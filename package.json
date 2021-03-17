@@ -1,0 +1,36 @@
+{
+  "name": "gitterra",
+  "version": "1.0.0",
+  "description": "A game of coding where you can play by doing the usual coding activities",
+  "main": "map.js",
+  "scripts": {
+    "start": "node map.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sergeychernyshev/GitTerra.git"
+  },
+  "keywords": [
+    "game",
+    "git"
+  ],
+  "contributors": [
+    {
+      "name": "Alexander Chernyshev",
+      "url": "https://www.alexchernyshev.com/"
+    },
+    {
+      "name": "Alex Druk",
+      "url": "https://github.com/alexdruk"
+    },
+    {
+      "name": "Sergey Chernyshev",
+      "url": "https://www.sergeychernyshev.com/"
+    }
+  ],
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/sergeychernyshev/GitTerra/issues"
+  },
+  "homepage": "https://github.com/sergeychernyshev/GitTerra#readme"
+}
