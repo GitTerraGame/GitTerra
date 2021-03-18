@@ -4,7 +4,7 @@
   "description": "A game of coding where you can play by doing the usual coding activities",
   "main": "map.js",
   "scripts": {
-    "start": "node map.js"
+    "start": "node map.js > map.html; open map.html"
   },
   "repository": {
     "type": "git",

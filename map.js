@@ -37,19 +37,71 @@ function getMapTileCoordinates(n) {
 }
 
 // total number of blocks to draw on the map
-const total = 12;
+const total = 21;
 
-const map = [];
+// scale the image if total is too high
+const tileScale = 1;
 
-for (let i = 1; i <= total; i++) {
+// actual image dimensions
+const tileOriginalWidth = 200;
+const highestTileOriginalHeight = 362;
+const numberOfTileVariations = 3;
+
+// calculated dimensions based on scale
+const tileWidth = tileOriginalWidth * tileScale;
+const tileHeight = tileWidth / 2;
+const isometricSkew = 1.65;
+const highestTileHeight = highestTileOriginalHeight * tileScale;
+
+let lowestIsoX = 0;
+let highestIsoX = 0;
+let highestIsoY = 0;
+
+const tiles = [];
+
+for (let i = total; i >= 1; i--) {
   const blockCoordinates = getMapTileCoordinates(i);
 
-  // creating columns if not defined otherwise
-  if (!Array.isArray(map[blockCoordinates.x])) {
-    map[blockCoordinates.x] = [];
+  const isoX =
+    (blockCoordinates.x * tileWidth) / 2 - blockCoordinates.y * tileHeight;
+  const isoY =
+    ((blockCoordinates.x * tileWidth) / 2 + blockCoordinates.y * tileHeight) /
+    isometricSkew;
+
+  if (lowestIsoX > isoX) {
+    lowestIsoX = isoX;
+  }
+  if (highestIsoX < isoX) {
+    highestIsoX = isoX;
+  }
+  if (highestIsoY < isoY) {
+    highestIsoY = isoY;
   }
 
-  map[blockCoordinates.x][blockCoordinates.y] = i;
+  const tileNumber =
+    Math.floor(Math.random() * (numberOfTileVariations - 1)) + 1;
+
+  tiles.push({ tileNumber, isoX, isoY });
 }
 
-console.table(map);
+const html = tiles.reduce((html, tile) => {
+  html += `<img src="images/tiles/tile${
+    tile.tileNumber
+  }.png" width="${tileWidth}"
+          style="
+            position: absolute;
+            left: ${tile.isoX - lowestIsoX}px;
+            bottom: ${tile.isoY - tileHeight}px;
+          "/>`;
+  return html;
+}, "");
+
+console.log(
+  `<body>
+      <div style="
+        position: absolute;
+        width: ${highestIsoX - lowestIsoX + tileWidth}px;
+        height: ${highestIsoY + highestTileHeight - tileHeight}px
+      ">${html}</div>
+  </body>`
+);
