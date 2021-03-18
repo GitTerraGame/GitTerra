@@ -7,7 +7,7 @@ A game of coding where you can play by doing the usual coding activities
 Clone this repository
 
 ```
-git clone --depth 1 https://github.com/sergeychernyshev/GitTerra
+git clone --depth 1 https://github.com/GitTerraGame/GitTerra
 cd GitTerra
 ```
 
@@ -35,11 +35,11 @@ Where `url-of-github-repo` is a URL of the GitHub project web page or `https://g
 So to generate a map for GitTerra itself you can run:
 
 ```
-npm start -- --url https://github.com/sergeychernyshev/GitTerra
+npm start -- --url https://github.com/GitTerraGame/GitTerra
 ```
 
 or
 
 ```
-npm start -- --url git@github.com:sergeychernyshev/GitTerra.git
+npm start -- --url git@github.com:GitTerraGame/GitTerra.git
 ```
