@@ -1,3 +1,6 @@
+# GitTerra app ignores
+map.html
+
 # Logs
 logs
 *.log
