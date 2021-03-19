@@ -1,10 +1,12 @@
 {
   "name": "gitterra",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A game of coding where you can play by doing the usual coding activities",
-  "main": "map.js",
+  "main": "main.js",
+  "type": "module",
   "scripts": {
-    "start": "node map.js > map.html; open map.html"
+    "debug": "npm start -- --url git@github.com:alexdruk/WhoAmI.git",
+    "start": "node main.js"
   },
   "repository": {
     "type": "git",
@@ -32,5 +34,9 @@
   "bugs": {
     "url": "https://github.com/sergeychernyshev/GitTerra/issues"
   },
-  "homepage": "https://github.com/sergeychernyshev/GitTerra#readme"
+  "homepage": "https://github.com/sergeychernyshev/GitTerra#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "yargs": "^16.2.0"
+  }
 }

@@ -35,73 +35,69 @@ function getMapTileCoordinates(n) {
     }
   }
 }
+export const generateMapHTML = function (total) {
+  // scale the image if total is too high
+  const tileScale = 1;
 
-// total number of blocks to draw on the map
-const total = 21;
+  // actual image dimensions
+  const tileOriginalWidth = 200;
+  const highestTileOriginalHeight = 362;
+  const numberOfTileVariations = 3;
 
-// scale the image if total is too high
-const tileScale = 1;
+  // calculated dimensions based on scale
+  const tileWidth = tileOriginalWidth * tileScale;
+  const tileHeight = tileWidth / 2;
+  const isometricSkew = 1.65;
+  const highestTileHeight = highestTileOriginalHeight * tileScale;
 
-// actual image dimensions
-const tileOriginalWidth = 200;
-const highestTileOriginalHeight = 362;
-const numberOfTileVariations = 3;
+  let lowestIsoX = 0;
+  let highestIsoX = 0;
+  let highestIsoY = 0;
 
-// calculated dimensions based on scale
-const tileWidth = tileOriginalWidth * tileScale;
-const tileHeight = tileWidth / 2;
-const isometricSkew = 1.65;
-const highestTileHeight = highestTileOriginalHeight * tileScale;
+  const tiles = [];
 
-let lowestIsoX = 0;
-let highestIsoX = 0;
-let highestIsoY = 0;
+  for (let i = total; i >= 1; i--) {
+    const blockCoordinates = getMapTileCoordinates(i);
 
-const tiles = [];
+    const isoX =
+      (blockCoordinates.x * tileWidth) / 2 - blockCoordinates.y * tileHeight;
+    const isoY =
+      ((blockCoordinates.x * tileWidth) / 2 + blockCoordinates.y * tileHeight) /
+      isometricSkew;
 
-for (let i = total; i >= 1; i--) {
-  const blockCoordinates = getMapTileCoordinates(i);
+    if (lowestIsoX > isoX) {
+      lowestIsoX = isoX;
+    }
+    if (highestIsoX < isoX) {
+      highestIsoX = isoX;
+    }
+    if (highestIsoY < isoY) {
+      highestIsoY = isoY;
+    }
 
-  const isoX =
-    (blockCoordinates.x * tileWidth) / 2 - blockCoordinates.y * tileHeight;
-  const isoY =
-    ((blockCoordinates.x * tileWidth) / 2 + blockCoordinates.y * tileHeight) /
-    isometricSkew;
+    const tileNumber =
+      Math.floor(Math.random() * (numberOfTileVariations - 1)) + 1;
 
-  if (lowestIsoX > isoX) {
-    lowestIsoX = isoX;
+    tiles.push({ tileNumber, isoX, isoY });
   }
-  if (highestIsoX < isoX) {
-    highestIsoX = isoX;
-  }
-  if (highestIsoY < isoY) {
-    highestIsoY = isoY;
-  }
 
-  const tileNumber =
-    Math.floor(Math.random() * (numberOfTileVariations - 1)) + 1;
-
-  tiles.push({ tileNumber, isoX, isoY });
-}
-
-const html = tiles.reduce((html, tile) => {
-  html += `<img src="images/tiles/tile${
-    tile.tileNumber
-  }.png" width="${tileWidth}"
+  const html = tiles.reduce((html, tile) => {
+    html += `<img src="images/tiles/tile${
+      tile.tileNumber
+    }.png" width="${tileWidth}"
           style="
             position: absolute;
             left: ${tile.isoX - lowestIsoX}px;
             bottom: ${tile.isoY - tileHeight}px;
           "/>`;
-  return html;
-}, "");
+    return html;
+  }, "");
 
-console.log(
-  `<body>
+  return `<body>
       <div style="
         position: absolute;
         width: ${highestIsoX - lowestIsoX + tileWidth}px;
         height: ${highestIsoY + highestTileHeight - tileHeight}px
       ">${html}</div>
-  </body>`
-);
+  </body>`;
+};
