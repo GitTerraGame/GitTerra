@@ -1,5 +1,6 @@
 # GitTerra app ignores
 map.html
+.DS_Store
 
 # Logs
 logs
