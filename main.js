@@ -51,10 +51,6 @@ async function countLinesGithub(owner, repo) {
     );
     const contributors = await response.json();
     //        console.log(contributors);
-    if (response.status == 202) {
-      //repeat request? countLinesGithub(owner, repo);
-      //return;
-    }
     if (response.status > 200 || !contributors || !contributors.length) {
       console.log(
         "Not found or empty array. We cannot continue without lines. Exiting..."
@@ -73,7 +69,6 @@ async function countLinesGithub(owner, repo) {
   } catch (err) {
     console.log(err);
     process.exit(1);
-    throw new Error("We cannot continue without lines");
   }
 }
 

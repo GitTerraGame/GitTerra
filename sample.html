@@ -111,21 +111,22 @@
                 return [owner, repo];
             }
             async function countLinesGithub(owner, repo) {
+                //modified from https://stackoverflow.com/questions/26881441/can-you-get-the-number-of-lines-of-code-from-a-github-repository/29012789#29012789
                 const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/stats/contributors`)
                 const contributors = await response.json();
-                if (response.status == 202) {
-                    //repeat request? countLinesGithub(owner, repo);
-                    //return;
-                }
                 if ((response.status > 200) || (!contributors?.length)) {
                     return error = "Not found or empty array";
                 }
+//                console.log("contributors",contributors);
                 const lineCounts = contributors.map(contributor => (
                     contributor.weeks.reduce((lineCount, week) => lineCount + week.a - week.d, 0)
                 ));
+//                console.log("lineCounts", lineCounts);
                 const lines = lineCounts.reduce((lineTotal, lineCount) => lineTotal + lineCount);
+                    console.log("lines", lines);
                 return lines;
             }
+            
             async function getRepoSize(owner, repo) {
                 const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`)
                 const json = await response.json();
@@ -143,7 +144,6 @@
             async function countFilesGithub(owner, repo) {
                 const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/master`)
                 const resp = await response.json();
-                let files = resp.tree.length;
                 /* to count only files, witout directories  - comment previous line and uncomment others
                 let files = 0;
                 for (var i=0; i<resp.tree.length; i++) {
@@ -156,8 +156,11 @@
                     //repeat request? countLinesGithub(owner, repo);
                     //return;
                 }
-                if (response.status > 200) {
+                else if (response.status > 200) {
                     return error = "Not found";
+                }
+                else {
+                    let files = resp.tree.length;
                 }
                 return files;
             }
