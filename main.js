@@ -12,6 +12,7 @@ const regexURL = /^https:\/\/github\.com\/(.+?)\/(.+?)$/;
 async function main() {
   checkInput();
   await getGitHubData();
+  //  console.log(GHData);
   const mapHTML = generateMapHTML(GHData.lines);
   try {
     fs.writeFileSync("./map.html", mapHTML);
@@ -34,17 +35,19 @@ main();
  */
 async function getGitHubData() {
   let lines = await countLinesGithub(GHData.owner, GHData.repo);
+  let files = await countFilesGithub(GHData.owner, GHData.repo);
+  let reposize = await getRepoSize(GHData.owner, GHData.repo);
   GHData.lines = lines;
-  //    console.log('lines: ', lines);
+  GHData.files = files;
+  GHData.size = reposize;
 }
 /**
  * to count lines using API call
  *  @param string owner, repo owner
  *  @param string repo, repo name
- * @return int number of line or exit with code 1
+ * @return int number of lines
  */
 async function countLinesGithub(owner, repo) {
-  let lines = null;
   try {
     const response = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/stats/contributors`
@@ -52,23 +55,71 @@ async function countLinesGithub(owner, repo) {
     const contributors = await response.json();
     //        console.log(contributors);
     if (response.status > 200 || !contributors || !contributors.length) {
-      console.log(
-        "Not found or empty array. We cannot continue without lines. Exiting..."
+      console.log("stats/contributors not found or empty array.");
+      //      process.stdout.write("We cannot continue without lines. Exiting...\n");
+      //      process.exit(1);
+      return;
+    } else {
+      const lineCounts = contributors.map((contributor) =>
+        contributor.weeks.reduce(
+          (lineCount, week) => lineCount + week.a - week.d,
+          0
+        )
       );
-      process.stdout.write("We cannot continue without lines. Exiting...\n");
-      process.exit(1);
+      let lines = lineCounts.reduce(
+        (lineTotal, lineCount) => lineTotal + lineCount
+      );
+      return lines;
     }
-    const lineCounts = contributors.map((contributor) =>
-      contributor.weeks.reduce(
-        (lineCount, week) => lineCount + week.a - week.d,
-        0
-      )
-    );
-    lines = lineCounts.reduce((lineTotal, lineCount) => lineTotal + lineCount);
-    return lines;
   } catch (err) {
     console.log(err);
-    process.exit(1);
+    //    process.exit(1);
+  }
+}
+/**
+ * to count files and directories using API call
+ *  @param string owner, repo owner
+ *  @param string repo, repo name
+ * @return int number of files and directories
+ */
+async function countFilesGithub(owner, repo) {
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/git/trees/master`
+    );
+    const resp = await response.json();
+    if (response.status > 200) {
+      console.log("trees/master file not found.");
+      return;
+    } else {
+      let files = resp.tree.length;
+      return files;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+/**
+ * to get repo size in KB using API call
+ *  @param string owner, repo owner
+ *  @param string repo, repo name
+ * @return int size in KB
+ */
+async function getRepoSize(owner, repo) {
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}`
+    );
+    const json = await response.json();
+    if (response.status > 200) {
+      console.log("repos/ file not found.");
+      return;
+    } else {
+      let size = json.size;
+      return size;
+    }
+  } catch (err) {
+    console.log(err);
   }
 }
 
