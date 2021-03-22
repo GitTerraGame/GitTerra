@@ -113,7 +113,5 @@ vendor
 locale
 
 #generated files
-./temp/sccresult.json
-./temp/sccresult.txt
-./temp
-./temp/*
+./temp/
+./temp/**
