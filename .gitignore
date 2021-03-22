@@ -113,5 +113,6 @@ vendor
 locale
 
 #generated files
+temp/
 ./temp/
 ./temp/**

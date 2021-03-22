@@ -6,14 +6,13 @@ import { spawn } from "child_process";
 import { generateMapHTML } from "./map.js";
 
 let GHData = {}; // global object to keep all data collected on given Git
-const regexHTTPS = /^https:\/\/github\.com\/(.+?)\/(.+?)\.git$/;
-const regexSSH = /^git@github\.com:(.+?)\/(.+?)\.git$/;
-const regexURL = /^https:\/\/github\.com\/(.+?)\/(.+?)$/;
+const SCCfile = "./temp/sccresult.json";
 async function main() {
-  checkInput();
-  await getGitHubData();
+  getInput();
+  readSCC(SCCfile);
+  //  await getGitHubData();
   //  console.log(GHData);
-  const mapHTML = generateMapHTML(GHData.lines);
+  const mapHTML = generateMapHTML(GHData.total.lines);
   try {
     fs.writeFileSync("./map.html", mapHTML);
     const subprocess = spawn("open", ["map.html"], {
@@ -29,175 +28,65 @@ async function main() {
 main();
 //          FUNCTIONS
 
-/**
- * to get data from github API
- * @return bolean or exit with error code
- */
-async function getGitHubData() {
-  let lines = await countLinesGithub(GHData.owner, GHData.repo);
-  let files = await countFilesGithub(GHData.owner, GHData.repo);
-  let reposize = await getRepoSize(GHData.owner, GHData.repo);
-  GHData.lines = lines;
-  GHData.files = files;
-  GHData.size = reposize;
+function readSCC(SCCfile) {
+  const filetext = fs.readFileSync(SCCfile, "utf-8");
+  let json = JSON.parse(filetext);
+  GHData.byLang = [];
+  let [
+    bytes,
+    files,
+    lines,
+    codebytes,
+    code,
+    comment,
+    blanks,
+    complexity,
+    wComplexity,
+  ] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  json.forEach((elem) => {
+    GHData.byLang.push({
+      name: elem.Name,
+      bytes: elem.Bytes,
+      codebytes: elem.CodeBytes,
+      lines: elem.Lines,
+      code: elem.Code,
+      comment: elem.Comment,
+      blanks: elem.Blank,
+      complexity: elem.Complexity,
+      count: elem.Count,
+      wComplexity: elem.WeightedComplexity,
+    });
+    bytes += elem.Bytes;
+    files += elem.Count;
+    lines += elem.Lines;
+    codebytes = +elem.CodeBytes;
+    code += elem.Code;
+    comment += elem.Comment;
+    blanks += elem.Blank;
+    complexity += elem.Complexity;
+    wComplexity += elem.WeightedComplexity;
+  });
+  GHData.total = {
+    bytes: bytes,
+    files: files,
+    lines: lines,
+    codebytes: codebytes,
+    code: code,
+    comment: comment,
+    blanks: blanks,
+    complexity: complexity,
+    wComplexity: wComplexity,
+  };
 }
-/**
- * to count lines using API call
- *  @param string owner, repo owner
- *  @param string repo, repo name
- * @return int number of lines
- */
-async function countLinesGithub(owner, repo) {
-  try {
-    const response = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/stats/contributors`
-    );
-    const contributors = await response.json();
-    //        console.log(contributors);
-    if (response.status > 200 || !contributors || !contributors.length) {
-      console.log("stats/contributors not found or empty array.");
-      //      process.stdout.write("We cannot continue without lines. Exiting...\n");
-      //      process.exit(1);
-      return;
-    } else {
-      const lineCounts = contributors.map((contributor) =>
-        contributor.weeks.reduce(
-          (lineCount, week) => lineCount + week.a - week.d,
-          0
-        )
-      );
-      let lines = lineCounts.reduce(
-        (lineTotal, lineCount) => lineTotal + lineCount
-      );
-      return lines;
-    }
-  } catch (err) {
-    console.log(err);
-    //    process.exit(1);
-  }
-}
-/**
- * to count files and directories using API call
- *  @param string owner, repo owner
- *  @param string repo, repo name
- * @return int number of files and directories
- */
-async function countFilesGithub(owner, repo) {
-  try {
-    const response = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/git/trees/master`
-    );
-    const resp = await response.json();
-    if (response.status > 200) {
-      console.log("trees/master file not found.");
-      return;
-    } else {
-      let files = resp.tree.length;
-      return files;
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
-/**
- * to get repo size in KB using API call
- *  @param string owner, repo owner
- *  @param string repo, repo name
- * @return int size in KB
- */
-async function getRepoSize(owner, repo) {
-  try {
-    const response = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}`
-    );
-    const json = await response.json();
-    if (response.status > 200) {
-      console.log("repos/ file not found.");
-      return;
-    } else {
-      let size = json.size;
-      return size;
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 /**
  * This function check validity of input
  * @return bolean or exit with error code
  */
-function checkInput() {
+function getInput() {
   const argv = yargs(process.argv.slice(2)).argv;
-  if (!argv.url) {
-    printUsageToStdout();
-    process.exit(9);
-  }
-  const gitname = argv.url;
-  if (
-    regexHTTPS.test(gitname) ||
-    regexSSH.test(gitname) ||
-    regexURL.test(gitname)
-  ) {
-    let gittype = getGitType(gitname);
-    let gitnames = gitExrtact(gitname, gittype);
-    GHData = { owner: gitnames[0], repo: gitnames[1] };
-  } else {
-    printUsageToStdout();
-    process.exit(9);
-  }
-}
-/**
- * This extract type of input argument
- *  @param string gitname of the input git. Only 3 types are allowed
- *  @return string git type (HTTPS, SSH or URL) or exit with error code
- */
-function getGitType(gitname) {
-  if (regexHTTPS.test(gitname)) {
-    return "HTTPS";
-  } else if (regexSSH.test(gitname)) {
-    return "SSH";
-  } else if (regexURL.test(gitname)) {
-    return "URL";
-  } else {
-    printUsageToStdout();
-    process.exit(9);
-  }
-}
-/**
- * This extract type of input argument
- *  @param string gitname of the input git
- *  @param string git type (HTTPS, SSH or URL)
- *  @return array of owener and repo names
- */
-function gitExrtact(gitname, gittype) {
-  let match = [];
-  if (gittype === "HTTPS") {
-    match = gitname.match(regexHTTPS);
-  } else if (gittype === "SSH") {
-    match = gitname.match(regexSSH);
-  } else if (gittype === "URL") {
-    match = gitname.match(regexURL);
-  }
-  const repo = match[2];
-  const owner = match[1];
-  return [owner, repo];
-}
-/**
- * This function print Usage to stdout
- */
-function printUsageToStdout() {
-  process.stdout.write("Wrong number of arguments. Exiting...\n");
-  process.stdout.write("USAGE: npm start -- --url <url-of-github-repo>\n");
-  process.stdout.write(
-    "Example: npm start -- --url https://github.com/GitTerraGame/GitTerra\n"
-  );
-  process.stdout.write(
-    "Example: npm start -- --url git@github.com:GitTerraGame/GitTerra.git\n"
-  );
-  process.stdout.write(
-    "Example: npm start -- --url https://github.com/GitTerraGame/GitTerra.git\n"
-  );
+  const owner = argv.o;
+  const repo = argv.r;
+  GHData = { owner: owner, repo: repo };
 }
 /**
  * This function defines the algorythm for plotting city blocks maintaining the diamond shape.
