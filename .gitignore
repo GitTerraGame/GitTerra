@@ -111,3 +111,7 @@ dist
 node_modules
 vendor
 locale
+
+#generated files
+./temp/sccresult.json
+./temp/sccresult.txt
