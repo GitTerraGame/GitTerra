@@ -15,7 +15,7 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 #validate input
-regex='\/github\.com[:|\/](.+)\/(.+)$'
+regex='github\.com[:|\/](.+)\/(.+)$'
 regex1='(.+)\.git$'
 if [[ $gitname =~ $regex ]]; then
     owner=${BASH_REMATCH[1]} 
