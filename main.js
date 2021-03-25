@@ -10,9 +10,22 @@ const SCCfile = "./temp/sccresult.json";
 async function main() {
   getInput();
   readSCC(SCCfile);
-  //  await getGitHubData();
-  //  console.log(GHData);
-  const mapHTML = generateMapHTML(GHData.total.lines);
+  //  possible values of univ_coeff 10-100+. 10*log10(sum(each param/~avg(param))+1)/maxLog10+5  (+1 to make range start from 1, not 0; +10 to make small repos has at least 10)
+  const univ_coeff = Math.round(
+    (100 *
+      Math.log10(
+        GHData.total.files / GHData.weight.files +
+          GHData.total.lines / GHData.weight.lines +
+          GHData.total.comment / GHData.weight.comment +
+          GHData.total.code / GHData.weight.code +
+          GHData.total.bytes / GHData.weight.bytes +
+          1
+      )) /
+      3 +
+      10
+  );
+  //  console.log("coeff", univ_coeff);
+  const mapHTML = generateMapHTML(univ_coeff);
   try {
     fs.writeFileSync("./map.html", mapHTML);
     const subprocess = spawn("open", ["map.html"], {
@@ -55,7 +68,7 @@ function readSCC(SCCfile) {
       complexity: elem.Complexity,
       count: elem.Count,
       wComplexity: elem.WeightedComplexity,
-    });
+    }); //push
     bytes += elem.Bytes;
     files += elem.Count;
     lines += elem.Lines;
@@ -65,7 +78,7 @@ function readSCC(SCCfile) {
     blanks += elem.Blank;
     complexity += elem.Complexity;
     wComplexity += elem.WeightedComplexity;
-  });
+  }); //foreach
   GHData.total = {
     bytes: bytes,
     files: files,
@@ -77,6 +90,10 @@ function readSCC(SCCfile) {
     complexity: complexity,
     wComplexity: wComplexity,
   };
+  if (GHData.total.files < 1) {
+    console.log("this git is empty or incorrect!");
+    process.exit(1);
+  }
 }
 /**
  * This function check validity of input
@@ -87,6 +104,14 @@ function getInput() {
   const owner = argv.o;
   const repo = argv.r;
   GHData = { owner: owner, repo: repo };
+  //fill out weight constants
+  GHData.weight = {
+    files: 400,
+    lines: 100000,
+    comment: 15000,
+    code: 80000,
+    bytes: 4000000,
+  };
 }
 /**
  * This function defines the algorythm for plotting city blocks maintaining the diamond shape.
