@@ -22,6 +22,20 @@ Then in the root of the repository, run npm to install the dependencies:
 npm install
 ```
 
+We also use [scc](https://github.com/boyter/scc) to generate code statistics. It is written in Go so you can install it by running
+
+```
+go get -u github.com/boyter/scc/
+
+```
+
+or if you're on a Mac, you can also install it using Homebrew:
+```
+brew install scc
+```
+See the repo for [other installation options](https://github.com/boyter/scc#install).
+
+
 ## Running the map generator
 
 To generate the map, run the following command:
