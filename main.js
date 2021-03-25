@@ -6,6 +6,7 @@ import { spawn } from "child_process";
 import { generateMapHTML } from "./map.js";
 
 let GHData = {}; // global object to keep all data collected on given Git
+const min_tiles = 10;
 const SCCfile = "./temp/sccresult.json";
 async function main() {
   getInput();
@@ -22,9 +23,9 @@ async function main() {
           1
       )) /
       3 +
-      10
+      min_tiles
   );
-  //  console.log("coeff", univ_coeff);
+  console.log("coeff", univ_coeff);
   const mapHTML = generateMapHTML(univ_coeff);
   try {
     fs.writeFileSync("./map.html", mapHTML);
