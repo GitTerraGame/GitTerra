@@ -36,7 +36,10 @@
   },
   "homepage": "https://github.com/sergeychernyshev/GitTerra#readme",
   "dependencies": {
+    "bin-pack": "^1.0.2",
+    "boxpack": "^0.1.0",
     "node-fetch": "^2.6.1",
+    "quadrekt": "^1.0.0",
     "yargs": "^16.2.0"
   }
 }

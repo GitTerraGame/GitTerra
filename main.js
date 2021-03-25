@@ -1,9 +1,9 @@
-import fetch from "node-fetch";
 import yargs from "yargs";
 import fs from "fs";
 import { spawn } from "child_process";
 
-import { generateMapHTML } from "./map.js";
+import diamond from "./diamond.js";
+import map from "./map.js";
 
 let GHData = {}; // global object to keep all data collected on given Git
 const SCCfile = "./temp/sccresult.json";
@@ -12,7 +12,7 @@ async function main() {
   readSCC(SCCfile);
   //  await getGitHubData();
   //  console.log(GHData);
-  const mapHTML = generateMapHTML(GHData.total.lines);
+  const mapHTML = map.generateMapHTML(GHData.total.lines, diamond);
   try {
     fs.writeFileSync("./map.html", mapHTML);
     const subprocess = spawn("open", ["map.html"], {
@@ -87,41 +87,4 @@ function getInput() {
   const owner = argv.o;
   const repo = argv.r;
   GHData = { owner: owner, repo: repo };
-}
-/**
- * This function defines the algorythm for plotting city blocks maintaining the diamond shape.
- * The input is a sequential number of the block and the output are
- * the pair of cartesian coordinates to be later converted into isometric coordinates.
- *
- * @param {int} n positive integer representing the sequence number of the city block
- */
-function getMapTileCoordinates(n) {
-  if (!Number.isInteger(n) || n <= 0) {
-    throw new Error("We can only draw blocks with positive integer numbers");
-  }
-
-  // primary coordinate
-  const primary = Math.ceil(Math.sqrt(n));
-
-  // secondary coordinate
-  const secondary = Math.ceil((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2);
-
-  if (secondary === 0) {
-    // center line tile
-    return { x: primary, y: primary };
-  } else {
-    // boolean representing the side of the diamond, e.g. left (false) or right (true)
-    const direction =
-      Math.ceil((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) -
-        Math.floor((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) ===
-      0;
-
-    if (direction) {
-      // append to the right
-      return { x: secondary, y: primary };
-    } else {
-      // append to the left
-      return { x: primary, y: secondary };
-    }
-  }
 }
