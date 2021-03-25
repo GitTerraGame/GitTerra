@@ -1,14 +1,14 @@
 #!/bin/bash
 function usage {
-    echo "USAGE: $scriptname --url <url-of-github-repo>"; 
-    echo "Example: $scriptname --url https://github.com/GitTerraGame/GitTerra or";
-    echo "Example: $scriptname --url git@github.com:GitTerraGame/GitTerra.git or";
-    echo "Example: $scriptname --url https://github.com/GitTerraGame/GitTerra.git";
+    echo "USAGE: $scriptname -url <url-of-github-repo>"; 
+    echo "Example: $scriptname -url https://github.com/GitTerraGame/GitTerra or";
+    echo "Example: $scriptname -url git@github.com:GitTerraGame/GitTerra.git or";
+    echo "Example: $scriptname -url https://github.com/GitTerraGame/GitTerra.git";
 }
 scriptname='getData.sh'
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        -url) gitname="$2";shift ;;
+        -u|--url|-url) gitname="$2";shift ;;
         *) usage
         exit 1 ;;
     esac
@@ -26,6 +26,7 @@ if [[ $gitname =~ $regex ]]; then
 else
     echo "Not correct github repo name."
     usage
+    exit 1
 fi
 #echo "owner: $owner"
 #echo "repo: $repo"
@@ -35,5 +36,6 @@ git clone --quiet --depth 1 "$gitname" > /dev/null
 scc --format-multi "tabular:sccresult.txt,json:sccresult.json" "$repo"
 rm -rf "$repo"
 cd ..
+#here you should check if node is installed and it's version > 10 ?
 node main.js -o "$owner" -r "$repo"
 exit 0
