@@ -26,7 +26,6 @@ We also use [scc](https://github.com/boyter/scc) to generate code statistics. It
 
 ```
 go get -u github.com/boyter/scc/
-
 ```
 
 or if you're on a Mac, you can also install it using Homebrew:
