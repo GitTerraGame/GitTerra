@@ -1,16 +1,18 @@
 import getStdin from "get-stdin";
 import fs from "fs";
+import yargs from "yargs";
 import { spawn } from "child_process";
 
 import { generateMapHTML } from "./map.js";
 
 const min_tiles = 10;
 const colormap_file = "./color_lang.json";
+const [owner, repo] = getOwnerRepo();
 
 async function main() {
   try {
     const repoData = await readSCC();
-    console.log(repoData);
+    //    console.log(repoData);
     const number_of_blocks = Math.round(
       (100 *
         Math.log10(
@@ -121,4 +123,14 @@ async function readSCC() {
     lang.rank = Math.round((100 * lang.code) / repoData.total.code);
   });
   return repoData;
+}
+/**
+ * This function check validity of input
+ * @return bolean or exit with error code
+ */
+function getOwnerRepo() {
+  const argv = yargs(process.argv.slice(2)).argv;
+  const owner = argv.o;
+  const repo = argv.r;
+  return [owner, repo];
 }
