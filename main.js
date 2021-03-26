@@ -5,11 +5,12 @@ import { spawn } from "child_process";
 import { generateMapHTML } from "./map.js";
 
 const min_tiles = 10;
+const colormap_file = "./color_lang.json";
 
 async function main() {
   try {
     const repoData = await readSCC();
-
+    console.log(repoData);
     const number_of_blocks = Math.round(
       (100 *
         Math.log10(
@@ -46,6 +47,7 @@ async function readSCC() {
   const repoData = {};
 
   let json = JSON.parse(await getStdin());
+  //  console.log(json);
   repoData.byLang = [];
 
   let [
@@ -72,6 +74,8 @@ async function readSCC() {
       complexity: elem.Complexity,
       count: elem.Count,
       wComplexity: elem.WeightedComplexity,
+      color: "default",
+      rank: 0,
     }); //push
     bytes += elem.Bytes;
     files += elem.Count;
@@ -108,6 +112,13 @@ async function readSCC() {
     console.log("this git is empty or incorrect!");
     process.exit(1);
   }
-
+  const colormap = fs.readFileSync(colormap_file, "utf-8");
+  let colors = JSON.parse(colormap);
+  repoData.byLang.forEach((lang) => {
+    if (colors[lang.name]) {
+      lang.color = colors[lang.name].color;
+    }
+    lang.rank = Math.round((100 * lang.code) / repoData.total.code);
+  });
   return repoData;
 }
