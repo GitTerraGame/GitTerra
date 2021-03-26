@@ -5,8 +5,8 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "debug": "./getData.sh --url https://github.com/GitTerraGame/GitTerra.git",
-    "start": "./getData.sh"
+    "debug": "./generateRepoMap.sh --url https://github.com/GitTerraGame/GitTerra.git",
+    "start": "./generateRepoMap.sh"
   },
   "repository": {
     "type": "git",
