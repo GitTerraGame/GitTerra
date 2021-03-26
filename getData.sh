@@ -1,11 +1,12 @@
 #!/bin/bash
 function usage {
-    echo "USAGE: $scriptname -url <url-of-github-repo>"; 
-    echo "Example: $scriptname -url https://github.com/GitTerraGame/GitTerra or";
-    echo "Example: $scriptname -url git@github.com:GitTerraGame/GitTerra.git or";
-    echo "Example: $scriptname -url https://github.com/GitTerraGame/GitTerra.git";
+    echo "USAGE: $scriptname --url <url-of-github-repo>"; 
+    echo "Examples:";
+    echo "$scriptname --url git@github.com:GitTerraGame/GitTerra.git";
+    echo "$scriptname --url https://github.com/GitTerraGame/GitTerra.git";
+    exit 1;
 }
-scriptname='getData.sh'
+scriptname=$0;
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -u|--url|-url) gitname="$2";shift ;;
@@ -28,14 +29,9 @@ else
     usage
     exit 1
 fi
-#echo "owner: $owner"
-#echo "repo: $repo"
-cd ./temp || exit 1
-git clone --quiet --depth 1 "$gitname" > /dev/null
-#scc  -o ./sccresult.txt "$repo"  > /dev/null
-scc --format-multi "tabular:sccresult.txt,json:sccresult.json" "$repo"
-rm -rf "$repo"
-cd ..
-#here you should check if node is installed and it's version > 10 ?
-node main.js -o "$owner" -r "$repo"
+
+TEMP_FOLDER=$(mktemp -d)
+git clone --quiet --depth 1 "$gitname" $TEMP_FOLDER > /dev/null
+scc -f json $TEMP_FOLDER | node main.js &
+rm -rf $TEMP_FOLDER
 exit 0
