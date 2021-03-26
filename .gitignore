@@ -106,3 +106,13 @@ dist
 
 # TernJS port file
 .tern-port
+
+#specific for many repositories
+node_modules
+vendor
+locale
+
+#generated files
+temp/
+./temp/
+./temp/**

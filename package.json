@@ -5,8 +5,8 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "debug": "npm start -- --url git@github.com:alexdruk/WhoAmI.git",
-    "start": "node main.js"
+    "debug": "./generateRepoMap.sh --url https://github.com/GitTerraGame/GitTerra.git",
+    "start": "./generateRepoMap.sh"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/sergeychernyshev/GitTerra#readme",
   "dependencies": {
-    "node-fetch": "^2.6.1",
+    "get-stdin": "^8.0.0",
     "yargs": "^16.2.0"
   }
 }

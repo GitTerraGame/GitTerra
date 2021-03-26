@@ -41,13 +41,13 @@ export const generateMapHTML = function (total) {
 
   // actual image dimensions
   const tileOriginalWidth = 200;
-  const highestTileOriginalHeight = 362;
-  const numberOfTileVariations = 3;
+  const highestTileOriginalHeight = 210;
+  const numberOfTileVariations = 7;
 
   // calculated dimensions based on scale
   const tileWidth = tileOriginalWidth * tileScale;
   const tileHeight = tileWidth / 2;
-  const isometricSkew = 1.65;
+  const isometricSkew = 1.73;
   const highestTileHeight = highestTileOriginalHeight * tileScale;
 
   let lowestIsoX = 0;
@@ -75,14 +75,13 @@ export const generateMapHTML = function (total) {
       highestIsoY = isoY;
     }
 
-    const tileNumber =
-      Math.floor(Math.random() * (numberOfTileVariations - 1)) + 1;
+    const tileNumber = Math.floor(Math.random() * numberOfTileVariations) + 1;
 
     tiles.push({ tileNumber, isoX, isoY });
   }
 
   const html = tiles.reduce((html, tile) => {
-    html += `<img src="images/tiles/tile${
+    html += `<img src="images/tiles/terraprime/tiles_v2-0${
       tile.tileNumber
     }.png" width="${tileWidth}"
           style="
