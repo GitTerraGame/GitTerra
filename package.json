@@ -5,8 +5,8 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "debug": "npm start -- --url https://github.com/GitTerraGame/GitTerra",
-    "start": "node main.js"
+    "debug": "./getData.sh --url https://github.com/GitTerraGame/GitTerra.git",
+    "start": "./getData.sh"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,6 @@
   },
   "homepage": "https://github.com/sergeychernyshev/GitTerra#readme",
   "dependencies": {
-    "node-fetch": "^2.6.1",
-    "yargs": "^16.2.0"
+    "get-stdin": "^8.0.0"
   }
 }
