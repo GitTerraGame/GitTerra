@@ -7,7 +7,7 @@ A game of coding where you can play by doing the usual coding activities
 Clone this repository
 
 ```
-git clone --depth 1 https://github.com/GitTerraGame/GitTerra
+git clone https://github.com/GitTerraGame/GitTerra
 cd GitTerra
 ```
 
