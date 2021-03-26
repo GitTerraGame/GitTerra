@@ -41,7 +41,7 @@ export const generateMapHTML = function (total) {
 
   // actual image dimensions
   const tileOriginalWidth = 200;
-  const highestTileOriginalHeight = 210;
+  const highestTileOriginalHeight = 420;
   const numberOfTileVariations = 11;
 
   // calculated dimensions based on scale
@@ -81,7 +81,7 @@ export const generateMapHTML = function (total) {
   }
 
   const html = tiles.reduce((html, tile) => {
-    html += `<img src="images/tiles/terraprime/tiles_v2-0${tile.tileNumber
+    html += `<img src="images/tiles/terraprime/tiles_v2-${tile.tileNumber.toString().padStart(2, '0')
       }.png" width="${tileWidth}"
           style="
             position: absolute;
