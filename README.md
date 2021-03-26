@@ -40,10 +40,10 @@ See the repo for [other installation options](https://github.com/boyter/scc#inst
 To generate the map, run the following command:
 
 ```
-npm start -- --url <url-of-github-repo>
+npm start -- --url *url-of-github-repo*
 ```
 
-Where `url-of-github-repo` is a URL of the GitHub project web page or `https://github.com/...` or `git@github.com:...` URL you use to clone the repository.
+Where `<url-of-github-repo>` is a URL of the GitHub project web page or `https://github.com/...` or `git@github.com:...` URL you use to clone the repository.
 
 So to generate a map for GitTerra itself you can run:
 
