@@ -13,6 +13,7 @@ cd GitTerra
 
 ### Dependencies
 
+#### Node modules
 This project uses Node.js and npm, install them from here:
 https://nodejs.org/
 
@@ -22,6 +23,7 @@ Then in the root of the repository, run npm to install the dependencies:
 npm install
 ```
 
+#### SCC code analysis tool
 We also use [scc](https://github.com/boyter/scc) to generate code statistics. It is written in Go so you can install it by running
 
 ```
