@@ -23,7 +23,7 @@ function getMapTileCoordinates(n) {
     // boolean representing the side of the diamond, e.g. left (false) or right (true)
     const direction =
       Math.ceil((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) -
-        Math.floor((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) ===
+      Math.floor((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) ===
       0;
 
     if (direction) {
@@ -42,7 +42,7 @@ export const generateMapHTML = function (total) {
   // actual image dimensions
   const tileOriginalWidth = 200;
   const highestTileOriginalHeight = 210;
-  const numberOfTileVariations = 7;
+  const numberOfTileVariations = 11;
 
   // calculated dimensions based on scale
   const tileWidth = tileOriginalWidth * tileScale;
@@ -81,9 +81,8 @@ export const generateMapHTML = function (total) {
   }
 
   const html = tiles.reduce((html, tile) => {
-    html += `<img src="images/tiles/terraprime/tiles_v2-0${
-      tile.tileNumber
-    }.png" width="${tileWidth}"
+    html += `<img src="images/tiles/terraprime/tiles_v2-0${tile.tileNumber
+      }.png" width="${tileWidth}"
           style="
             position: absolute;
             left: ${tile.isoX - lowestIsoX}px;
