@@ -32,6 +32,6 @@ fi
 
 TEMP_FOLDER=$(mktemp -d)
 git clone --quiet --depth 1 "$gitname" $TEMP_FOLDER > /dev/null
-scc -f json $TEMP_FOLDER | node main.js &
+scc -f json $TEMP_FOLDER | node main.js
 rm -rf $TEMP_FOLDER
 exit 0
