@@ -23,7 +23,7 @@ function getMapTileCoordinates(n) {
     // boolean representing the side of the diamond, e.g. left (false) or right (true)
     const direction =
       Math.ceil((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) -
-      Math.floor((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) ===
+        Math.floor((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) ===
       0;
 
     if (direction) {
@@ -81,8 +81,9 @@ export const generateMapHTML = function (total) {
   }
 
   const html = tiles.reduce((html, tile) => {
-    html += `<img src="images/tiles/terraprime/tiles_v2-${tile.tileNumber.toString().padStart(2, '0')
-      }.png" width="${tileWidth}"
+    html += `<img src="images/tiles/terraprime/tiles_v2-${tile.tileNumber
+      .toString()
+      .padStart(2, "0")}.png" width="${tileWidth}"
           style="
             position: absolute;
             left: ${tile.isoX - lowestIsoX}px;
@@ -91,11 +92,21 @@ export const generateMapHTML = function (total) {
     return html;
   }, "");
 
-  return `<body>
+  return `<html>
+  <body>
+  <div style="text-align:center;">
+  <img itemprop="image"  style="vertical-align:middle" src="https://avatars.githubusercontent.com/u/80906958?s=200&amp;v=4" width="50" height="50" alt="@GitTerraGame">
+  <span style="font-size:xx-large;vertical-align:middle;margin-bottom: 25px;">GitTerraGame</span>
+  </div>
       <div style="
         position: absolute;
         width: ${highestIsoX - lowestIsoX + tileWidth}px;
-        height: ${highestIsoY + highestTileHeight - tileHeight}px
+        height: ${highestIsoY + highestTileHeight - tileHeight}px;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
       ">${html}</div>
-  </body>`;
+  <div style="position: fixed; bottom:10;"><a href="https://github.com/GitTerraGame/GitTerra/issues">Please give us your feedback!</a></div>
+  </body></html>`;
 };
