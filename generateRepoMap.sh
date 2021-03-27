@@ -1,22 +1,8 @@
 #!/bin/bash
-function usage {
-    echo "USAGE: $scriptname --url <url-of-github-repo>"; 
-    echo "Examples:";
-    echo "$scriptname --url git@github.com:GitTerraGame/GitTerra";
-    echo "$scriptname --url git@github.com:GitTerraGame/GitTerra.git";
-    echo "$scriptname --url https://github.com/GitTerraGame/GitTerra.git";
-    exit 1;
-}
-scriptname=$0;
-while [[ "$#" -gt 0 ]]; do
-    case $1 in
-        -u|--url|-url) gitname="$2";shift ;;
-        *) usage
-        exit 1 ;;
-    esac
-    shift
-done
-#validate input
+
+gitname=$(cat -)
+
+# validate input
 regex='github\.com[:|\/](.+)\/(.+)$'
 regex1='(.+)\.git$'
 if [[ $gitname =~ $regex ]]; then
