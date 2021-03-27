@@ -93,20 +93,30 @@ export const generateMapHTML = function (total) {
   }, "");
 
   return `<html>
+  <head>
+  <style>
+  h1, #feedback {
+    text-align:center;
+  }
+  h1 * {
+    vertical-align: middle;
+  }
+  </style>
+  </head>
   <body>
-  <div style="text-align:center;">
-  <img itemprop="image"  style="vertical-align:middle" src="https://avatars.githubusercontent.com/u/80906958?s=200&amp;v=4" width="50" height="50" alt="@GitTerraGame">
-  <span style="font-size:xx-large;vertical-align:middle;margin-bottom: 25px;">GitTerraGame</span>
-  </div>
-      <div style="
-        position: absolute;
-        width: ${highestIsoX - lowestIsoX + tileWidth}px;
-        height: ${highestIsoY + highestTileHeight - tileHeight}px;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%)
-      ">${html}</div>
-  <div style="position: fixed; bottom:10;"><a href="https://github.com/GitTerraGame/GitTerra/issues">Please give us your feedback!</a></div>
-  </body></html>`;
+    <h1>
+      <img itemprop="image" src="https://avatars.githubusercontent.com/u/80906958?s=200&amp;v=4" width="50" height="50" alt="@GitTerraGame">
+      <span>GitTerraGame</span>
+    </h1>
+    <div id="feedback"><a href="https://github.com/GitTerraGame/GitTerra/issues">How can we make this game better?</a></div>
+    <div style="
+      position: absolute;
+      width: ${highestIsoX - lowestIsoX + tileWidth}px;
+      height: ${highestIsoY + highestTileHeight - tileHeight}px;
+      left: 50%;
+      margin-right: -50%;
+      transform: translate(-50%, 0)
+    ">${html}</div>
+  </body>
+</html>`;
 };
