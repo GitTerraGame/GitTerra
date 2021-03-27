@@ -1,15 +1,18 @@
 import getStdin from "get-stdin";
 import fs from "fs";
+import yargs from "yargs";
 import { spawn } from "child_process";
 
 import { generateMapHTML } from "./map.js";
 
 const min_tiles = 10;
+const colormap_file = "./color_lang.json";
+const [owner, repo] = getOwnerRepo();
 
 async function main() {
   try {
     const repoData = await readSCC();
-
+    //    console.log(repoData);
     const number_of_blocks = Math.round(
       (100 *
         Math.log10(
@@ -46,6 +49,7 @@ async function readSCC() {
   const repoData = {};
 
   let json = JSON.parse(await getStdin());
+  //  console.log(json);
   repoData.byLang = [];
 
   let [
@@ -72,6 +76,8 @@ async function readSCC() {
       complexity: elem.Complexity,
       count: elem.Count,
       wComplexity: elem.WeightedComplexity,
+      color: "default",
+      rank: 0,
     }); //push
     bytes += elem.Bytes;
     files += elem.Count;
@@ -108,6 +114,23 @@ async function readSCC() {
     console.log("this git is empty or incorrect!");
     process.exit(1);
   }
-
+  const colormap = fs.readFileSync(colormap_file, "utf-8");
+  let colors = JSON.parse(colormap);
+  repoData.byLang.forEach((lang) => {
+    if (colors[lang.name]) {
+      lang.color = colors[lang.name].color;
+    }
+    lang.rank = Math.round((100 * lang.code) / repoData.total.code);
+  });
   return repoData;
+}
+/**
+ * This function check validity of input
+ * @return bolean or exit with error code
+ */
+function getOwnerRepo() {
+  const argv = yargs(process.argv.slice(2)).argv;
+  const owner = argv.o;
+  const repo = argv.r;
+  return [owner, repo];
 }
