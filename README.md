@@ -55,9 +55,3 @@ So to generate a map for GitTerra itself you can run:
 ```
 ./generateRepoMap.sh --url https://github.com/GitTerraGame/GitTerra
 ```
-
-or
-
-```
-./generateRepoMap.sh --url git@github.com:GitTerraGame/GitTerra.git
-```
