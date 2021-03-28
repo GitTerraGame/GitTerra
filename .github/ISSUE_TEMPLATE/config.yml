@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Bug Report
+    url: https://github.com/GitTerraGame/GitTerra/issues/new?template=bug_template.md&labels=bug
+    about: Please report a bug.
+  - name: YourFeedback
+    url: https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&labels=feedback
+    about: Please tell us how we can improve the Game
