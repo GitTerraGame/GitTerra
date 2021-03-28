@@ -101,6 +101,10 @@ export const generateMapHTML = function (total) {
   h1 * {
     vertical-align: middle;
   }
+  body {
+    background: url("images/background_and_menus/site_background_image_bg.svg");
+    background-size: cover;
+  }
   </style>
   </head>
   <body>
