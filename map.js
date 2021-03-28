@@ -105,12 +105,14 @@ export const generateMapHTML = function (total) {
     background: url("images/background_and_menus/site_background_image_bg.svg");
     background-size: cover;
   }
+  #logobanner {
+    width: 30%;
+  }
   </style>
   </head>
   <body>
     <h1>
-      <img itemprop="image" src="https://avatars.githubusercontent.com/u/80906958?s=200&amp;v=4" width="50" height="50" alt="@GitTerraGame">
-      <span>GitTerra Game</span>
+      <img id="logobanner" src="images/background_and_menus/logobanner_logobanner.svg"/>
     </h1>
     <div id="feedback"><a href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&labels=feedback">How can we make this game better?</a></div>
     <div style="
