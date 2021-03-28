@@ -106,7 +106,7 @@ export const generateMapHTML = function (total) {
   <body>
     <h1>
       <img itemprop="image" src="https://avatars.githubusercontent.com/u/80906958?s=200&amp;v=4" width="50" height="50" alt="@GitTerraGame">
-      <span>GitTerraGame</span>
+      <span>GitTerra Game</span>
     </h1>
     <div id="feedback"><a href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&labels=feedback">How can we make this game better?</a></div>
     <div style="
