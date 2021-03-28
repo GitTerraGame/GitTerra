@@ -23,7 +23,7 @@ function getMapTileCoordinates(n) {
     // boolean representing the side of the diamond, e.g. left (false) or right (true)
     const direction =
       Math.ceil((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) -
-        Math.floor((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) ===
+      Math.floor((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) ===
       0;
 
     if (direction) {
