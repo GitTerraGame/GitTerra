@@ -7,7 +7,7 @@ import { generateMapHTML } from "./map.js";
 
 const min_tiles = 10;
 const colormap_file = "./color_lang.json";
-const [owner, repo] = getOwnerRepo();
+const [gitname, owner, repo] = getOwnerRepo();
 
 async function main() {
   try {
@@ -130,7 +130,7 @@ async function readSCC() {
  */
 function getOwnerRepo() {
   const argv = yargs(process.argv.slice(2)).argv;
-  const owner = argv.o;
-  const repo = argv.r;
-  return [owner, repo];
+  const gitname = argv.u;
+  let matches = gitname.match(/^https:\/\/(.+?)\/(.+?)\/(.+?)$/);
+  return [matches[1], matches[2], matches[3]];
 }
