@@ -4,7 +4,6 @@ function usage {
     echo "Examples:";
     echo "$scriptname --url git@github.com:GitTerraGame/GitTerra";
     echo "$scriptname --url git@github.com:GitTerraGame/GitTerra.git";
-    echo "$scriptname --url https://github.com/GitTerraGame/GitTerra.git";
     exit 1;
 }
 scriptname=$0;
