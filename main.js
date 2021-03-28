@@ -132,6 +132,5 @@ function getOwnerRepo() {
   const argv = yargs(process.argv.slice(2)).argv;
   const gitname = argv.u;
   let matches = gitname.match(/^https:\/\/(.+?)\/(.+?)\/(.+?)$/);
-  console.log(matches[1], matches[2], matches[3]);
   return [matches[1], matches[2], matches[3]];
 }
