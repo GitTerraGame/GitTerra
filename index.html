@@ -1,0 +1,63 @@
+<html>
+
+<head>
+    <style>
+        h1,
+        #feedback {
+            text-align: center;
+        }
+
+        h1 * {
+            vertical-align: middle;
+        }
+
+        body {
+            background: url("images/background_and_menus/site_background_image_bg.svg");
+            background-size: cover;
+        }
+
+        #mainMenu {
+            background-color: #2E3192;
+            border: 3px solid white;
+            padding: 20% 20px;
+            margin-top: -15%;
+            z-index: -100;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+
+        #inputField {
+            margin-bottom: 15%;
+        }
+
+        #wholeMenu {
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, 0);
+            position: absolute;
+            width: 30%;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="wholeMenu">
+
+        <img id="logobanner" src="images/background_and_menus/logobanner.svg" />
+
+        <div id="mainMenu">
+            <img id="enterGitRepo" src="images/background_and_menus/home_page_enterGitRepo.svg" />
+            <img id="inputField" src="images/background_and_menus/home_page_inputField.svg" />
+            <input type="image" id="generateButton" src="images/background_and_menus/home_page_generateButton.svg" />
+        </div>
+
+        <div id="feedback"><a
+                href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&labels=feedback">How can
+                we
+                make this game better?</a></div>
+    </div>
+</body>
+
+</html>
