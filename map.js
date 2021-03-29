@@ -23,7 +23,7 @@ function getMapTileCoordinates(n) {
     // boolean representing the side of the diamond, e.g. left (false) or right (true)
     const direction =
       Math.ceil((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) -
-      Math.floor((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) ===
+        Math.floor((n - Math.pow(Math.floor(Math.sqrt(n)), 2)) / 2) ===
       0;
 
     if (direction) {
@@ -81,7 +81,7 @@ export const generateMapHTML = function (total) {
   }
 
   const html = tiles.reduce((html, tile) => {
-    html += `<img src="images/tiles/terraprime/tiles_v2-${tile.tileNumber
+    html += `<img src="../../../../images/tiles/terraprime/tiles_v2-${tile.tileNumber
       .toString()
       .padStart(2, "0")}.png" width="${tileWidth}"
           style="
@@ -102,7 +102,7 @@ export const generateMapHTML = function (total) {
     vertical-align: middle;
   }
   body {
-    background: url("images/background_and_menus/site_background_image_bg.svg");
+    background: url("../../../../images/background_and_menus/site_background_image_bg.svg");
     background-size: cover;
   }
   #logobanner {
@@ -112,7 +112,7 @@ export const generateMapHTML = function (total) {
   </head>
   <body>
     <h1>
-      <img id="logobanner" src="images/background_and_menus/logobanner.svg"/>
+      <img id="logobanner" src="../../../../images/background_and_menus/logobanner.svg"/>
     </h1>
     <div id="feedback"><a href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&labels=feedback">How can we make this game better?</a></div>
     <div style="
