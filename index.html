@@ -67,7 +67,7 @@
     </style>
   </head>
 
-  <body>
+  <body id="body">
     <div id="wholeMenu">
       <img id="logobanner" src="images/background_and_menus/logobanner.svg" />
 
@@ -97,8 +97,66 @@
       </div>
     </div>
     <script>
-      function processInput() {
-        validateInput();
+      async function processInput() {
+        if (!validateInput()) {
+          return;
+        }
+        //trigger the API for map generation (/api/generateMap)
+        //        let response = await fetch("https://localhost:3000/api/generateMap"); //we need here to define a server
+        const repo = { repo: document.getElementById("inputField").value };
+        try {
+          let response = await fetch("https://httpbin.org/post", {
+            method: "POST",
+            body: JSON.stringify(repo),
+            headers: { "Content-type": "application/json; charset=UTF-8" },
+          }); //just for example
+          handleErrors(response);
+        } catch (err) {
+          console.log(err);
+          throw new Error(err);
+        }
+        //it will be enoght to triger API process? We do not have to process responce here?
+        let job = await checkJobStatus(repo);
+        if (job.complete) {
+          let mapPageURL = job.mapPageURL;
+          window.location.replace(mapPageURL);
+        } else {
+          let body = document.getElementById("body");
+          while (body.firstChild) {
+            body.removeChild(div.firstChild);
+          }
+          let elem = document.createElement("img");
+          elem.setAttribute(
+            "src",
+            "./images/background_and_menus/site_loading_loading.svg"
+          );
+          document.getElementById("body").appendChild(elem);
+          setInterval(checkJobStatus, 15000); //every 1/4 min
+        }
+      }
+      async function checkJobStatus(postdata) {
+        try {
+          let response = await fetch("https://httpbin.org/post", {
+            method: "POST",
+            body: JSON.stringify(postdata),
+            headers: { "Content-type": "application/json; charset=UTF-8" },
+          }); //just for example
+          handleErrors(response);
+          let data = await response.json();
+          return data;
+        } catch (err) {
+          console.log(err);
+          throw new Error(err);
+        }
+      }
+
+      //function to handle errors in ajax fetch
+      function handleErrors(response) {
+        if (!response.ok) {
+          console.log(response.statusText);
+          throw new Error(response.statusText);
+        }
+        return response;
       }
       function validateInput() {
         let err = "";
@@ -118,12 +176,17 @@
         }
         if (err) {
           let elem = document.getElementById("error");
-          if (elem.style.display === "none") {
+          if (window.getComputedStyle(elem, null).display === "none") {
             elem.style.display = "block";
             document.getElementById("error").innerText = err;
           } else {
             elem.style.display = "none";
           }
+        }
+        if (err) {
+          return false;
+        } else {
+          return true;
         }
       }
     </script>
