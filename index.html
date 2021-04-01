@@ -118,7 +118,7 @@
         //it will be enoght to triger API process? We do not have to process responce here?
         let job = await checkJobStatus(repo);
         if (job.complete) {
-          let mapPageURL = job.mapPageURL;
+          let mapPageURL = job.mapPageURL; //redirect to map when complete
           window.location.replace(mapPageURL);
         } else {
           let body = document.getElementById("body");
