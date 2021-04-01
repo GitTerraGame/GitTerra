@@ -118,7 +118,7 @@
         //it will be enoght to triger API process? We do not have to process responce here?
         let job = await checkJobStatus(repo);
         if (job.complete) {
-          let mapPageURL = job.mapPageURL; //redirect to map when complete
+          let mapPageURL = job.mapPageURL;
           window.location.replace(mapPageURL);
         } else {
           let body = document.getElementById("body");
@@ -134,6 +134,7 @@
           setInterval(checkJobStatus, 15000); //every 1/4 min
         }
       }
+
       async function checkJobStatus(postdata) {
         try {
           let response = await fetch("https://httpbin.org/post", {
