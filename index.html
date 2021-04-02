@@ -123,7 +123,7 @@
         } else {
           let body = document.getElementById("body");
           while (body.firstChild) {
-            body.removeChild(div.firstChild);
+            body.removeChild(body.firstChild);
           }
           let elem = document.createElement("img");
           elem.setAttribute(
