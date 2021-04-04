@@ -12,10 +12,7 @@ function usage {
 }
 
 # attempting to read repo URL from STDIN
-gitname=$(cat -)
-
-# validate input
-if [ "$gitname" = "" ]; then
+if test -t 0; then
     while [[ "$#" -gt 0 ]]; do
         case $1 in
             -u|--url|-url) gitname="$2";shift ;;
@@ -24,6 +21,8 @@ if [ "$gitname" = "" ]; then
         esac
         shift
     done
+else
+    gitname=$(cat -);
 fi
 
 #validate input
