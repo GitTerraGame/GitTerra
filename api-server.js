@@ -5,15 +5,21 @@ import http from "http";
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/generateRepoMap", function (req, res) {
-  res.status(200).send(`<form action="" method="POST" target="_blank">
-    Enter Repo URL:
-    <input type="text" name="repo" size="50" value="https://github.com/GitTerraGame/GitTerra.git"/>
+app.get("/", function (req, res) {
+  res.status(200).send(`
+  <h1>API Debugging Page</h1>
+  <h2>Generate GitTerra Map</h2>
+  <pre>/api/generateMap</pre>
+  <form action="/api/generateMap" method="POST" target="_blank">
+    <div>
+      Repo URL:
+      <input type="text" name="repo" size="50" value="https://github.com/GitTerraGame/GitTerra.git"/>
+    </ div>
     <input type="submit" />
   </form>`);
 });
 
-app.post("/generateRepoMap", function (req, res) {
+app.post("/api/generateMap", function (req, res) {
   if (!req.body.repo) {
     return res.status(400).send(`Missing repo parameter`);
   }
@@ -54,5 +60,5 @@ app.post("/generateRepoMap", function (req, res) {
 });
 
 http.createServer(app).listen(3000, function () {
-  console.log("Listening on 3000");
+  console.log("Listening on http://localhost:3000/");
 });
