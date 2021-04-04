@@ -1,8 +1,32 @@
 #!/bin/bash
 
+# Name of the executed script
+scriptname=$0;
+
+function usage {
+    echo "USAGE: $scriptname --url <url-of-github-repo>"; 
+    echo "Examples:";
+    echo "$scriptname --url git@github.com:GitTerraGame/GitTerra";
+    echo "$scriptname --url git@github.com:GitTerraGame/GitTerra.git";
+    exit 1;
+}
+
+# attempting to read repo URL from STDIN
 gitname=$(cat -)
 
 # validate input
+if [ "$gitname" = "" ]; then
+    while [[ "$#" -gt 0 ]]; do
+        case $1 in
+            -u|--url|-url) gitname="$2";shift ;;
+            *) usage
+            exit 1 ;;
+        esac
+        shift
+    done
+fi
+
+#validate input
 regex='github\.com[:|\/](.+)\/(.+)$'
 regex1='(.+)\.git$'
 if [[ $gitname =~ $regex ]]; then
@@ -18,6 +42,6 @@ else
 fi
 TEMP_FOLDER=$(mktemp -d)
 git clone --quiet --depth 1 "$gitname" $TEMP_FOLDER > /dev/null
-scc -f json $TEMP_FOLDER | node main.js -o "$owner" -r "$repo"
+scc -f json $TEMP_FOLDER | node main.js -u "$gitname"
 rm -rf $TEMP_FOLDER
 exit 0

@@ -1,14 +1,14 @@
 import getStdin from "get-stdin";
 import fs from "fs";
 import yargs from "yargs";
+import mkdirp from "mkdirp";
 import { spawn } from "child_process";
 
 import { generateMapHTML } from "./map.js";
 
 const min_tiles = 10;
 const colormap_file = "./color_lang.json";
-const [owner, repo] = getOwnerRepo();
-
+let [gitname, owner, repo] = getOwnerRepo();
 async function main() {
   try {
     const repoData = await readSCC();
@@ -27,10 +27,12 @@ async function main() {
         min_tiles
     );
 
+    const dirname = "./repos/" + gitname + "/" + owner + "/" + repo;
+    const filename = dirname + "/index.html";
+    mkdirp.sync(dirname);
     const mapHTML = generateMapHTML(number_of_blocks);
-
-    fs.writeFileSync("./map.html", mapHTML);
-    const subprocess = spawn("open", ["map.html"], {
+    fs.writeFileSync(filename, mapHTML); // alwais overwrite the filename
+    const subprocess = spawn("open", [filename], {
       detached: true,
       stdio: "ignore",
     });
@@ -130,7 +132,7 @@ async function readSCC() {
  */
 function getOwnerRepo() {
   const argv = yargs(process.argv.slice(2)).argv;
-  const owner = argv.o;
-  const repo = argv.r;
-  return [owner, repo];
+  const gitname = argv.u;
+  let matches = gitname.match(/^https:\/\/(.+?)\/(.+?)\/(.+?)$/);
+  return [matches[1], matches[2], matches[3]];
 }

@@ -116,3 +116,6 @@ locale
 temp/
 ./temp/
 ./temp/**
+repos/
+./repos/
+./repos/**

@@ -1,0 +1,195 @@
+<html>
+  <head>
+    <style>
+      h1,
+      #feedback {
+        text-align: center;
+      }
+
+      h1 * {
+        vertical-align: middle;
+      }
+
+      body {
+        background: url("images/background_and_menus/site_background_image_bg.svg");
+        background-size: cover;
+      }
+
+      #mainMenu {
+        background-color: #2e3192;
+        border: 3px solid white;
+        padding: 20% 20px;
+        margin-top: -15%;
+        z-index: -100;
+        margin-left: 5%;
+        margin-right: 5%;
+      }
+
+      #inputField {
+        margin-bottom: 15%;
+      }
+
+      #wholeMenu {
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, 0);
+        position: absolute;
+        width: 30%;
+      }
+      #inputField {
+        line-height: 3em;
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 15px;
+        width: 80%;
+        border-top-style: solid;
+        border-right-style: hidden;
+        border-left-style: hidden;
+        border-bottom-style: solid;
+        border-width: 4px;
+        border-color: rgb(19, 4, 77);
+      }
+      #wrapper {
+        background-image: url("images/background_and_menus/home_page_inputField.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+      }
+      *:focus {
+        outline: 0 !important;
+      }
+      #error {
+        display: none;
+        text-align: center;
+        color: red;
+      }
+    </style>
+  </head>
+
+  <body id="body">
+    <div id="wholeMenu">
+      <img id="logobanner" src="images/background_and_menus/logobanner.svg" />
+
+      <div id="mainMenu">
+        <img
+          id="enterGitRepo"
+          src="images/background_and_menus/home_page_enterGitRepo.svg"
+        />
+        <div id="wrapper">
+          <input type="text" id="inputField" name="inputField" />
+        </div>
+        <div id="error"></div>
+        <input
+          type="image"
+          id="generateButton"
+          alt="Submit"
+          src="images/background_and_menus/home_page_generateButton.svg"
+          onclick="processInput()"
+        />
+      </div>
+
+      <div id="feedback">
+        <a
+          href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&labels=feedback"
+          >How can we make this game better?</a
+        >
+      </div>
+    </div>
+    <script>
+      async function processInput() {
+        if (!validateInput()) {
+          return;
+        }
+        //trigger the API for map generation (/api/generateMap)
+        //        let response = await fetch("https://localhost:3000/api/generateMap"); //we need here to define a server
+        const repo = { repo: document.getElementById("inputField").value };
+        try {
+          let response = await fetch("https://httpbin.org/post", {
+            method: "POST",
+            body: JSON.stringify(repo),
+            headers: { "Content-type": "application/json; charset=UTF-8" },
+          }); //just for example
+          handleErrors(response);
+        } catch (err) {
+          console.log(err);
+          throw new Error(err);
+        }
+        //it will be enoght to triger API process? We do not have to process responce here?
+        let job = await checkJobStatus(repo);
+        if (job.complete) {
+          let mapPageURL = job.mapPageURL;
+          window.location.replace(mapPageURL);
+        } else {
+          let body = document.getElementById("body");
+          while (body.firstChild) {
+            body.removeChild(body.firstChild);
+          }
+          let elem = document.createElement("img");
+          elem.setAttribute(
+            "src",
+            "./images/background_and_menus/site_loading_loading.svg"
+          );
+          document.getElementById("body").appendChild(elem);
+          setInterval(checkJobStatus, 15000); //every 1/4 min
+        }
+      }
+
+      async function checkJobStatus(postdata) {
+        try {
+          let response = await fetch("https://httpbin.org/post", {
+            method: "POST",
+            body: JSON.stringify(postdata),
+            headers: { "Content-type": "application/json; charset=UTF-8" },
+          }); //just for example
+          handleErrors(response);
+          let data = await response.json();
+          return data;
+        } catch (err) {
+          console.log(err);
+          throw new Error(err);
+        }
+      }
+
+      //function to handle errors in ajax fetch
+      function handleErrors(response) {
+        if (!response.ok) {
+          console.log(response.statusText);
+          throw new Error(response.statusText);
+        }
+        return response;
+      }
+      function validateInput() {
+        let err = "";
+        let input = document.getElementById("inputField").value;
+        let slashPos = input.indexOf("/");
+        if (slashPos > 1) {
+          let urlparts = input.split("/");
+          if (
+            urlparts.length != 5 ||
+            urlparts[0] != "https:" ||
+            urlparts[2].indexOf("git") < 0
+          ) {
+            err = "Wrong repo URL!";
+          }
+        } else {
+          err = "Wrong repo URL!";
+        }
+        if (err) {
+          let elem = document.getElementById("error");
+          if (window.getComputedStyle(elem, null).display === "none") {
+            elem.style.display = "block";
+            document.getElementById("error").innerText = err;
+          } else {
+            elem.style.display = "none";
+          }
+        }
+        if (err) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    </script>
+  </body>
+</html>
