@@ -1,5 +1,17 @@
 # GitTerra app ignores
-map.html
+config
+
+#generated files
+temp/
+./temp/
+./temp/**
+repos/
+./repos/
+./repos/**
+
+###############################################################
+
+# Mac folder index
 .DS_Store
 
 # Logs
@@ -111,11 +123,3 @@ dist
 node_modules
 vendor
 locale
-
-#generated files
-temp/
-./temp/
-./temp/**
-repos/
-./repos/
-./repos/**
