@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "debug": "./generateRepoMap.sh --url https://github.com/GitTerraGame/GitTerra.git",
-    "start": "./generateRepoMap.sh"
+    "start": "./generateRepoMap.sh",
+    "api-start": "node api-server.js"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,7 @@
   },
   "homepage": "https://github.com/sergeychernyshev/GitTerra#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "get-stdin": "^8.0.0",
     "mkdirp": "^1.0.4",
     "simple-git": "^2.37.0",

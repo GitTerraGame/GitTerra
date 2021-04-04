@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Name of the executed script
+scriptname=$0;
+
 function usage {
     echo "USAGE: $scriptname --url <url-of-github-repo>"; 
     echo "Examples:";
@@ -6,15 +10,21 @@ function usage {
     echo "$scriptname --url git@github.com:GitTerraGame/GitTerra.git";
     exit 1;
 }
-scriptname=$0;
-while [[ "$#" -gt 0 ]]; do
-    case $1 in
-        -u|--url|-url) gitname="$2";shift ;;
-        *) usage
-        exit 1 ;;
-    esac
-    shift
-done
+
+# attempting to read repo URL from STDIN
+if test -t 0; then
+    while [[ "$#" -gt 0 ]]; do
+        case $1 in
+            -u|--url|-url) gitname="$2";shift ;;
+            *) usage
+            exit 1 ;;
+        esac
+        shift
+    done
+else
+    gitname=$(cat -);
+fi
+
 #validate input
 regex='github\.com[:|\/](.+)\/(.+)$'
 regex1='(.+)\.git$'
