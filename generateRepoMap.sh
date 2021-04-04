@@ -30,7 +30,10 @@ else
     exit 1
 fi
 TEMP_FOLDER=$(mktemp -d)
-git clone --quiet --depth 1 "$gitname" $TEMP_FOLDER > /dev/null
+currentDir=$(pwd)
+#git clone --quiet --depth 1 "$gitname" $TEMP_FOLDER > /dev/null
+git clone --quiet  "$gitname" $TEMP_FOLDER > /dev/null
 scc -f json $TEMP_FOLDER | node main.js -u "$gitname"
+cd $TEMP_FOLDER && git log --date=local --reverse --no-merges --shortstat --pretty="%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E" |  tr "\n" " " | tr "@" "\n" | node "$currentDir""/readCommits.js"
 rm -rf $TEMP_FOLDER
 exit 0
