@@ -1,6 +1,3 @@
-# GitTerra app ignores
-config
-
 #generated files
 temp/
 ./temp/
