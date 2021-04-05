@@ -1,9 +1,10 @@
-module.exports = {
+export default {
+  target: "node",
   module: {
     rules: [
       {
         test: /\.(jsx?)$/,
-        exclude: /node_modules/,
+        exclude: [/node_modules/, /images/],
         use: {
           loader: "babel-loader",
         },
@@ -11,13 +12,14 @@ module.exports = {
     ],
   },
   entry: {
-    bootstrap4: "./src/widget-bootstrap4.js",
-    plain: "./src/widget-plain.js",
+    // api: "./src/api-server.js",
+    main: "./src/main.js",
+    // log: "./src/readCommings.js",
   },
   resolve: {
     extensions: ["*", ".js", ".jsx"],
   },
   output: {
-    filename: "power-strip-[name].js",
+    filename: "[name].js",
   },
 };

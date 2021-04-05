@@ -9,7 +9,6 @@
       h1 * {
         vertical-align: middle;
       }
-
       body {
         background: url("images/background_and_menus/site_background_image_bg.svg");
         background-size: cover;
@@ -105,10 +104,10 @@
         //        let response = await fetch("https://localhost:3000/api/generateMap"); //we need here to define a server
         const repo = { repo: document.getElementById("inputField").value };
         try {
-          let response = await fetch("https://httpbin.org/post", {
+          let response = await fetch("/api/generateMap", {
             method: "POST",
             body: JSON.stringify(repo),
-            headers: { "Content-type": "application/json; charset=UTF-8" },
+            headers: { "Content-type": "application/json" },
           }); //just for example
           handleErrors(response);
         } catch (err) {
@@ -119,7 +118,7 @@
         let job = await checkJobStatus(repo);
         if (job.complete) {
           let mapPageURL = job.mapPageURL;
-          window.location.replace(mapPageURL);
+          window.location.href = mapPageURL;
         } else {
           let body = document.getElementById("body");
           while (body.firstChild) {
@@ -128,16 +127,18 @@
           let elem = document.createElement("img");
           elem.setAttribute(
             "src",
-            "./images/background_and_menus/site_loading_loading.svg"
+            "images/background_and_menus/site_loading_loading.svg"
           );
           document.getElementById("body").appendChild(elem);
-          setInterval(checkJobStatus, 15000); //every 1/4 min
+          setInterval(() => {
+            checkJobStatus(repo);
+          }, 15000); //every 1/4 min
         }
       }
 
       async function checkJobStatus(postdata) {
         try {
-          let response = await fetch("https://httpbin.org/post", {
+          let response = await fetch("/api/mapStatus", {
             method: "POST",
             body: JSON.stringify(postdata),
             headers: { "Content-type": "application/json; charset=UTF-8" },

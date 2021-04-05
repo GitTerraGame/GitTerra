@@ -1,27 +1,25 @@
-const { merge } = require("webpack-merge");
-const common = require("./webpack.common.js");
+import merger from "webpack-merge";
 
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
+import HtmlWebPackPlugin from "html-webpack-plugin";
 
-const config = require("config");
+import path from "path";
+import fs from "fs";
+import config from "config";
 
-let webpackConfig = merge(common, {
+import common from "./webpack.common.js";
+
+let webpackConfig = merger.merge(common, {
   mode: "development",
   devtool: "eval-source-map",
-  entry: {
-    reactsample: "./src/index.jsx",
-  },
   module: {
     rules: [
       {
         test: /\.html$/,
-        use: [
-          {
-            loader: "html-loader",
-          },
-        ],
+        loader: "html-loader",
+        options: {
+          // Disables attributes processing
+          sources: false,
+        },
       },
     ],
   },
@@ -34,23 +32,31 @@ let webpackConfig = merge(common, {
   ],
 });
 
+const devServer = {
+  contentBase: [
+    path.join(fs.realpathSync("."), "images"),
+    path.join(fs.realpathSync("."), "repos"),
+  ],
+  contentBasePublicPath: ["/images/", "/maps/"],
+};
+
 if (typeof config.mapServerProxy !== "undefined" && config.mapServerProxy) {
   console.log(
     `[GitTerra] Will proxy requests from '/api/ to ${config.mapServerProxy}`
   );
 
-  webpackConfig = merge(webpackConfig, {
-    devServer: {
-      proxy: {
-        "/api": {
-          target: config.mapServerProxy,
-          pathRewrite: { "^/api/": "/" },
-          secure: false,
-          changeOrigin: true,
-        },
-      },
+  devServer.proxy = {
+    "/api": {
+      target: config.mapServerProxy,
+      pathRewrite: { "^/api/": "/api/" },
+      secure: false,
+      changeOrigin: true,
     },
-  });
+  };
 }
 
-module.exports = webpackConfig;
+webpackConfig = merger.merge(webpackConfig, {
+  devServer,
+});
+
+export default webpackConfig;

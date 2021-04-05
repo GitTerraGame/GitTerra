@@ -6,8 +6,8 @@ scriptname=$0;
 function usage {
     echo "USAGE: $scriptname --url <url-of-github-repo>"; 
     echo "Examples:";
-    echo "$scriptname --url git@github.com:GitTerraGame/GitTerra";
-    echo "$scriptname --url git@github.com:GitTerraGame/GitTerra.git";
+    echo "$scriptname --url https://github.com/GitTerraGame/GitTerra";
+    echo "$scriptname --url https://github.com/GitTerraGame/GitTerra.git";
     exit 1;
 }
 
@@ -21,8 +21,11 @@ if test -t 0; then
         esac
         shift
     done
+    # open the file once generated
+    OPEN_ARGS="-o"
 else
     gitname=$(cat -);
+    OPEN_ARGS=""
 fi
 
 #validate input
@@ -43,7 +46,11 @@ TEMP_FOLDER=$(mktemp -d)
 currentDir=$(pwd)
 #git clone --quiet --depth 1 "$gitname" $TEMP_FOLDER > /dev/null
 git clone --quiet --single-branch "$gitname" $TEMP_FOLDER > /dev/null
-scc -f json $TEMP_FOLDER | node main.js -u "$gitname"
-cd $TEMP_FOLDER && git log --date=local --reverse --no-merges --shortstat --pretty="%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E" |  tr "\n" " " | tr "@" "\n" | node "$currentDir""/readCommits.js"
+scc -f json $TEMP_FOLDER | node src/main.js -u "$gitname" $OPEN_ARGS
+cd $TEMP_FOLDER && git log --date=local --reverse --no-merges --shortstat \
+    --pretty="%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E" \
+    | tr "\n" " " \
+    | tr "@" "\n" \
+    | node "$currentDir/src/readCommits.js"
 rm -rf $TEMP_FOLDER
 exit 0

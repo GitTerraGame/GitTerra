@@ -8,7 +8,8 @@ import { generateMapHTML } from "./map.js";
 
 const min_tiles = 10;
 const colormap_file = "./color_lang.json";
-let [gitname, owner, repo] = getOwnerRepo();
+let [gitname, owner, repo, shouldOpenInBrowser] = getInputArgs();
+
 async function main() {
   try {
     const repoData = await readSCC();
@@ -32,11 +33,14 @@ async function main() {
     mkdirp.sync(dirname);
     const mapHTML = generateMapHTML(number_of_blocks);
     fs.writeFileSync(filename, mapHTML); // alwais overwrite the filename
-    const subprocess = spawn("open", [filename], {
-      detached: true,
-      stdio: "ignore",
-    });
-    subprocess.unref();
+
+    if (shouldOpenInBrowser) {
+      const subprocess = spawn("open", [filename], {
+        detached: true,
+        stdio: "ignore",
+      });
+      subprocess.unref();
+    }
   } catch (err) {
     console.error(err);
   }
@@ -126,13 +130,11 @@ async function readSCC() {
   });
   return repoData;
 }
-/**
- * This function check validity of input
- * @return bolean or exit with error code
- */
-function getOwnerRepo() {
+
+function getInputArgs() {
   const argv = yargs(process.argv.slice(2)).argv;
   const gitname = argv.u;
   let matches = gitname.match(/^https:\/\/(.+?)\/(.+?)\/(.+?)$/);
-  return [matches[1], matches[2], matches[3]];
+  const shouldOpenInBrowser = argv.o;
+  return [matches[1], matches[2], matches[3], shouldOpenInBrowser];
 }

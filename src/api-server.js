@@ -4,19 +4,28 @@ import http from "http";
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.get("/", function (req, res) {
   res.status(200).send(`
   <h1>API Debugging Page</h1>
-  <h2>Generate GitTerra Map</h2>
+
+  <h2>Generate a map</h2>
   <pre>/api/generateMap</pre>
   <form action="/api/generateMap" method="POST" target="_blank">
-    <div>
-      Repo URL:
-      <input type="text" name="repo" size="50" value="https://github.com/GitTerraGame/GitTerra.git"/>
-    </ div>
+    Repo URL:
+    <input type="text" name="repo" size="50" value="https://github.com/GitTerraGame/GitTerra.git"/>
     <input type="submit" />
-  </form>`);
+  </form>
+
+  <h2>Get status of map generation</h2>
+  <pre>/api/mapStatus</pre>
+  <form action="/api/mapStatus" method="POST" target="_blank">
+    Repo URL:
+    <input type="text" name="repo" size="50" value="https://github.com/GitTerraGame/GitTerra.git"/>
+    <input type="submit" />
+  </form>
+  `);
 });
 
 app.post("/api/generateMap", function (req, res) {
@@ -57,6 +66,33 @@ app.post("/api/generateMap", function (req, res) {
     console.log("Chunk: ", data.toString());
     output += data;
   });
+});
+
+app.post("/api/mapStatus", function (req, res) {
+  if (!req.body.repo) {
+    return res.status(400).send(`Missing repo parameter`);
+  }
+  const repo_string = req.body.repo;
+
+  let repo_url;
+  try {
+    repo_url = new URL(repo_string);
+  } catch (err) {
+    return res.status(400).send(`Malformed repo URL parameter`);
+  }
+
+  if (repo_url.protocol !== "https:") {
+    return res
+      .status(400)
+      .send(`Invalid repo URL parameter (we only accept https: URLs)`);
+  }
+
+  res.status(200).send(
+    JSON.stringify({
+      complete: true,
+      mapPageURL: "/maps/github.com/GitTerraGame/GitTerra/", // hardcoded value
+    })
+  );
 });
 
 http.createServer(app).listen(3000, function () {
