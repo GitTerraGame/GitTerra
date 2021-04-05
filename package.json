@@ -5,8 +5,9 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "start": "webpack serve --config webpack.dev.js",
-    "api-start": "node src/api-server.js"
+    "start": "npm run api-server & npm run web-dev-server",
+    "api-server": "node src/api-server.js",
+    "web-dev-server": "webpack serve --config webpack.dev.js"
   },
   "repository": {
     "type": "git",
