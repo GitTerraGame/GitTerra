@@ -35,7 +35,7 @@ async function readcommits() {
       impact: impact,
     });
   }
-  console.log("from comLog:", comLog[0]);
+  console.log("from comLog:", comLog.length);
   return comLog;
 }
 readcommits();
