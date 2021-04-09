@@ -1,7 +1,5 @@
 import merger from "webpack-merge";
 
-import HtmlWebPackPlugin from "html-webpack-plugin";
-
 import path from "path";
 import fs from "fs";
 import config from "config";
@@ -11,25 +9,11 @@ import common from "./webpack.common.js";
 let webpackConfig = merger.merge(common, {
   mode: "development",
   devtool: "eval-source-map",
-  module: {
-    rules: [
-      {
-        test: /\.html$/,
-        loader: "html-loader",
-        options: {
-          // Disables attributes processing
-          sources: false,
-        },
-      },
-    ],
+  entry: {
+    // apiServer: "./src/apiServer.js",
+    // main: "./src/main.js",
+    // readCommits: "./src/readCommits.js",
   },
-  plugins: [
-    new HtmlWebPackPlugin({
-      template: "./src/index.html",
-      filename: "./index.html",
-      chunks: [],
-    }),
-  ],
 });
 
 const devServer = {

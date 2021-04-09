@@ -1,3 +1,7 @@
+import HtmlWebPackPlugin from "html-webpack-plugin";
+import path from "path";
+import fs from "fs";
+
 export default {
   target: "node",
   module: {
@@ -9,17 +13,28 @@ export default {
           loader: "babel-loader",
         },
       },
+      {
+        test: /\.html$/,
+        loader: "html-loader",
+        options: {
+          // Disables attributes processing
+          sources: false,
+        },
+      },
     ],
   },
-  entry: {
-    // api: "./src/api-server.js",
-    main: "./src/main.js",
-    // log: "./src/readCommings.js",
-  },
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: "./src/index.html",
+      filename: "./index.html",
+      chunks: [],
+    }),
+  ],
   resolve: {
     extensions: ["*", ".js", ".jsx"],
   },
   output: {
     filename: "[name].js",
+    path: path.resolve(fs.realpathSync("."), "dist"),
   },
 };

@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "npm run api-server & npm run web-dev-server",
+    "build": "NODE_ENV=production webpack --config webpack.prod.js",
     "api-server": "node src/api-server.js",
     "web-dev-server": "webpack serve --config webpack.dev.js"
   },
