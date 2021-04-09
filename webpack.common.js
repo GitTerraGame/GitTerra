@@ -30,6 +30,11 @@ export default {
       chunks: [],
     }),
   ],
+  entry: {
+    // apiServer: "./src/apiServer.js",
+    // main: "./src/main.js",
+    // readCommits: "./src/readCommits.js",
+  },
   resolve: {
     extensions: ["*", ".js", ".jsx"],
   },

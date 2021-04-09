@@ -9,11 +9,6 @@ import common from "./webpack.common.js";
 let webpackConfig = merger.merge(common, {
   mode: "development",
   devtool: "eval-source-map",
-  entry: {
-    // apiServer: "./src/apiServer.js",
-    // main: "./src/main.js",
-    // readCommits: "./src/readCommits.js",
-  },
 });
 
 const devServer = {
