@@ -112,7 +112,7 @@ export const generateMapHTML = function (total) {
   </head>
   <body>
     <h1>
-      <img id="logobanner" src="../../../../images/background_and_menus/logobanner.svg"/>
+      <a href="/"><img id="logobanner" src="../../../../images/background_and_menus/logobanner.svg"/></a>
     </h1>
     <div id="feedback"><a href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&labels=feedback">How can we make this game better?</a></div>
     <div style="
