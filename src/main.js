@@ -27,13 +27,16 @@ async function main() {
         3 +
         min_tiles
     );
-
     const dirname = "./repos/" + gitname + "/" + owner + "/" + repo;
     const filename = dirname + "/index.html";
     mkdirp.sync(dirname);
-    const mapHTML = generateMapHTML(number_of_blocks);
-    fs.writeFileSync(filename, mapHTML); // alwais overwrite the filename
-
+    if (number_of_blocks === min_tiles) {
+      // should be build a special page with message "Your repo seems empty.
+      //Start to buld your city by commiting code to your repo and come again!"
+    } else {
+      const mapHTML = generateMapHTML(number_of_blocks);
+      fs.writeFileSync(filename, mapHTML); // alwais overwrite the filename
+    }
     if (shouldOpenInBrowser) {
       const subprocess = spawn("open", [filename], {
         detached: true,
@@ -118,7 +121,7 @@ async function readSCC() {
 
   if (repoData.total.files < 1) {
     console.log("this git is empty or incorrect!");
-    process.exit(1);
+    //should build an empty city
   }
   const colormap = fs.readFileSync(colormap_file, "utf-8");
   let colors = JSON.parse(colormap);
