@@ -141,8 +141,7 @@
           let job = await response.json();
           //          console.log("resp:", response);
           if (job.complete) {
-            let mapPageURL = job.mapPageURL;
-            window.location.href = mapPageURL;
+            window.location.href = job.mapPageURL;
           }
         } catch (err) {
           console.log(err);
