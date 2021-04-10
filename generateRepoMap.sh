@@ -45,7 +45,7 @@ fi
 TEMP_FOLDER=$(mktemp -d)
 currentDir=$(pwd)
 #git clone --quiet --depth 1 "$gitname" $TEMP_FOLDER > /dev/null
-git clone --quiet --single-branch "$gitname" $TEMP_FOLDER > /dev/null
+git clone --quiet --single-branch --filter=blob:none --shallow-submodules "$gitname" $TEMP_FOLDER > /dev/null
 scc -f json $TEMP_FOLDER | node src/main.js -u "$gitname" $OPEN_ARGS
 cd $TEMP_FOLDER && git log --date=local --reverse --no-merges --shortstat \
     --pretty="%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E" \
