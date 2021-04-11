@@ -42,10 +42,25 @@ else
     usage
     exit 1
 fi
+status_code=$(curl --write-out "%{http_code}\n" --silent \
+--output /dev/null https://api.github.com/repos/"$owner"/"$repo")
+#echo "status_code" $status_code
+if [[ "$status_code" -ne 200 ]] ; then
+echo "We cannot process your repo"
+exit 1
+fi
+sizelimit=100000 #~ 100MB
+size=$(curl https://api.github.com/repos/$owner/$repo 2> /dev/null | grep size | tr -dc '[:digit:]')
+#echo "size:" $size
+if [[ "$size" -gt "$sizelimit" ]] ; then
+echo "Sorry, your repo is too big to be processed on our server."
+exit 1
+fi
 TEMP_FOLDER=$(mktemp -d)
 currentDir=$(pwd)
 #git clone --quiet --depth 1 "$gitname" $TEMP_FOLDER > /dev/null
-git clone --quiet --single-branch --filter=blob:none --shallow-submodules "$gitname" $TEMP_FOLDER > /dev/null
+#git clone --quiet --single-branch --filter=blob:none --shallow-submodules "$gitname" $TEMP_FOLDER > /dev/null
+git clone --quiet --single-branch --shallow-submodules "$gitname" $TEMP_FOLDER > /dev/null
 scc -f json $TEMP_FOLDER | node src/main.js -u "$gitname" $OPEN_ARGS
 cd $TEMP_FOLDER && git log --date=local --reverse --no-merges --shortstat \
     --pretty="%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E" \
