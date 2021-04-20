@@ -55,7 +55,7 @@ app.post("/api/generateMap", function (req, res) {
   if (process_exists && !process_exists.complete) {
     return res.status(200).send(`Process already exists but not complete`);
   }
-  const generator = child.spawn("bash", ["./generateRepoMap.sh"]);
+  const generator = child.spawn("node", ["./src/generateMap.js"]);
   generator.stdin.write(repo_string);
   generator.stdin.end();
   stack.push({

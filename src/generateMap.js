@@ -1,3 +1,4 @@
+import getStdin from "get-stdin";
 import fs from "fs";
 import yargs from "yargs";
 import mkdirp from "mkdirp";
@@ -55,21 +56,27 @@ async function generateMap({
   } catch (err) {
     console.error(err);
   }
-  return true;
+  process.exit(0);
 }
 
-function getInputArgs() {
-  const argv = yargs(process.argv.slice(2)).argv;
-  const repoUrl = argv.u;
+async function getInputArgs() {
+  let repoUrl;
+  if (process.stdin.isTTY) {
+    const argv = yargs(process.argv.slice(2)).argv;
+    repoUrl = argv.u;
+  } else {
+    repoUrl = await getStdin();
+  }
   let matches = repoUrl.match(/^https:\/\/(.+?)\/(.+?)\/(.+?)$/);
-  const shouldOpenInBrowser = argv.o;
   return {
     repoUrl,
     host: matches[1],
     owner: matches[2],
     repo: matches[3],
-    shouldOpenInBrowser,
+    shouldOpenInBrowser: process.stdin.isTTY,
   };
 }
-
-generateMap(getInputArgs());
+async function main() {
+  generateMap(await getInputArgs());
+}
+main();
