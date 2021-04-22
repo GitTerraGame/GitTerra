@@ -79,6 +79,8 @@
     </div>
     <script>
       async function processInput() {
+        const body = document.querySelector("body");
+
         if (!validateInput()) {
           return;
         }
@@ -95,7 +97,6 @@
           console.log(err);
           throw new Error(err.message);
         }
-        let body = document.getElementById("body");
         while (body.firstChild) {
           body.removeChild(body.firstChild);
         }
@@ -104,7 +105,7 @@
           "src",
           "images/background_and_menus/site_loading_loading.svg"
         );
-        document.getElementById("body").appendChild(elem);
+        body.appendChild(elem);
 
         checkJobStatus(repo);
         setInterval(() => {
