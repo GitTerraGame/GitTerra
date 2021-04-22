@@ -24,10 +24,6 @@
         margin-right: 5%;
       }
 
-      #inputField {
-        margin-bottom: 15%;
-      }
-
       #wholeMenu {
         left: 50%;
         margin-right: -50%;
@@ -36,24 +32,12 @@
         width: 30%;
       }
       #inputField {
-        line-height: 3em;
         display: block;
-        margin-right: auto;
-        margin-left: auto;
-        margin-top: 15px;
-        width: 80%;
-        border-top-style: solid;
-        border-right-style: hidden;
-        border-left-style: hidden;
-        border-bottom-style: solid;
-        border-width: 4px;
-        border-color: rgb(19, 4, 77);
-      }
-      #wrapper {
-        background-image: url("images/background_and_menus/home_page_inputField.svg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
+        margin: 1px auto 12% auto;
+        width: 100%;
+        border: 2px solid rgb(19, 4, 77);
+        font-size: 1.2em;
+        line-height: 2.5em;
       }
       *:focus {
         outline: 0 !important;
@@ -66,7 +50,7 @@
     </style>
   </head>
 
-  <body id="body">
+  <body>
     <div id="wholeMenu">
       <img id="logobanner" src="images/background_and_menus/logobanner.svg" />
 
@@ -75,9 +59,7 @@
           id="enterGitRepo"
           src="images/background_and_menus/home_page_enterGitRepo.svg"
         />
-        <div id="wrapper">
-          <input type="text" id="inputField" name="inputField" />
-        </div>
+        <input type="text" id="inputField" name="inputField" />
         <div id="error"></div>
         <input
           type="image"
