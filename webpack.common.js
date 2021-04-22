@@ -29,6 +29,13 @@ export default {
       filename: "./index.html",
       chunks: [],
     }),
+
+    new HtmlWebPackPlugin({
+      template: "./src/404.html",
+      filename: "./404.html",
+      chunks: [],
+    }),
+
   ],
   entry: {
     // apiServer: "./src/apiServer.js",
