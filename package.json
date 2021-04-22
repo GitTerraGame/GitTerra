@@ -41,6 +41,7 @@
     "express": "^4.17.1",
     "get-stdin": "^8.0.0",
     "mkdirp": "^1.0.4",
+    "node-fetch": "^2.6.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.3",

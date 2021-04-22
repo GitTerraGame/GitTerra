@@ -71,22 +71,27 @@ app.post("/api/generateMap", function (req, res) {
       let elem = stack.find((v) => v.repo === repo_string);
       elem.complete = true;
       elem.status = "error";
-      //      console.log(`Error running the script: ${code}`);
+      // console.log(`Error running the script: ${code}: ${err_output}`);
     } else {
       let elem = stack.find((v) => v.repo === repo_string);
       elem.complete = true;
       elem.timestamp = Date.now();
       elem.status = "finished";
-      //      console.log("Finished running the script", output);
+      // console.log("Finished running the script", output);
     }
   });
 
   res.status(200).send(`Building your city...`);
 
-  let output = ""; // what to do with output?
+  let output = "";
   generator.stdout.on("data", function (data) {
-    //    console.log("Chunk: ", data.toString());
+    // console.log("Chunk: ", data.toString());
     output += data;
+  });
+  let err_output = "";
+  generator.stderr.on("data", function (data) {
+    // console.log("Error Chunk: ", data.toString());
+    err_output += data;
   });
 }); ///api/generateMap
 
