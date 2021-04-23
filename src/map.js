@@ -107,6 +107,8 @@ export const generateMapHTML = function (total) {
   }
   #logobanner {
     width: 30%;
+    min-width: 10em;
+    max-width: 15em;
   }
   </style>
   </head>

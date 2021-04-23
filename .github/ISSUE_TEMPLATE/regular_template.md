@@ -2,4 +2,4 @@
 
 ## Steps
 
-## Additional requarements 
+## Additional requirements
