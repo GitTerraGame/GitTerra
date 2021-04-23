@@ -12,28 +12,26 @@ const colormap_file = "./color_lang.json";
 export const getRepoData = async function (repoUrl, owner, repo) {
   let commitsData = {}; //one of 2 main obgects
   let repoData = {}; //one of 2 main obgects
-  if (
-    (await isPrivateRepo(owner, repo)) ||
-    (await isRepoTooBig(owner, repo, SIZE_LIMIT))
-  ) {
+  if (await isGoodRepo(owner, repo)) {
     return null;
   }
   const tempDir = createTempDirSync();
-  console.log("tempDir", tempDir);
+  // console.log("tempDir", tempDir);
+
   // clone repo and show progress
   const { GitPluginError } = simpleGit;
   const progress = ({ method, stage, progress }) => {
     console.log(`git.${method} ${stage} stage ${progress}% complete`);
   };
   const git = simpleGit({
-    //    baseDir: tempDir,
+    baseDir: tempDir,
     timeout: {
       block: GIT_TIMEOUT,
     },
     progress,
   });
   try {
-    await git.init().clone(repoUrl, tempDir).cwd(tempDir);
+    await git.clone(repoUrl, tempDir).cwd(tempDir);
   } catch (error) {
     console.log(error);
     if (error instanceof GitPluginError && error.plugin === "timeout") {
@@ -53,23 +51,20 @@ export const getRepoData = async function (repoUrl, owner, repo) {
   }
   //get commits
   try {
-    let commits = await git
-      .init("--progress")
-      .cwd(tempDir)
-      .log(
-        [
-          "--date=local",
-          "--reverse",
-          "--no-merges",
-          "--shortstat",
-          "--pretty='%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E'",
-        ],
-        function (error) {
-          if (error) {
-            console.log("error:", error);
-          }
+    let commits = await git.log(
+      [
+        "--date=local",
+        "--reverse",
+        "--no-merges",
+        "--shortstat",
+        "--pretty='%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E'",
+      ],
+      function (error) {
+        if (error) {
+          console.log("error:", error);
         }
-      );
+      }
+    );
     let tmp = commits.all[0].hash.replace(/\n/g, " ");
     let tmp1 = tmp.replace(/@/g, "\n");
     let commitsArray = tmp1.split(/\n/);
@@ -249,39 +244,21 @@ function createTempDirSync() {
     throw new Error(error.message);
   }
 }
-
-async function isPrivateRepo(owner, repo) {
+async function isGoodRepo(owner, repo) {
   try {
     let response = await fetch(
       "https://api.github.com/repos/" + owner + "/" + repo
     );
     if (response.status > 200) {
-      console.log(
-        "Sorry we cannot process your request. Your repo seems private."
-      );
       return true;
     } else {
-      return false;
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error(error.message);
-  }
-}
-
-async function isRepoTooBig(owner, repo, sizelimit) {
-  try {
-    let url = "https://api.github.com/repos/" + owner + "/" + repo;
-    let response = await fetch(url);
-    handleErrors(response);
-    let json = await response.json();
-    if (json.size > sizelimit) {
-      console.log(
-        "Sorry we cannot process your request. It is too big for our servers."
-      );
-      return true;
-    } else {
-      return false;
+      let json = await response.json();
+      handleErrors(response);
+      if (json.size > SIZE_LIMIT) {
+        return true;
+      } else {
+        return false;
+      }
     }
   } catch (error) {
     console.log(error);
