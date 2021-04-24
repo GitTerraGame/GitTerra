@@ -1,4 +1,3 @@
-import yargs from "yargs";
 import fs from "fs";
 import child from "child_process";
 import simpleGit from "simple-git";
@@ -31,7 +30,7 @@ export const getRepoData = async function (repoUrl, owner, repo) {
     progress,
   });
   try {
-    await git.clone(repoUrl, tempDir).cwd(tempDir);
+    await git.clone(repoUrl, tempDir);
   } catch (error) {
     console.log(error);
     if (error instanceof GitPluginError && error.plugin === "timeout") {
