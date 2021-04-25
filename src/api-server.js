@@ -5,6 +5,7 @@ import http from "http";
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+const writeLog = false;
 let stack = [];
 setInterval(() => {
   deleteOld();
@@ -64,20 +65,21 @@ app.post("/api/generateMap", function (req, res) {
     complete: false,
     status: "progress",
   });
-  //console.log("stack", stack);
+  writeLog && console.log("stack", stack);
 
   generator.on("close", function (code) {
     if (code !== 0) {
       let elem = stack.find((v) => v.repo === repo_string);
       elem.complete = true;
       elem.status = "error";
-      // console.log(`Error running the script: ${code}: ${err_output}`);
+      writeLog &&
+        console.log(`Error running the script: ${code}: ${err_output}`);
     } else {
       let elem = stack.find((v) => v.repo === repo_string);
       elem.complete = true;
       elem.timestamp = Date.now();
       elem.status = "finished";
-      // console.log("Finished running the script", output);
+      writeLog && console.log("Finished running the script", output);
     }
   });
 
@@ -85,12 +87,12 @@ app.post("/api/generateMap", function (req, res) {
 
   let output = "";
   generator.stdout.on("data", function (data) {
-    // console.log("Chunk: ", data.toString());
+    writeLog && console.log("Chunk: ", data.toString());
     output += data;
   });
   let err_output = "";
   generator.stderr.on("data", function (data) {
-    // console.log("Error Chunk: ", data.toString());
+    writeLog && console.log("Error Chunk: ", data.toString());
     err_output += data;
   });
 }); ///api/generateMap
@@ -114,13 +116,13 @@ app.post("/api/mapStatus", function (req, res) {
       .send(`Invalid repo URL parameter (we only accept https: URLs)`);
   }
   let elemToCheck = stack.find((v) => v.repo === repo_string);
-  //  console.log("stackStatus", stack);
+  writeLog && console.log("stackStatus", stack);
   if (elemToCheck && elemToCheck.status === "error") {
-    //    console.log("status error", elemToCheck.status);
+    writeLog && console.log("status error", elemToCheck.status);
     return res.status(500).send(`An error occur`);
   }
   if (elemToCheck && !elemToCheck.complete) {
-    //    console.log("status complete", elemToCheck.complete);
+    writeLog && console.log("status complete", elemToCheck.complete);
     return res.status(200).send(
       JSON.stringify({
         complete: elemToCheck.complete,
@@ -132,7 +134,8 @@ app.post("/api/mapStatus", function (req, res) {
     elemToCheck.complete &&
     elemToCheck.status === "finished"
   ) {
-    //    console.log("status finished:", elemToCheck.complete, elemToCheck.status);
+    writeLog &&
+      console.log("status finished:", elemToCheck.complete, elemToCheck.status);
     return res.status(200).send(
       JSON.stringify({
         complete: elemToCheck.complete,
@@ -144,9 +147,7 @@ app.post("/api/mapStatus", function (req, res) {
 
 function deleteOld() {
   let currentTime = Date.now();
-  //  console.log("before", stack.length);
   stack = stack.filter((elem) => currentTime - elem.timestamp < 1800000);
-  //  console.log("after", stack.length);
 }
 http.createServer(app).listen(3000, function () {
   console.log("Listening on http://localhost:3000/");

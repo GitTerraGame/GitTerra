@@ -7,6 +7,7 @@ import tmp from "tmp";
 const GIT_TIMEOUT = 360000; //6min
 const SIZE_LIMIT = 100000; //~ 100MB
 const colormap_file = "./color_lang.json";
+const writeLog = false;
 
 export const getRepoData = async function (repoUrl, owner, repo) {
   let commitsData = {}; //one of 2 main obgects
@@ -15,12 +16,13 @@ export const getRepoData = async function (repoUrl, owner, repo) {
     return null;
   }
   const tempDir = createTempDirSync();
-  // console.log("tempDir", tempDir);
+  writeLog && console.log("tempDir", tempDir);
 
   // clone repo and show progress
   const { GitPluginError } = simpleGit;
   const progress = ({ method, stage, progress }) => {
-    console.log(`git.${method} ${stage} stage ${progress}% complete`);
+    writeLog &&
+      console.log(`git.${method} ${stage} stage ${progress}% complete`);
   };
   const git = simpleGit({
     baseDir: tempDir,
@@ -35,14 +37,14 @@ export const getRepoData = async function (repoUrl, owner, repo) {
     console.log(error);
     if (error instanceof GitPluginError && error.plugin === "timeout") {
       // task failed because of a timeout
-      console.log("timeout detected ");
+      writeLog && console.log("timeout detected ");
     }
   }
 
   //start scc and get json results
   try {
     let scc_result = await startSCC(tempDir);
-    // console.log("scc_result", scc_result);
+    writeLog && console.log("scc_result", scc_result);
     repoData = readSCCresults(scc_result);
   } catch (error) {
     console.log(error);
@@ -69,12 +71,12 @@ export const getRepoData = async function (repoUrl, owner, repo) {
     let commitsArray = tmp1.split(/\n/);
     commitsArray.shift(); //commitsArray[0] = ', so just remove it
     commitsData = readcommits(commitsArray);
-    //    console.log("commits", commitsData);
+    writeLog && console.log("commits", commitsData);
   } catch (error) {
     console.log(error);
     if (error instanceof GitPluginError && error.plugin === "timeout") {
       // task failed because of a timeout
-      console.log("timeout detected ");
+      writeLog && console.log("timeout detected ");
     }
   }
   //delete tempDir recursively
@@ -83,7 +85,7 @@ export const getRepoData = async function (repoUrl, owner, repo) {
       if (error) {
         console.error(error.message);
       } else {
-        console.log(tempDir + " was removed"); //why never log this?
+        writeLog && console.log(tempDir + " was removed"); //why never log this?
       }
     });
   } catch (error) {
@@ -91,7 +93,7 @@ export const getRepoData = async function (repoUrl, owner, repo) {
     throw new Error(error.message);
   }
   //retrun 2 object with repo data
-  //   console.log("results:", repoData);
+  writeLog && console.log("results:", repoData);
   return { repoData, commitsData };
 }; //end of getRepoData
 
@@ -158,7 +160,7 @@ function readSCCresults(scc_result) {
   };
 
   if (repoData.total.files < 1) {
-    console.log("this git is empty or incorrect!");
+    writeLog && console.log("this git is empty or incorrect!");
     //should build an empty city
   }
   const colormap = fs.readFileSync(colormap_file, "utf-8");
@@ -205,7 +207,6 @@ function readcommits(arrayOfCommits) {
       impact: impact,
     });
   }
-  //  console.log("from comLog:", comLog.length);
   return comLog;
 }
 
@@ -220,7 +221,7 @@ async function startSCC(tempDir) {
       console.error(`stderr: ${data}`);
     });
     scc_process.on("close", (code) => {
-      //      console.log(`child process exited with code ${code}`);
+      writeLog && console.log(`child process exited with code ${code}`);
       if (code) {
         reject(code);
       } else {
@@ -267,7 +268,7 @@ async function isGoodRepo(owner, repo) {
 
 function handleErrors(response) {
   if (!response.ok) {
-    console.log(response.statusText);
+    writeLog && console.log(response.statusText);
     throw new Error(response.statusText);
   }
 }
