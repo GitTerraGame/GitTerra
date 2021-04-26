@@ -2,8 +2,12 @@
   <head>
     <style>
       h1,
-      #feedback {
+      footer {
         text-align: center;
+      }
+
+      footer {
+        margin-bottom: 3em;
       }
 
       h1 * {
@@ -70,6 +74,9 @@
       body.showintro #mainMenu {
         display: none;
       }
+      body.showintro #about {
+        display: none;
+      }
 
       #startbox {
         text-align: center;
@@ -114,6 +121,13 @@
 
   <body class="showintro">
     <script>
+      function showIntro(e) {
+        e.preventDefault();
+
+        document.querySelector("body").classList.add("showintro");
+        document.cookie =
+          "introshown=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      }
       function closeIntro() {
         document.querySelector("body").classList.remove("showintro");
         document.cookie =
@@ -171,15 +185,22 @@
         />
       </div>
 
-      <div id="feedback">
-        <a
-          href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&labels=feedback"
-          >How can we make this game better?</a
-        >
-      </div>
+      <footer>
+        <div id="feedback">
+          <a
+            href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&labels=feedback"
+            >How can we make this game better?</a
+          >
+        </div>
+        <div id="about">
+          <a href="#" id="aboutlink">About Git Terra</a>
+        </div>
+      </footer>
     </div>
     <script>
       document.querySelector("#start").addEventListener("click", closeIntro);
+      document.querySelector("#aboutlink").addEventListener("click", showIntro);
+
       const SIZE_LIMIT = 100000; //~ 100MB
 
       async function processInput() {
