@@ -10,18 +10,70 @@
         vertical-align: middle;
       }
       body {
+        background-color: white;
         background: url("images/background_and_menus/site_background_image_bg.svg");
         background-size: cover;
+
+        /* Jsut got a font stack from CSS-tricks site: https://css-tricks.com/snippets/css/font-stacks/ */
+        /* Helvetica/Arial-based sans serif stack */
+        font-family: Frutiger, "Frutiger Linotype", Univers, Calibri,
+          "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad,
+          "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma,
+          Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
 
-      #mainMenu {
+      #logobanner {
+        aspect-ratio: auto 400 / 216.012;
+        width: 100%;
+      }
+
+      #enterGitRepo {
+        aspect-ratio: auto 322 / 110.25;
+        width: 100%;
+      }
+
+      #generateButton {
+        aspect-ratio: auto 322 / 71.862;
+        width: 100%;
+      }
+
+      #mainMenu,
+      #intro {
         background-color: #2e3192;
         border: 3px solid white;
-        padding: 20% 20px;
-        margin-top: -15%;
+        padding: 17% 1em 1em 1em;
+        margin-top: -17%;
         z-index: -100;
         margin-left: 5%;
         margin-right: 5%;
+        display: block;
+      }
+
+      #start {
+        background-color: white;
+        border: 3px solid white;
+        color: #2e3091;
+        padding: 0.5em 1em;
+        text-align: center;
+        font-size: 18px;
+        border-radius: 0.5em;
+      }
+
+      #intro {
+        color: white;
+        display: none;
+      }
+
+      body.showintro #intro {
+        display: block;
+      }
+      body.showintro #mainMenu {
+        display: none;
+      }
+
+      #startbox {
+        text-align: center;
+        margin: 2em 0;
       }
 
       #wholeMenu {
@@ -29,9 +81,9 @@
         margin-right: -50%;
         transform: translate(-50%, 0);
         position: absolute;
-        width: 60%;
+        width: 85%;
         min-width: 15em;
-        max-width: 25em;
+        max-width: 32em;
       }
       #inputField {
         display: block;
@@ -50,12 +102,53 @@
         text-align: center;
         color: red;
       }
+
+      #enterGitRepo {
+        margin-top: 8%;
+      }
+      #generateButton {
+        margin-bottom: 8%;
+      }
     </style>
   </head>
 
-  <body>
+  <body class="showintro">
+    <script>
+      function closeIntro() {
+        document.querySelector("body").classList.remove("showintro");
+        document.cookie =
+          "introshown=true; path=/; max-age=" + 365 * 24 * 60 * 60;
+      }
+      if (document.cookie.indexOf("introshown=true") >= 0) {
+        closeIntro();
+      }
+    </script>
+
     <div id="wholeMenu">
       <img id="logobanner" src="images/background_and_menus/logobanner.svg" />
+
+      <div id="intro">
+        <h1>Welcome Player!</h1>
+        <p>GitTerra is a game for developers played by building software!</p>
+
+        <div id="startbox">
+          <button id="start">🏗️ Start Building Your City 🏗️</button>
+        </div>
+
+        <p>
+          Our game is in the very early stages of development with so many
+          features will coming later! Imagine cities colored based on the code
+          language, imaging getting points for coding and doing non-coding tasks
+          like submitting issues and writing tests and documentation, imagine
+          ability to see how your city evolved over time, and so many more we
+          can imagine together with you!
+        </p>
+        <p>
+          Right now, you can already get a city generated based on your
+          repository, just enter the URL of the public code repository on GitHub
+          and the city will rise!
+        </p>
+      </div>
 
       <div id="mainMenu">
         <img
@@ -86,6 +179,8 @@
       </div>
     </div>
     <script>
+      document.querySelector("#start").addEventListener("click", closeIntro);
+
       async function processInput() {
         const body = document.querySelector("body");
 
