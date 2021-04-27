@@ -246,9 +246,25 @@ function createTempDirSync() {
 }
 async function isGoodRepo(owner, repo) {
   try {
-    let response = await fetch(
-      "https://api.github.com/repos/" + owner + "/" + repo
-    );
+    const creds = fs.readFileSync("credentials.json", "utf-8");
+    const token = JSON.parse(creds).token;
+    let response = null;
+    if (token) {
+      response = await fetch(
+        "https://api.github.com/repos/" + owner + "/" + repo,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "token " + token,
+          },
+        }
+      );
+    } else {
+      response = await fetch(
+        "https://api.github.com/repos/" + owner + "/" + repo
+      );
+    }
+    writeLog && console.log("headers:", response.headers);
     if (response.status > 200) {
       return true;
     } else {
