@@ -6,6 +6,9 @@ repos/
 ./repos/
 ./repos/**
 
+#credentilas
+credentials.json
+./credentials.json
 ###############################################################
 
 # Mac folder index
