@@ -17,12 +17,8 @@ async function generateMap({
   shouldOpenInBrowser,
 }) {
   try {
-    let checkObj = await getRepoData(repoUrl, owner, repo);
-    if (!checkObj) {
-      return false;
-    }
-    let { repoData, commitsData } = checkObj;
-    //    console.log(repoData);
+    let { repoData, commitsData } = await getRepoData(repoUrl, owner, repo);
+
     const number_of_blocks = Math.round(
       (100 *
         Math.log10(
@@ -55,6 +51,7 @@ async function generateMap({
     }
   } catch (err) {
     console.error(err);
+    process.exit(1);
   }
   process.exit(0);
 }
@@ -67,12 +64,33 @@ async function getInputArgs() {
   } else {
     repoUrl = await getStdin();
   }
-  let matches = repoUrl.match(/^https:\/\/(.+?)\/(.+?)\/(.+?)$/);
+  let owner, repo;
+
+  const url = new URL(repoUrl);
+
+  if (url.protocol !== "https:") {
+    throw new Error("Repo URL should use https protocol");
+  }
+
+  if (url.host !== "github.com") {
+    throw new Error(
+      "Sorry, Git Terra only works with github.com repos for now"
+    );
+  }
+
+  let matches = url.pathname.match(/^\/(.+?)\/(.+?)(\.git)?$/);
+  if (matches) {
+    owner = matches[1];
+    repo = matches[2];
+  } else {
+    throw new Error("Please enter a repository homepage or *.git repo URL");
+  }
+
   return {
     repoUrl,
-    host: matches[1],
-    owner: matches[2],
-    repo: matches[3],
+    host: url.host,
+    owner,
+    repo,
     shouldOpenInBrowser: process.stdin.isTTY,
   };
 }

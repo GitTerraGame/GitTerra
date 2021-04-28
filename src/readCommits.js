@@ -1,5 +1,7 @@
 import getStdin from "get-stdin";
 
+import log from "./logger.js";
+
 async function readcommits() {
   let comLog = [];
   const commits = await getStdin();
@@ -35,7 +37,7 @@ async function readcommits() {
       impact: impact,
     });
   }
-  console.log("from comLog:", comLog.length);
+  log("from comLog:", comLog.length);
   return comLog;
 }
 readcommits();

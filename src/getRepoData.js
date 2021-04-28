@@ -4,25 +4,25 @@ import simpleGit from "simple-git";
 import fetch from "node-fetch";
 import tmp from "tmp";
 
+import log from "./logger.js";
+
 const GIT_TIMEOUT = 360000; //6min
 const SIZE_LIMIT = 100000; //~ 100MB
 const colormap_file = "./color_lang.json";
-const writeLog = false;
 
 export const getRepoData = async function (repoUrl, owner, repo) {
   let commitsData = {}; //one of 2 main obgects
   let repoData = {}; //one of 2 main obgects
-  if (await isGoodRepo(owner, repo)) {
-    return null;
+  if (!(await isSupportedRepo(owner, repo))) {
+    throw new Error("Repo is not supported");
   }
   const tempDir = createTempDirSync();
-  writeLog && console.log("tempDir", tempDir);
+  log("tempDir", tempDir);
 
   // clone repo and show progress
   const { GitPluginError } = simpleGit;
   const progress = ({ method, stage, progress }) => {
-    writeLog &&
-      console.log(`git.${method} ${stage} stage ${progress}% complete`);
+    log(`git.${method} ${stage} stage ${progress}% complete`);
   };
   const git = simpleGit({
     baseDir: tempDir,
@@ -34,20 +34,20 @@ export const getRepoData = async function (repoUrl, owner, repo) {
   try {
     await git.clone(repoUrl, tempDir);
   } catch (error) {
-    console.log(error);
+    log(error);
     if (error instanceof GitPluginError && error.plugin === "timeout") {
       // task failed because of a timeout
-      writeLog && console.log("timeout detected ");
+      log("timeout detected ");
     }
   }
 
   //start scc and get json results
   try {
     let scc_result = await startSCC(tempDir);
-    writeLog && console.log("scc_result", scc_result);
+    log("scc_result", scc_result);
     repoData = readSCCresults(scc_result);
   } catch (error) {
-    console.log(error);
+    log(error);
     throw new Error(error.message);
   }
   //get commits
@@ -62,7 +62,7 @@ export const getRepoData = async function (repoUrl, owner, repo) {
       ],
       function (error) {
         if (error) {
-          console.log("error:", error);
+          log("error:", error);
         }
       }
     );
@@ -71,12 +71,11 @@ export const getRepoData = async function (repoUrl, owner, repo) {
     let commitsArray = tmp1.split(/\n/);
     commitsArray.shift(); //commitsArray[0] = ', so just remove it
     commitsData = readcommits(commitsArray);
-    writeLog && console.log("commits", commitsData);
   } catch (error) {
-    console.log(error);
+    log(error);
     if (error instanceof GitPluginError && error.plugin === "timeout") {
       // task failed because of a timeout
-      writeLog && console.log("timeout detected ");
+      log("timeout detected ");
     }
   }
   //delete tempDir recursively
@@ -85,15 +84,15 @@ export const getRepoData = async function (repoUrl, owner, repo) {
       if (error) {
         console.error(error.message);
       } else {
-        writeLog && console.log(tempDir + " was removed"); //why never log this?
+        log(tempDir + " was removed"); //why never log this?
       }
     });
   } catch (error) {
-    console.log(error);
+    log(error);
     throw new Error(error.message);
   }
   //retrun 2 object with repo data
-  writeLog && console.log("results:", repoData);
+  log("results:", repoData);
   return { repoData, commitsData };
 }; //end of getRepoData
 
@@ -160,7 +159,7 @@ function readSCCresults(scc_result) {
   };
 
   if (repoData.total.files < 1) {
-    writeLog && console.log("this git is empty or incorrect!");
+    log("this git is empty or incorrect!");
     //should build an empty city
   }
   const colormap = fs.readFileSync(colormap_file, "utf-8");
@@ -221,7 +220,7 @@ async function startSCC(tempDir) {
       console.error(`stderr: ${data}`);
     });
     scc_process.on("close", (code) => {
-      writeLog && console.log(`child process exited with code ${code}`);
+      log(`child process exited with code ${code}`);
       if (code) {
         reject(code);
       } else {
@@ -240,16 +239,17 @@ function createTempDirSync() {
     const tmpobj = tmp.dirSync();
     return tmpobj.name;
   } catch (error) {
-    console.log(error);
+    log(error);
     throw new Error(error.message);
   }
 }
-async function isGoodRepo(owner, repo) {
+async function isSupportedRepo(owner, repo) {
   try {
     const creds = fs.readFileSync("credentials.json", "utf-8");
     const token = JSON.parse(creds).token;
     let response = null;
     if (token) {
+      log("https://api.github.com/repos/" + owner + "/" + repo);
       response = await fetch(
         "https://api.github.com/repos/" + owner + "/" + repo,
         {
@@ -264,27 +264,27 @@ async function isGoodRepo(owner, repo) {
         "https://api.github.com/repos/" + owner + "/" + repo
       );
     }
-    writeLog && console.log("headers:", response.headers);
+    log("headers:", response.headers);
     if (response.status > 200) {
-      return true;
+      return false;
     } else {
       let json = await response.json();
       handleErrors(response);
       if (json.size > SIZE_LIMIT) {
-        return true;
-      } else {
         return false;
+      } else {
+        return true;
       }
     }
   } catch (error) {
-    console.log(error);
+    log(error);
     throw new Error(error.message);
   }
 }
 
 function handleErrors(response) {
   if (!response.ok) {
-    writeLog && console.log(response.statusText);
+    log(response.statusText);
     throw new Error(response.statusText);
   }
 }

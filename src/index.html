@@ -249,7 +249,6 @@
             headers: { "Content-type": "application/json" },
           });
           handleErrors(response);
-          //          console.log("response:", response);
         } catch (err) {
           console.log(err);
           throw new Error(err.message);
@@ -282,7 +281,6 @@
           });
           handleErrors(response);
           let job = await response.json();
-          //          console.log("resp:", response);
           if (job.complete) {
             window.location.href = job.mapPageURL;
           }
