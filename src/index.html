@@ -102,9 +102,9 @@
         min-width: 15em;
         max-width: 32em;
       }
-      #inputField {
+      #repoUrl {
         display: block;
-        margin: 1px auto 12% auto;
+        margin: 1px auto 0.8em auto;
         width: 100%;
         border: 2px solid rgb(19, 4, 77);
         font-size: 1.2em;
@@ -115,9 +115,15 @@
         outline: 0 !important;
       }
       #error {
-        display: none;
+        visibility: hidden;
         text-align: center;
-        color: red;
+        color: rgb(255 204 13);
+        font-weight: bold;
+        margin: 0.5em 0;
+      }
+
+      #error.invalid {
+        visibility: visible;
       }
 
       #enterGitRepo {
@@ -161,11 +167,14 @@
 
         <p>
           Our game is in the very early stages of development with so many
-          features will coming later! Imagine cities colored based on the code
-          language, imaging getting points for coding and doing non-coding tasks
-          like submitting issues and writing tests and documentation, imagine
-          ability to see how your city evolved over time, and so many more we
-          can imagine together with you!
+          awesome features coming!
+        </p>
+        <p>
+          Imagine cities colored based on the code language, imaging getting
+          points for coding and doing non-coding tasks like submitting issues
+          and writing tests and documentation, imagine ability to see how your
+          city evolved over time, and so many more we can imagine together with
+          you!
         </p>
         <p>
           Right now, you can already get a city generated based on your
@@ -174,26 +183,26 @@
         </p>
       </div>
 
-      <div id="mainMenu">
+      <form id="mainMenu">
         <img
           id="enterGitRepo"
           src="images/background_and_menus/home_page_enterGitRepo.svg"
         />
         <input
-          type="text"
-          id="inputField"
-          name="inputField"
+          type="url"
+          id="repoUrl"
+          name="repoUrl"
+          required
           placeholder="https://github.com/your/repo"
         />
-        <div id="error"></div>
+        <div id="error">Repo URL seems to be valid!</div>
         <input
           type="image"
           id="generateButton"
           alt="Submit"
           src="images/background_and_menus/home_page_generateButton.svg"
-          onclick="processInput()"
         />
-      </div>
+      </form>
 
       <footer>
         <div id="feedback">
@@ -213,17 +222,25 @@
 
       const SIZE_LIMIT = 100000; //~ 100MB
 
-      async function processInput() {
-        const body = document.querySelector("body");
-        let repoUrl = { repo: document.getElementById("inputField").value };
-        let re = /\.git$/; // case https://github.com/GitTerraGame/GitTerra.git
-        if (repoUrl.repo.match(re)) {
-          repoUrl.repo = repoUrl.repo.replace(re, "");
-        }
+      async function processInput(event) {
+        event.preventDefault();
 
-        if (!(await isValidInput(repoUrl.repo))) {
+        const body = document.querySelector("body");
+        let repoUrl = { repo: document.getElementById("repoUrl").value };
+        repoUrl.repo = repoUrl.repo.replace(/\.git$/, ""); // case https://github.com/GitTerraGame/GitTerra.git
+
+        const errorElement = document.getElementById("error");
+        try {
+          await isValidInput(repoUrl.repo);
+        } catch (error) {
+          errorElement.innerText = error.message;
+          errorElement.classList.add("invalid");
           return;
         }
+
+        // remove previous message if validation check is sucessful
+        errorElement.classList.remove("invalid");
+
         try {
           let response = await fetch("/api/generateMap", {
             method: "POST",
@@ -251,6 +268,9 @@
           checkJobStatus(repoUrl);
         }, 3000); //every 3sec
       }
+      document
+        .querySelector("#mainMenu")
+        .addEventListener("submit", processInput);
 
       async function checkJobStatus(postdata) {
         try {
@@ -279,58 +299,64 @@
         }
         return response;
       }
-      async function isValidInput(repoUrl) {
-        let err = "";
-        let slashPos = repoUrl.indexOf("/");
-        if (slashPos > 1) {
-          let urlparts = repoUrl.split("/");
-          if (
-            urlparts.length != 5 ||
-            urlparts[0] != "https:" ||
-            urlparts[2].indexOf("git") < 0
-          ) {
-            err = "Wrong repo URL!";
-          }
-        } else {
-          err = "Wrong repo URL!";
-        }
-        let matches = repoUrl.match(/^https:\/\/(.+?)\/(.+?)\/(.+?)$/);
-        let owner = matches[2];
-        let repo = matches[3];
 
-        if (await isGoodRepo(owner, repo)) {
-          err =
-            "Sorry we cannot process your request. Your repo seems private, does not exist or too big for our servers.";
+      async function isValidInput(repoUrl) {
+        let owner, repo;
+
+        const url = new URL(repoUrl);
+
+        if (url.protocol !== "https:") {
+          throw new Error("Repo URL should use https protocol");
         }
-        if (err) {
-          let elem = document.getElementById("error");
-          if (window.getComputedStyle(elem, null).display === "none") {
-            elem.style.display = "block";
-            document.getElementById("error").innerText = err;
-          } else {
-            elem.style.display = "none";
-          }
-          return false;
+
+        if (url.host !== "github.com") {
+          throw new Error(
+            "Sorry, Git Terra only works with github.com repos for now"
+          );
+        }
+
+        let matches = url.pathname.match(/^\/(.+?)\/(.+?)(\.git)?$/);
+        if (matches) {
+          owner = matches[1];
+          repo = matches[2];
         } else {
-          return true;
+          throw new Error(
+            "Please enter a repository homepage or *.git repo URL"
+          );
         }
+
+        if (!(await isSupportedRepo(owner, repo))) {
+          throw new Error(
+            "Sorry we cannot build your city. The repo is private, does not exist or too big for us to build."
+          );
+        }
+
+        return true;
       }
-      async function isGoodRepo(owner, repo) {
+
+      /**
+       * Checks if repos is supported, e.g. public and under the size limit
+       *
+       * @param string owner slug of the owning account / organization
+       * @param string repo slug of the repo
+       *
+       * @return boolean returns true if repo is supported
+       */
+      async function isSupportedRepo(owner, repo) {
         try {
           let response = await fetch(
             "https://api.github.com/repos/" + owner + "/" + repo
           );
           if (response.status > 200) {
-            return true;
+            return false; // repo does not exist or private
           } else {
             let json = await response.json();
             handleErrors(response);
             if (json.size > SIZE_LIMIT) {
-              return true;
-            } else {
-              return false;
+              return false; // repo is too big
             }
           }
+          return true;
         } catch (error) {
           console.log(error);
           throw new Error(error.message);
