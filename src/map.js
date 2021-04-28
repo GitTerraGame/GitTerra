@@ -106,6 +106,7 @@ export const generateMapHTML = function (total) {
     background-size: cover;
   }
   #logobanner {
+    aspect-ratio: auto 400 / 216.012;
     width: 30%;
     min-width: 10em;
     max-width: 15em;
