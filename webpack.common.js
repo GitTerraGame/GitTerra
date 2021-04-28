@@ -35,13 +35,8 @@ export default {
       filename: "./404.html",
       chunks: [],
     }),
-
   ],
-  entry: {
-    // apiServer: "./src/apiServer.js",
-    // main: "./src/main.js",
-    // readCommits: "./src/readCommits.js",
-  },
+  entry: {},
   resolve: {
     extensions: ["*", ".js", ".jsx"],
   },

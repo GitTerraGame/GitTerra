@@ -2,7 +2,7 @@
   "name": "gitterra",
   "version": "0.1.0",
   "description": "A game of coding where you can play by doing the usual coding activities",
-  "main": "main.js",
+  "main": "api-server.js",
   "type": "module",
   "scripts": {
     "start": "npm run api-server & npm run web-dev-server",
