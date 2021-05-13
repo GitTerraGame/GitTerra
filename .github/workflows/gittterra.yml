@@ -39,7 +39,7 @@ jobs:
         with:
           args: ${{ env.workspace }} -f json
       - name: Report lines of code
-        run: echo "${{steps.scc.outputs.scc}}"
+        run: echo "${{steps.scc.outputs.scc}}" > scc.json
         #install modules
       - name: install modules
         run: npm install
