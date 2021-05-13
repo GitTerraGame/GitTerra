@@ -1,0 +1,18 @@
+h1,
+#feedback {
+  text-align: center;
+}
+h1 * {
+  vertical-align: middle;
+}
+body {
+  /* webpackIgnore: true */
+  background: url(/images/background_and_menus/site_background_image_bg.svg);
+  background-size: cover;
+}
+#logobanner {
+  aspect-ratio: auto 400 / 216.012;
+  width: 30%;
+  min-width: 10em;
+  max-width: 15em;
+}

@@ -27,6 +27,17 @@ module.exports = {
           sources: false,
         },
       },
+      {
+        test: /\.css$/i,
+        loader: "css-loader",
+        options: {
+          sourceMap: false,
+        },
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: "asset/resource",
+      },
     ],
   },
   plugins: [
