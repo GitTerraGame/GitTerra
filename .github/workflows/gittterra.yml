@@ -38,6 +38,8 @@ jobs:
         uses: iryanbell/scc-docker-action@v1.0.2
         with:
           args: ${{ env.workspace }} -i js,go,html,css
+      - name: Report lines of code
+        run: echo "${{steps.scc.outputs.scc}}"
         #install modules
       - name: install modules
         run: npm install
