@@ -1,8 +1,14 @@
-import HtmlWebPackPlugin from "html-webpack-plugin";
-import path from "path";
-import fs from "fs";
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const path = require("path");
+const fs = require("fs");
+const nodeExternals = require("webpack-node-externals");
 
-export default {
+module.exports = {
+  mode: "production",
+  // adds standard node modules
+  externalsPresets: { node: true },
+  // loads modules from node_modules instead of bundling them
+  // externals: [nodeExternals()],
   target: "node",
   module: {
     rules: [
@@ -36,7 +42,10 @@ export default {
       chunks: [],
     }),
   ],
-  entry: {},
+  entry: {
+    generateMap: "./src/generateMap",
+    apiServer: "./src/apiServer",
+  },
   resolve: {
     extensions: ["*", ".js", ".jsx"],
   },

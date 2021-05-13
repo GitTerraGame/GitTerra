@@ -1,6 +1,14 @@
 {
   "presets": [
-    ["@babel/preset-env", { "targets": "> 0.25%, not dead" }],
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "esmodules": true,
+          "node": "current"
+        }
+      }
+    ],
     "@babel/preset-react"
   ]
 }

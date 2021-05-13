@@ -1,9 +1,9 @@
-import merger from "webpack-merge";
-import common from "./webpack.common.js";
+const merger = require("webpack-merge");
+const common = require("./webpack.common.js");
 
-// import BundleAnalyzerPlugin from "webpack-bundle-analyzer";
+// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer");
 
-export default merger.merge(common, {
+module.exports = merger.merge(common, {
   mode: "production",
   devtool: "source-map",
   // plugins: [
