@@ -1,7 +1,5 @@
 # This is a basic workflow to help you get started with Actions
 
-# This is a basic workflow to help you get started with Actions
-
 name: GitTerra
 
 # Controls when the action will run. 
@@ -37,9 +35,8 @@ jobs:
         uses: actions/setup-node@v1
       - name: Get the lines of code.
         id: scc
-        uses: iryanbell/scc-docker-action@v1.0.0
+        uses: iryanbell/scc-docker-action@v1.0.2
         with:
-          #args: ${{ env.workspace }} -f json
           args: ${{ env.workspace }} -i js,go,html,css
         #install modules
       - name: install modules
