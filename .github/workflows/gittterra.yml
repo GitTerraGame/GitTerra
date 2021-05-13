@@ -39,13 +39,8 @@ jobs:
         id: scc
         uses: iryanbell/scc-docker-action@v1.0.0
         with:
-          args: ${{ env.workspace }} -f json
-                #install modules
-      - name: install modules
-        run: npm install
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
+          #args: ${{ env.workspace }} -f json
+          args: ${{ env.workspace }} -i js,go,html,css
         #install modules
       - name: install modules
         run: npm install
