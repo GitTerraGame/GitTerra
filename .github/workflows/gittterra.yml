@@ -49,7 +49,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: scc-results
-          path: scc_$now.json
+          path: scc_*.json
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
