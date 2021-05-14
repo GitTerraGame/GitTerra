@@ -34,12 +34,12 @@ jobs:
        # install Node & NPM
       - name: install Node & NPM
         uses: actions/setup-node@v1
-      - name: Get the lines of code.
+      - name: SCC
         id: scc
         uses: iryanbell/scc-docker-action@v1.0.2
         with:
           args: ${{ env.workspace }} -f json
-      - name: Cache node modules
+      - name: Cache scc
         uses: actions/cache@v2
         env:
           cache-name: cache-scc
@@ -52,7 +52,10 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Report lines of code
-        run: echo "${{steps.scc.outputs.scc}}" > scc.json
+      - name: Save scc resulst
+        run: now=$(date +"%m_%d_%Y") && echo "${{steps.scc.outputs.scc}}" > scc_$now.json
       - name: gitlog
         run: git log --date=local --reverse --no-merges --shortstat --pretty="%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E" |  tr "\n" " " | tr "@" "\n" >commits.txt
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
