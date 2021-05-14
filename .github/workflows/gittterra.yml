@@ -50,6 +50,11 @@ jobs:
         with:
           name: scc-results
           path: scc_*.json
+      - name: Archive commits
+        uses: actions/upload-artifact@v2
+        with:
+          name: commits-results
+          path: commits_*.txt
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
