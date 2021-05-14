@@ -39,23 +39,17 @@ jobs:
         uses: iryanbell/scc-docker-action@v1.0.2
         with:
           args: ${{ env.workspace }} -f json
-      - name: Cache scc
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-scc
-        with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.scc
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
 
       - name: Save scc resulst
         run: now=$(date +"%m_%d_%Y") && echo "${{steps.scc.outputs.scc}}" > scc_$now.json
       - name: gitlog
-        run: git log --date=local --reverse --no-merges --shortstat --pretty="%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E" |  tr "\n" " " | tr "@" "\n" >commits.txt
+        run: now=$(date +"%m_%d_%Y") && git log --date=local --reverse --no-merges --shortstat --pretty="%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E" |  tr "\n" " " | tr "@" "\n" >commits_$now.txt
+        #upload scc and commits files
+      - name: Archive scc
+        uses: actions/upload-artifact@v2
+        with:
+          name: scc-results
+          path: scc_$now.json
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
