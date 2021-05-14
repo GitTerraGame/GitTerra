@@ -40,7 +40,5 @@ jobs:
           args: ${{ env.workspace }} -f json
       - name: Report lines of code
         run: echo "${{steps.scc.outputs.scc}}" > scc.json
-      - name: Set up Visual Studio shell
-        uses: egor-tensin/vs-shell@v2
-        with:
-          arch: x64
+      - name: gitlog
+        run: git log
