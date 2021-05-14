@@ -41,4 +41,4 @@ jobs:
       - name: Report lines of code
         run: echo "${{steps.scc.outputs.scc}}" > scc.json
       - name: gitlog
-        run: git log
+        run: git log --no-merges --shortstat
