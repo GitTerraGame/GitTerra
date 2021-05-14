@@ -39,6 +39,19 @@ jobs:
         uses: iryanbell/scc-docker-action@v1.0.2
         with:
           args: ${{ env.workspace }} -f json
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-scc
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.scc
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
       - name: Report lines of code
         run: echo "${{steps.scc.outputs.scc}}" > scc.json
       - name: gitlog
