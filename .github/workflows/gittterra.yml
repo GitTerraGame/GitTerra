@@ -39,10 +39,6 @@ jobs:
         uses: iryanbell/scc-docker-action@v1.0.2
         with:
           args: ${{ env.workspace }} -f json
-      - name: Set the value
-        id: step_one
-        run: |
-          now=$(date +"%m_%d_%Y") && echo "FOO=$now" >> $GITHUB_ENV
 
       - name: Save scc resulst
         run: now=$(date +"%m_%d_%Y") && echo "${{steps.scc.outputs.scc}}" > scc_$now.json
@@ -52,8 +48,8 @@ jobs:
       - name: Archive scc
         uses: actions/upload-artifact@v2
         with:
-          name: scc_${{ env.FOO }}.json
-          path: scc_${{ env.FOO }}.json
+          name: scc_results
+          path: scc_*.json
       - name: Archive commits
         uses: actions/upload-artifact@v2
         with:
