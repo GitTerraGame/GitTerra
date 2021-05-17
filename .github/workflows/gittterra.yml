@@ -34,6 +34,12 @@ jobs:
        # install Node & NPM
       - name: install Node & NPM
         uses: actions/setup-node@v1
+      - name: Set today value
+        id: today
+        run: |
+          now=$(date +"%m_%d_%Y") && echo "TODAY=$now" >> $GITHUB_ENV
+        
+        #install scc
       - name: SCC
         id: scc
         uses: iryanbell/scc-docker-action@v1.0.2
@@ -41,20 +47,21 @@ jobs:
           args: ${{ env.workspace }} -f json
 
       - name: Save scc resulst
-        run: now=$(date +"%m_%d_%Y") && echo "${{steps.scc.outputs.scc}}" > scc_$now.json
+        run: echo "${{steps.scc.outputs.scc}}" > scc_${{ env.TODAY }}.json
+      #get commits
       - name: gitlog
-        run: now=$(date +"%m_%d_%Y") && git log --date=local --reverse --no-merges --shortstat --pretty="%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E" |  tr "\n" " " | tr "@" "\n" >commits_$now.txt
+        run:  git log --date=local --reverse --no-merges --shortstat --pretty="%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E" |  tr "\n" " " | tr "@" "\n" >commits_${{ env.TODAY }}.txt
         #upload scc and commits files
       - name: Archive scc
         uses: actions/upload-artifact@v2
         with:
-          name: scc_results
-          path: scc_*.json
+          name: scc_${{ env.TODAY }}
+          path: scc_${{ env.TODAY }}.json
       - name: Archive commits
         uses: actions/upload-artifact@v2
         with:
-          name: commits-results
-          path: commits_*.txt
+          name: commits_${{ env.TODAY }}
+          path: commits_${{ env.TODAY }}.txt
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
