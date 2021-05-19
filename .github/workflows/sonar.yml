@@ -19,9 +19,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_SECRET }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            #-Dsonar.sources=src/
-            #-Dsonar.test.exclusions=tests/**
-            #-Dsonar.tests=tests/
-            -Dsonar.verbose=true
