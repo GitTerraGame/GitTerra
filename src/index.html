@@ -1,360 +1,377 @@
+<!DOCTYPE html>
 <html>
+  <title>Welcome to GitTerraGame!</title>
+  <meta content="text/html; charset=utf-8" />
 
-<head>
-  <style>
-    h1,
-    footer {
-      text-align: center;
-    }
+  <head>
+    <style>
+      h1,
+      footer {
+        text-align: center;
+      }
 
-    footer {
-      margin-bottom: 3em;
-    }
+      footer {
+        margin-bottom: 3em;
+      }
 
-    h1 * {
-      vertical-align: middle;
-    }
+      h1 * {
+        vertical-align: middle;
+      }
 
-    body {
-      background-color: white;
-      background: url("images/background_and_menus/site_background_image_bg.svg");
-      background-size: cover;
+      body {
+        background-color: white;
+        background: url("images/background_and_menus/site_background_image_bg.svg");
+        background-size: cover;
 
-      /* Jsut got a font stack from CSS-tricks site: https://css-tricks.com/snippets/css/font-stacks/ */
-      /* Helvetica/Arial-based sans serif stack */
-      font-family: Frutiger, "Frutiger Linotype", Univers, Calibri,
-        "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad,
-        "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma,
-        Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
+        /* Jsut got a font stack from CSS-tricks site: https://css-tricks.com/snippets/css/font-stacks/ */
+        /* Helvetica/Arial-based sans serif stack */
+        font-family: Frutiger, "Frutiger Linotype", Univers, Calibri,
+          "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad,
+          "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma,
+          Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
 
-    #logobanner {
-      aspect-ratio: auto 400 / 216.012;
-      width: 100%;
-    }
+      #logobanner {
+        aspect-ratio: auto 400 / 216.012;
+        width: 100%;
+      }
 
-    #enterGitRepo {
-      aspect-ratio: auto 322 / 110.25;
-      width: 100%;
-    }
+      #enterGitRepo {
+        aspect-ratio: auto 322 / 110.25;
+        width: 100%;
+      }
 
-    #generateButton {
-      aspect-ratio: auto 322 / 71.862;
-      width: 100%;
-    }
+      #generateButton {
+        aspect-ratio: auto 322 / 71.862;
+        width: 100%;
+      }
 
-    #mainMenu,
-    #intro {
-      background-color: #2e3192;
-      border: 3px solid white;
-      padding: 17% 1em 1em 1em;
-      margin-top: -17%;
-      z-index: -100;
-      margin-left: 5%;
-      margin-right: 5%;
-      display: block;
-    }
+      #mainMenu,
+      #intro {
+        background-color: #2e3192;
+        border: 3px solid white;
+        padding: 17% 1em 1em 1em;
+        margin-top: -17%;
+        z-index: -100;
+        margin-left: 5%;
+        margin-right: 5%;
+        display: block;
+      }
 
-    #start {
-      background-color: white;
-      border: 3px solid white;
-      color: #2e3091;
-      padding: 0.5em 1em;
-      text-align: center;
-      font-size: 18px;
-      border-radius: 0.5em;
-    }
+      #start {
+        background-color: white;
+        border: 3px solid white;
+        color: #2e3091;
+        padding: 0.5em 1em;
+        text-align: center;
+        font-size: 18px;
+        border-radius: 0.5em;
+      }
 
-    #start:hover {
-      background-color: #f0f0f0;
-      border-color: #f0f0f0;
-    }
+      #start:hover {
+        background-color: #f0f0f0;
+        border-color: #f0f0f0;
+      }
 
-    #start:active {
-      border-width: 2px;
-      margin: 1px;
-    }
+      #start:active {
+        border-width: 2px;
+        margin: 1px;
+      }
 
-    #intro {
-      color: white;
-      display: none;
-    }
+      #intro {
+        color: white;
+        display: none;
+      }
 
-    body.showintro #intro {
-      display: block;
-    }
+      body.showintro #intro {
+        display: block;
+      }
 
-    body.showintro #mainMenu {
-      display: none;
-    }
+      body.showintro #mainMenu {
+        display: none;
+      }
 
-    body.showintro #about {
-      display: none;
-    }
+      body.showintro #about {
+        display: none;
+      }
 
-    #startbox {
-      text-align: center;
-      margin: 2em 0;
-    }
+      #startbox {
+        text-align: center;
+        margin: 2em 0;
+      }
 
-    #wholeMenu {
-      left: 50%;
-      margin-right: -50%;
-      transform: translate(-50%, 0);
-      position: absolute;
-      width: 85%;
-      min-width: 15em;
-      max-width: 32em;
-    }
+      #wholeMenu {
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, 0);
+        position: absolute;
+        width: 85%;
+        min-width: 15em;
+        max-width: 32em;
+      }
 
-    #repoUrl {
-      display: block;
-      margin: 1px auto 0.8em auto;
-      width: 100%;
-      border: 2px solid rgb(19, 4, 77);
-      font-size: 1.2em;
-      line-height: 1.5em;
-      padding: 0.5em;
-    }
+      #repoUrl {
+        display: block;
+        margin: 1px auto 0.8em auto;
+        width: 100%;
+        border: 2px solid rgb(19, 4, 77);
+        font-size: 1.2em;
+        line-height: 1.5em;
+        padding: 0.5em;
+      }
 
-    *:focus {
-      outline: 0 !important;
-    }
+      *:focus {
+        outline: 0 !important;
+      }
 
-    #error {
-      visibility: hidden;
-      text-align: center;
-      color: rgb(255 204 13);
-      font-weight: bold;
-      margin: 0.5em 0;
-      height: 2em;
-    }
+      #error {
+        visibility: hidden;
+        text-align: center;
+        color: rgb(255 204 13);
+        font-weight: bold;
+        margin: 0.5em 0;
+        height: 2em;
+      }
 
-    #error.invalid {
-      visibility: visible;
-    }
+      #error.invalid {
+        visibility: visible;
+      }
 
-    #enterGitRepo {
-      margin-top: 8%;
-    }
+      #enterGitRepo {
+        margin-top: 8%;
+      }
 
-    #generateButton {
-      margin-bottom: 8%;
-    }
-  </style>
-</head>
+      #generateButton {
+        margin-bottom: 8%;
+      }
+    </style>
+  </head>
 
-<body class="showintro">
-  <script>
-    function showIntro(e) {
-      e.preventDefault();
+  <body class="showintro">
+    <script>
+      function showIntro(e) {
+        e.preventDefault();
 
-      document.querySelector("body").classList.add("showintro");
-      document.cookie =
-        "introshown=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-    }
-    function closeIntro() {
-      document.querySelector("body").classList.remove("showintro");
-      document.cookie =
-        "introshown=true; path=/; max-age=" + 365 * 24 * 60 * 60;
-    }
-    if (document.cookie.indexOf("introshown=true") >= 0) {
-      closeIntro();
-    }
-  </script>
+        document.querySelector("body").classList.add("showintro");
+        document.cookie =
+          "introshown=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      }
+      function closeIntro() {
+        document.querySelector("body").classList.remove("showintro");
+        document.cookie =
+          "introshown=true; path=/; max-age=" + 365 * 24 * 60 * 60;
+      }
+      if (document.cookie.indexOf("introshown=true") >= 0) {
+        closeIntro();
+      }
+    </script>
 
-  <div id="wholeMenu">
-    <img id="logobanner" src="images/background_and_menus/logobanner.svg" />
+    <div id="wholeMenu">
+      <img id="logobanner" src="images/background_and_menus/logobanner.svg" />
 
-    <div id="intro">
-      <h1>Welcome Player!</h1>
-      <p>GitTerra is a game for developers played by building software!</p>
+      <div id="intro">
+        <h1>Welcome Player!</h1>
+        <p>GitTerra is a game for developers played by building software!</p>
 
-      <div id="startbox">
-        <button id="start">🏗️ Start Building Your City 🏗️</button>
+        <div id="startbox">
+          <button id="start">🏗️ Start Building Your City 🏗️</button>
+        </div>
+
+        <p>
+          Our game is in the very early stages of development with so many
+          awesome features coming!
+        </p>
+        <p>
+          Imagine cities colored based on the code language, imaging getting
+          points for coding and doing non-coding tasks like submitting issues
+          and writing tests and documentation, imagine ability to see how your
+          city evolved over time, and so many more we can imagine together with
+          you!
+        </p>
+        <p>
+          Right now, you can already get a city generated based on your
+          repository, just enter the URL of the public code repository on GitHub
+          and the city will rise!
+        </p>
       </div>
 
-      <p>
-        Our game is in the very early stages of development with so many
-        awesome features coming!
-      </p>
-      <p>
-        Imagine cities colored based on the code language, imaging getting
-        points for coding and doing non-coding tasks like submitting issues
-        and writing tests and documentation, imagine ability to see how your
-        city evolved over time, and so many more we can imagine together with
-        you!
-      </p>
-      <p>
-        Right now, you can already get a city generated based on your
-        repository, just enter the URL of the public code repository on GitHub
-        and the city will rise!
-      </p>
+      <form id="mainMenu">
+        <img
+          id="enterGitRepo"
+          src="images/background_and_menus/home_page_enterGitRepo.svg"
+        />
+        <input
+          type="url"
+          id="repoUrl"
+          name="repoUrl"
+          required
+          placeholder="https://github.com/your/repo"
+        />
+        <div id="error">Repo URL seems to be valid!</div>
+        <input
+          type="image"
+          id="generateButton"
+          alt="Submit"
+          src="images/background_and_menus/home_page_generateButton.svg"
+        />
+      </form>
+
+      <footer>
+        <div id="feedback">
+          <a
+            href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&labels=feedback"
+            >How can we make this game better?</a
+          >
+        </div>
+        <div id="about">
+          <a href="#" id="aboutlink">About Git Terra</a>
+        </div>
+      </footer>
     </div>
+    <script>
+      document.querySelector("#start").addEventListener("click", closeIntro);
+      document.querySelector("#aboutlink").addEventListener("click", showIntro);
 
-    <form id="mainMenu">
-      <img id="enterGitRepo" src="images/background_and_menus/home_page_enterGitRepo.svg" />
-      <input type="url" id="repoUrl" name="repoUrl" required placeholder="https://github.com/your/repo" />
-      <div id="error">Repo URL seems to be valid!</div>
-      <input type="image" id="generateButton" alt="Submit"
-        src="images/background_and_menus/home_page_generateButton.svg" />
-    </form>
+      const SIZE_LIMIT = 100000; //~ 100MB
 
-    <footer>
-      <div id="feedback">
-        <a href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&labels=feedback">How can we
-          make this game better?</a>
-      </div>
-      <div id="about">
-        <a href="#" id="aboutlink">About Git Terra</a>
-      </div>
-    </footer>
-  </div>
-  <script>
-    document.querySelector("#start").addEventListener("click", closeIntro);
-    document.querySelector("#aboutlink").addEventListener("click", showIntro);
+      async function processInput(event) {
+        event.preventDefault();
 
-    const SIZE_LIMIT = 100000; //~ 100MB
+        const body = document.querySelector("body");
+        let repoUrl = { repo: document.getElementById("repoUrl").value };
+        repoUrl.repo = repoUrl.repo.replace(/\.git$/, ""); // case https://github.com/GitTerraGame/GitTerra.git
 
-    async function processInput(event) {
-      event.preventDefault();
-
-      const body = document.querySelector("body");
-      let repoUrl = { repo: document.getElementById("repoUrl").value };
-      repoUrl.repo = repoUrl.repo.replace(/\.git$/, ""); // case https://github.com/GitTerraGame/GitTerra.git
-
-      const errorElement = document.getElementById("error");
-      try {
-        await isValidInput(repoUrl.repo);
-      } catch (error) {
-        errorElement.innerText = error.message;
-        errorElement.classList.add("invalid");
-        return;
-      }
-
-      // remove previous message if validation check is sucessful
-      errorElement.classList.remove("invalid");
-
-      try {
-        let response = await fetch("/api/generateMap", {
-          method: "POST",
-          body: JSON.stringify(repoUrl),
-          headers: { "Content-type": "application/json" },
-        });
-        handleErrors(response);
-      } catch (err) {
-        console.log(err);
-        throw new Error(err.message);
-      }
-      while (body.firstChild) {
-        body.removeChild(body.firstChild);
-      }
-      let elem = document.createElement("img");
-      elem.setAttribute(
-        "src",
-        "images/background_and_menus/site_loading_animated.svg"
-      );
-      body.appendChild(elem);
-
-      checkJobStatus(repoUrl);
-      setInterval(() => {
-        checkJobStatus(repoUrl);
-      }, 3000); //every 3sec
-    }
-    document
-      .querySelector("#mainMenu")
-      .addEventListener("submit", processInput);
-
-    async function checkJobStatus(postdata) {
-      try {
-        let response = await fetch("/api/mapStatus", {
-          method: "POST",
-          body: JSON.stringify(postdata),
-          headers: { "Content-type": "application/json" },
-        });
-        handleErrors(response);
-        let job = await response.json();
-        if (job.complete) {
-          window.location.href = job.mapPageURL;
+        const errorElement = document.getElementById("error");
+        try {
+          await isValidInput(repoUrl.repo);
+        } catch (error) {
+          errorElement.innerText = error.message;
+          errorElement.classList.add("invalid");
+          return;
         }
-      } catch (err) {
-        console.log(err);
-        throw new Error(err.message);
-      }
-    }
 
-    //function to handle errors in ajax fetch
-    function handleErrors(response) {
-      if (!response.ok) {
-        console.log(response.statusText);
-        throw new Error(response.statusText);
-      }
-      return response;
-    }
+        // remove previous message if validation check is sucessful
+        errorElement.classList.remove("invalid");
 
-    async function isValidInput(repoUrl) {
-      let owner, repo;
-
-      const url = new URL(repoUrl);
-
-      if (url.protocol !== "https:") {
-        throw new Error("Repo URL should use https protocol");
-      }
-
-      if (url.host !== "github.com") {
-        throw new Error(
-          "Sorry, Git Terra only works with github.com repos for now"
-        );
-      }
-
-      let matches = url.pathname.match(/^\/(.+?)\/(.+?)(\.git)?$/);
-      if (matches) {
-        owner = matches[1];
-        repo = matches[2];
-      } else {
-        throw new Error(
-          "Please enter a repository homepage or *.git repo URL"
-        );
-      }
-
-      if (!(await isSupportedRepo(owner, repo))) {
-        throw new Error(
-          "Sorry we cannot build your city. The repo is private, does not exist or too big for us to build."
-        );
-      }
-
-      return true;
-    }
-
-    /**
-     * Checks if repos is supported, e.g. public and under the size limit
-     *
-     * @param string owner slug of the owning account / organization
-     * @param string repo slug of the repo
-     *
-     * @return boolean returns true if repo is supported
-     */
-    async function isSupportedRepo(owner, repo) {
-      try {
-        let response = await fetch(
-          "https://api.github.com/repos/" + owner + "/" + repo
-        );
-        if (response.status > 200) {
-          return false; // repo does not exist or private
-        } else {
-          let json = await response.json();
+        try {
+          let response = await fetch("/api/generateMap", {
+            method: "POST",
+            body: JSON.stringify(repoUrl),
+            headers: { "Content-type": "application/json" },
+          });
           handleErrors(response);
-          if (json.size > SIZE_LIMIT) {
-            return false; // repo is too big
-          }
+        } catch (err) {
+          console.log(err);
+          throw new Error(err.message);
         }
-        return true;
-      } catch (error) {
-        console.log(error);
-        throw new Error(error.message);
-      }
-    }
-  </script>
-</body>
+        while (body.firstChild) {
+          body.removeChild(body.firstChild);
+        }
+        let elem = document.createElement("img");
+        elem.setAttribute(
+          "src",
+          "images/background_and_menus/site_loading_animated.svg"
+        );
+        body.appendChild(elem);
 
+        checkJobStatus(repoUrl);
+        setInterval(() => {
+          checkJobStatus(repoUrl);
+        }, 3000); //every 3sec
+      }
+      document
+        .querySelector("#mainMenu")
+        .addEventListener("submit", processInput);
+
+      async function checkJobStatus(postdata) {
+        try {
+          let response = await fetch("/api/mapStatus", {
+            method: "POST",
+            body: JSON.stringify(postdata),
+            headers: { "Content-type": "application/json" },
+          });
+          handleErrors(response);
+          let job = await response.json();
+          if (job.complete) {
+            window.location.href = job.mapPageURL;
+          }
+        } catch (err) {
+          console.log(err);
+          throw new Error(err.message);
+        }
+      }
+
+      //function to handle errors in ajax fetch
+      function handleErrors(response) {
+        if (!response.ok) {
+          console.log(response.statusText);
+          throw new Error(response.statusText);
+        }
+        return response;
+      }
+
+      async function isValidInput(repoUrl) {
+        let owner, repo;
+
+        const url = new URL(repoUrl);
+
+        if (url.protocol !== "https:") {
+          throw new Error("Repo URL should use https protocol");
+        }
+
+        if (url.host !== "github.com") {
+          throw new Error(
+            "Sorry, Git Terra only works with github.com repos for now"
+          );
+        }
+
+        let matches = url.pathname.match(/^\/(.+?)\/(.+?)(\.git)?$/);
+        if (matches) {
+          owner = matches[1];
+          repo = matches[2];
+        } else {
+          throw new Error(
+            "Please enter a repository homepage or *.git repo URL"
+          );
+        }
+
+        if (!(await isSupportedRepo(owner, repo))) {
+          throw new Error(
+            "Sorry we cannot build your city. The repo is private, does not exist or too big for us to build."
+          );
+        }
+
+        return true;
+      }
+
+      /**
+       * Checks if repos is supported, e.g. public and under the size limit
+       *
+       * @param string owner slug of the owning account / organization
+       * @param string repo slug of the repo
+       *
+       * @return boolean returns true if repo is supported
+       */
+      async function isSupportedRepo(owner, repo) {
+        try {
+          let response = await fetch(
+            "https://api.github.com/repos/" + owner + "/" + repo
+          );
+          if (response.status > 200) {
+            return false; // repo does not exist or private
+          } else {
+            let json = await response.json();
+            handleErrors(response);
+            if (json.size > SIZE_LIMIT) {
+              return false; // repo is too big
+            }
+          }
+          return true;
+        } catch (error) {
+          console.log(error);
+          throw new Error(error.message);
+        }
+      }
+    </script>
+  </body>
 </html>

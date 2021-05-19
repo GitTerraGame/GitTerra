@@ -7,8 +7,8 @@ async function readcommits() {
   const commits = await getStdin();
   let lines = commits.split(/\n/);
   let count = 0;
-  for (let i = 0; i < lines.length; i++) {
-    let [sha, dt, message, data] = lines[i].split(/~~/);
+  for (let value of lines) {
+    let [sha, dt, message, data] = value.split(/~~/);
     if (sha == "") {
       continue;
     }

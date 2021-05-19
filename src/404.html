@@ -1,97 +1,118 @@
+<!DOCTYPE html>
 <html>
+  <head>
+    <title>File not found</title>
+    <meta content="text/html; charset=utf-8" />
 
-<head>
+    <script>
+      function installParallax() {
+        let middleground = document.querySelector("#middleground");
+        let background = document.querySelector("#background");
+        let text404 = document.querySelector("#text404");
 
+        let backgroundHeight = background.clientHeight;
+        let backgroundWidth = background.clientWidth;
+        let middlegroundHeight = middleground.clientHeight;
+        let middlegroundWidth = middleground.clientWidth;
+        let text404Height = text404.clientHeight;
+        let text404Width = text404.clientWidth;
 
-  <script>
-    function installParallax() {
-      let middleground = document.querySelector("#middleground");
-      let background = document.querySelector("#background");
-      let text404 = document.querySelector("#text404");
+        function applyParallax(event) {
+          middleground.style.left = `${
+            ((-middlegroundWidth / 8) * event.pageX) / window.innerWidth
+          }px`;
+          middleground.style.bottom = `${
+            (-middlegroundHeight / 5) * (1 - event.pageY / window.innerHeight)
+          }px`;
+          background.style.right = `${
+            (-backgroundWidth / 10) * (1 - event.pageX / window.innerWidth)
+          }px`;
+          background.style.bottom = `${
+            (-backgroundHeight / 9) * (1 - event.pageY / window.innerHeight)
+          }px`;
+          text404.style.marginRight = `${
+            (text404Width / 10) * (event.pageX / window.innerWidth)
+          }px`;
+          text404.style.marginTop = `${
+            (text404Height / 10) * (1 - event.pageY / window.innerHeight)
+          }px`;
+        }
 
-      let backgroundHeight = background.clientHeight;
-      let backgroundWidth = background.clientWidth;
-      let middlegroundHeight = middleground.clientHeight;
-      let middlegroundWidth = middleground.clientWidth;
-      let text404Height = text404.clientHeight;
-      let text404Width = text404.clientWidth;
+        document.addEventListener("mousemove", applyParallax);
+      }
+      window.addEventListener("load", installParallax);
+    </script>
 
-      function applyParallax(event) {
-        middleground.style.left = `${-middlegroundWidth / 8 * event.pageX / window.innerWidth}px`;
-        middleground.style.bottom = `${-middlegroundHeight / 5 * (1 - event.pageY / window.innerHeight)}px`;
-        background.style.right = `${-backgroundWidth / 10 * (1 - event.pageX / window.innerWidth)}px`;
-        background.style.bottom = `${-backgroundHeight / 9 * (1 - event.pageY / window.innerHeight)}px`;
-        text404.style.marginRight = `${text404Width / 10 * (event.pageX / window.innerWidth)}px`;
-        text404.style.marginTop = `${text404Height / 10 * (1 - event.pageY / window.innerHeight)}px`;
+    <style>
+      a {
+        width: 70%;
+        position: absolute;
+        top: 5%;
       }
 
-      document.addEventListener('mousemove', applyParallax);
-    }
-    window.addEventListener('load', installParallax);
-  </script>
+      @media (min-width: 500px) {
+        a {
+          top: 5%;
+          left: 5%;
+          width: 20%;
+          position: absolute;
+        }
+      }
 
-  <style>
-    a {
-      width: 70%;
-      position: absolute;
-      top: 5%;
-    }
-
-    @media (min-width: 500px) {
-      a {
-        top: 5%;
-        left: 5%;
-        width: 20%;
+      #background {
+        right: 0;
+        bottom: 0;
+        width: 50%;
         position: absolute;
       }
-    }
 
-    #background {
-      right: 0;
-      bottom: 0;
-      width: 50%;
-      position: absolute;
-    }
+      #middleground {
+        left: 0;
+        bottom: 0;
+        width: 80%;
+        position: absolute;
+      }
 
-    #middleground {
-      left: 0;
-      bottom: 0;
-      width: 80%;
-      position: absolute;
-    }
+      #text404 {
+        width: 60%;
+      }
 
-    #text404 {
-      width: 60%;
-    }
+      body {
+        background: linear-gradient(#fbb03b, #ed1c24);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 85%;
+        overflow: hidden;
+      }
+    </style>
+  </head>
 
-    body {
-      background: linear-gradient(#FBB03B, #ED1C24);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 85%;
-      overflow: hidden;
-    }
-  </style>
-</head>
+  <body id="404">
+    <img
+      id="text404"
+      src="/images/background_and_menus/parallax_404_404text.svg"
+      alt="error 404: This is not the city you are looking for..."
+    />
 
-<body id="404">
+    <img
+      id="background"
+      src="/images/background_and_menus/parallax_404_background.svg"
+      alt="the background, a sandy orange yellow hill with sillouhetes of buidlings in dotted line, with question marks in them"
+    />
 
-  <img id="text404" src="/images/background_and_menus/parallax_404_404text.svg"
-    alt="error 404: This is not the city you are looking for...">
+    <img
+      id="middleground"
+      src="/images/background_and_menus/parallax_404_middleground.svg"
+      alt="the middleground, a sandy orange hill with dried shrubs"
+    />
 
-  <img id="background" src="/images/background_and_menus/parallax_404_background.svg"
-    alt="the background, a sandy orange yellow hill with sillouhetes of buidlings in dotted line, with question marks in them">
-
-  <img id="middleground" src="/images/background_and_menus/parallax_404_middleground.svg"
-    alt="the middleground, a sandy orange hill with dried shrubs">
-
-
-  <a href="/">
-    <img id="logo" src="/images/background_and_menus/logobanner.svg" alt="click to go to home page">
-  </a>
-
-
-</body>
-
+    <a href="/">
+      <img
+        id="logo"
+        src="/images/background_and_menus/logobanner.svg"
+        alt="click to go to home page"
+      />
+    </a>
+  </body>
 </html>

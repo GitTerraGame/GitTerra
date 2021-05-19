@@ -52,23 +52,16 @@ export const getRepoData = async function (repoUrl, owner, repo) {
   }
   //get commits
   try {
-    let commits = await git.log(
-      [
-        "--date=local",
-        "--reverse",
-        "--no-merges",
-        "--shortstat",
-        "--pretty='%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E'",
-      ],
-      function (error) {
-        if (error) {
-          log("error:", error);
-        }
-      }
-    );
-    let tmp = commits.all[0].hash.replace(/\n/g, " ");
-    let tmp1 = tmp.replace(/@/g, "\n");
-    let commitsArray = tmp1.split(/\n/);
+    let commits = await git.log([
+      "--date=local",
+      "--reverse",
+      "--no-merges",
+      "--shortstat",
+      "--pretty='%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E'",
+    ]);
+    let temp = commits.all[0].hash.replace(/\n/g, " ");
+    let temp1 = temp.replace(/@/g, "\n");
+    let commitsArray = temp1.split(/\n/);
     commitsArray.shift(); //commitsArray[0] = ', so just remove it
     commitsData = readcommits(commitsArray);
   } catch (error) {
@@ -79,18 +72,14 @@ export const getRepoData = async function (repoUrl, owner, repo) {
     }
   }
   //delete tempDir recursively
-  try {
-    fs.rmdirSync(tempDir, { recursive: true }, (error) => {
-      if (error) {
-        console.error(error.message);
-      } else {
-        log(tempDir + " was removed"); //why never log this?
-      }
-    });
-  } catch (error) {
-    log(error);
-    throw new Error(error.message);
-  }
+  fs.rmdirSync(tempDir, { recursive: true }, (error) => {
+    if (error) {
+      console.error(error.message);
+    } else {
+      log(tempDir + " was removed"); //why never log this?
+    }
+  });
+
   //retrun 2 object with repo data
   log("results:", repoData);
   return { repoData, commitsData };
@@ -176,8 +165,8 @@ function readSCCresults(scc_result) {
 function readcommits(arrayOfCommits) {
   let comLog = [];
   let count = 0;
-  for (let i = 0; i < arrayOfCommits.length; i++) {
-    let [sha, dt, message, data] = arrayOfCommits[i].split(/~~/);
+  for (let value of arrayOfCommits) {
+    let [sha, dt, message, data] = value.split(/~~/);
     if (sha == "") {
       continue;
     }
@@ -270,11 +259,7 @@ async function isSupportedRepo(owner, repo) {
     } else {
       let json = await response.json();
       handleErrors(response);
-      if (json.size > SIZE_LIMIT) {
-        return false;
-      } else {
-        return true;
-      }
+      return json.size > SIZE_LIMIT;
     }
   } catch (error) {
     log(error);
