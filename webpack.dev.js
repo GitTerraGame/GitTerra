@@ -4,9 +4,12 @@ const path = require("path");
 const fs = require("fs");
 const config = require("config");
 
-const common = require("./webpack.common.js");
+const client = require("./webpack.client.js");
 
-let webpackConfig = merger.merge(common, {
+/**
+ * For developemtn server only run client config
+ */
+let webpackConfig = merger.merge(client, {
   mode: "development",
   devtool: "eval-source-map",
 });

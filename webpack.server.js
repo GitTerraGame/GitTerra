@@ -1,10 +1,11 @@
-const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const fs = require("fs");
-const nodeExternals = require("webpack-node-externals");
+// const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  mode: "production",
+  /**
+   * This is a server build configuration
+   */
   // adds standard node modules
   externalsPresets: { node: true },
   // loads modules from node_modules instead of bundling them
@@ -17,6 +18,20 @@ module.exports = {
         exclude: [/node_modules/, /images/],
         use: {
           loader: "babel-loader",
+          options: {
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  targets: {
+                    esmodules: true,
+                    node: "current",
+                  },
+                },
+              ],
+              "@babel/preset-react",
+            ],
+          },
         },
       },
       {
@@ -40,19 +55,6 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new HtmlWebPackPlugin({
-      template: "./src/index.html",
-      filename: "./index.html",
-      chunks: [],
-    }),
-
-    new HtmlWebPackPlugin({
-      template: "./src/404.html",
-      filename: "./404.html",
-      chunks: [],
-    }),
-  ],
   entry: {
     generateMap: "./src/generateMap",
     apiServer: "./src/apiServer",
