@@ -21,7 +21,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.sources=src/
-            -Dsonar.test.exclusions=tests/**
-            -Dsonar.tests=tests/
+            #-Dsonar.sources=src/
+            #-Dsonar.test.exclusions=tests/**
+            #-Dsonar.tests=tests/
             -Dsonar.verbose=true
