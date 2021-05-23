@@ -36,10 +36,7 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        loader: "css-loader",
-        options: {
-          sourceMap: false,
-        },
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -51,7 +48,7 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: "./src/index.html",
       filename: "./index.html",
-      chunks: [],
+      chunks: ["index"],
     }),
 
     new HtmlWebPackPlugin({
@@ -59,16 +56,15 @@ module.exports = {
       filename: "./404.html",
       chunks: [],
     }),
-    new HtmlWebPackPlugin({
-      template: "./src/client.html",
-      filename: "./client.html",
-    }),
   ],
   entry: {
-    client: "./src/client",
+    index: "./src/index",
   },
   resolve: {
     extensions: ["*", ".js", ".jsx"],
+    alias: {
+      images: path.resolve(fs.realpathSync("."), "images"),
+    },
   },
   output: {
     filename: "[name].js",
