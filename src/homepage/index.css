@@ -73,19 +73,6 @@ body {
 
 #intro {
   color: white;
-  display: none;
-}
-
-body.showintro #intro {
-  display: block;
-}
-
-body.showintro #mainMenu {
-  display: none;
-}
-
-body.showintro #about {
-  display: none;
 }
 
 #startbox {

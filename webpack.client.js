@@ -46,9 +46,9 @@ module.exports = {
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: "./src/index.html",
+      template: "./src/homepage/index.html",
       filename: "./index.html",
-      chunks: ["index"],
+      chunks: ["homepage"],
     }),
 
     new HtmlWebPackPlugin({
@@ -58,7 +58,7 @@ module.exports = {
     }),
   ],
   entry: {
-    index: "./src/index",
+    homepage: "./src/homepage/index",
   },
   resolve: {
     extensions: ["*", ".js", ".jsx"],
