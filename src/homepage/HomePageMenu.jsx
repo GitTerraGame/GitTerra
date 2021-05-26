@@ -2,11 +2,14 @@ import React, { useState } from "react";
 
 import Intro from "./Intro";
 import RepoInputForm from "./RepoInputForm";
+import generateMap from "./generateMap";
 
 const HomePageMenu = function () {
   const [intro, setIntro] = useState(
     document.cookie.indexOf("introshown=true") < 0
   );
+
+  const [isGenerating, setIsGenerating] = useState(false);
 
   function showIntro() {
     // enable to reset cookie when intro is explicitly opened (for debugging)
@@ -19,11 +22,21 @@ const HomePageMenu = function () {
     setIntro(false);
   }
 
-  return (
+  function startGeneration(repo) {
+    generateMap(repo, setIsGenerating);
+  }
+
+  return isGenerating ? (
+    <img src="/images/background_and_menus/site_loading_animated.svg" />
+  ) : (
     <div id="wholeMenu">
       <img id="logobanner" src="images/background_and_menus/logobanner.svg" />
 
-      {intro ? <Intro onClose={hideIntro} /> : <RepoInputForm />}
+      {intro ? (
+        <Intro onClose={hideIntro} />
+      ) : (
+        <RepoInputForm callback={startGeneration} />
+      )}
 
       <footer>
         <div id="feedback">

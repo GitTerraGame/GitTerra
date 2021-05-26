@@ -1,20 +1,21 @@
 import React, { useState } from "react";
+import { func } from "prop-types";
 
 import repoURLValidator from "./repoURLValidator";
 
-function RepoInputForm() {
+function RepoInputForm({ callback }) {
   const [valid, setValid] = useState(false);
   const [error, setError] = useState();
   const [url, setUrl] = useState("");
 
   async function handleSubmit(e) {
-    alert("handling");
     e.preventDefault();
 
-    const repo = url.replace(/\.git$/, ""); // case https://github.com/GitTerraGame/GitTerra.git
+    // URL of the repo e.g. https://github.com/GitTerraGame/GitTerra.git
+    const repo = url.replace(/\.git$/, "");
 
     try {
-      await repoURLValidator(repo);
+      setValid(await repoURLValidator(repo));
     } catch (ex) {
       setValid(false);
       setError(ex.message);
@@ -22,7 +23,7 @@ function RepoInputForm() {
       return;
     }
 
-    // handle map generation
+    callback(repo);
   }
 
   return (
@@ -52,5 +53,9 @@ function RepoInputForm() {
     </form>
   );
 }
+
+RepoInputForm.propTypes = {
+  callback: func.isRequired,
+};
 
 export default RepoInputForm;

@@ -45,27 +45,18 @@ async function isSupportedRepo(owner, repo) {
     let response = await fetch(
       "https://api.github.com/repos/" + owner + "/" + repo
     );
-    if (response.status > 200) {
+    if (!response.ok) {
       return false; // repo does not exist or private
-    } else {
-      let json = await response.json();
-      handleHTTPError(response);
-      if (json.size > SIZE_LIMIT) {
-        return false; // repo is too big
-      }
     }
-    return true;
+
+    let json = await response.json();
+    if (json.size > SIZE_LIMIT) {
+      return false; // repo is too big
+    }
   } catch (error) {
     console.log(error);
     throw new Error(error.message);
   }
-}
 
-//function to handle errors in ajax fetch
-function handleHTTPError(response) {
-  if (!response.ok) {
-    console.log(response.statusText);
-    throw new Error(response.statusText);
-  }
-  return response;
+  return true;
 }

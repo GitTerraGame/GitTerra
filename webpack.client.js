@@ -18,7 +18,8 @@ module.exports = {
               [
                 "@babel/preset-env",
                 {
-                  targets: "> 0.25%, not dead",
+                  targets: ">0.25%, not dead",
+                  exclude: ["@babel/plugin-transform-regenerator"],
                 },
               ],
               "@babel/preset-react",
