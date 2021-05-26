@@ -1,12 +1,15 @@
-import merger from "webpack-merge";
+const merger = require("webpack-merge");
 
-import path from "path";
-import fs from "fs";
-import config from "config";
+const path = require("path");
+const fs = require("fs");
+const config = require("config");
 
-import common from "./webpack.common.js";
+const client = require("./webpack.client.js");
 
-let webpackConfig = merger.merge(common, {
+/**
+ * For developemtn server only run client config
+ */
+let webpackConfig = merger.merge(client, {
   mode: "development",
   devtool: "eval-source-map",
 });
@@ -38,4 +41,4 @@ webpackConfig = merger.merge(webpackConfig, {
   devServer,
 });
 
-export default webpackConfig;
+module.exports = webpackConfig;

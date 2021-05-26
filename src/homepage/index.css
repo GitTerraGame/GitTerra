@@ -1,0 +1,127 @@
+h1,
+footer {
+  text-align: center;
+}
+
+footer {
+  margin-bottom: 3em;
+}
+
+h1 * {
+  vertical-align: middle;
+}
+
+body {
+  background-color: white;
+  background: url("images/background_and_menus/site_background_image_bg.svg");
+  background-size: cover;
+
+  /* Jsut got a font stack from CSS-tricks site: https://css-tricks.com/snippets/css/font-stacks/ */
+  /* Helvetica/Arial-based sans serif stack */
+  font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans",
+    "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed",
+    "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue",
+    Helvetica, Arial, sans-serif;
+}
+
+#logobanner {
+  aspect-ratio: auto 400 / 216.012;
+  width: 100%;
+}
+
+#enterGitRepo {
+  aspect-ratio: auto 322 / 110.25;
+  width: 100%;
+}
+
+#generateButton {
+  aspect-ratio: auto 322 / 71.862;
+  width: 100%;
+}
+
+#mainMenu,
+#intro {
+  background-color: #2e3192;
+  border: 3px solid white;
+  padding: 17% 1em 1em 1em;
+  margin-top: -17%;
+  z-index: -100;
+  margin-left: 5%;
+  margin-right: 5%;
+  display: block;
+}
+
+#start {
+  background-color: white;
+  border: 3px solid white;
+  color: #2e3091;
+  padding: 0.5em 1em;
+  text-align: center;
+  font-size: 18px;
+  border-radius: 0.5em;
+}
+
+#start:hover {
+  background-color: #f0f0f0;
+  border-color: #f0f0f0;
+}
+
+#start:active {
+  border-width: 2px;
+  margin: 1px;
+}
+
+#intro {
+  color: white;
+}
+
+#startbox {
+  text-align: center;
+  margin: 2em 0;
+}
+
+#wholeMenu {
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, 0);
+  position: absolute;
+  width: 85%;
+  min-width: 15em;
+  max-width: 32em;
+}
+
+#repoUrl {
+  box-sizing: border-box;
+  display: block;
+  margin: 1px auto 0.8em auto;
+  width: 100%;
+  border: 2px solid rgb(19, 4, 77);
+  font-size: 1.2em;
+  line-height: 1.5em;
+  padding: 0.5em;
+}
+
+*:focus {
+  outline: 0 !important;
+}
+
+#error {
+  visibility: hidden;
+  text-align: center;
+  color: rgb(255 204 13);
+  font-weight: bold;
+  margin: 0.5em 0;
+  height: 2em;
+}
+
+#error.invalid {
+  visibility: visible;
+}
+
+#enterGitRepo {
+  margin-top: 8%;
+}
+
+#generateButton {
+  margin-bottom: 8%;
+}

@@ -1,3 +1,7 @@
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+import styles from "./mapStyles.css";
+
 /**
  * This function defines the algorythm for plotting city blocks maintaining the diamond shape.
  * The input is a sequential number of the block and the output are
@@ -80,52 +84,53 @@ export const generateMapHTML = function (total) {
     tiles.push({ tileNumber, isoX, isoY });
   }
 
-  const html = tiles.reduce((html, tile) => {
-    html += `<img src="../../../../images/tiles/terraprime/tiles_v2-${tile.tileNumber
-      .toString()
-      .padStart(2, "0")}.png" width="${tileWidth}"
-          style="
-            position: absolute;
-            left: ${tile.isoX - lowestIsoX}px;
-            bottom: ${tile.isoY - tileHeight}px;
-          "/>`;
-    return html;
-  }, "");
+  const tileImages = tiles.map((tile) => (
+    <img
+      key={tile.tileNumber}
+      src={`/images/tiles/terraprime/tiles_v2-${tile.tileNumber
+        .toString()
+        .padStart(2, "0")}.png`}
+      width={tileWidth}
+      style={{
+        position: "absolute",
+        left: `${tile.isoX - lowestIsoX}px`,
+        bottom: `${tile.isoY - tileHeight}px`,
+      }}
+    />
+  ));
 
-  return `<html>
-  <head>
-  <style>
-  h1, #feedback {
-    text-align:center;
-  }
-  h1 * {
-    vertical-align: middle;
-  }
-  body {
-    background: url("../../../../images/background_and_menus/site_background_image_bg.svg");
-    background-size: cover;
-  }
-  #logobanner {
-    aspect-ratio: auto 400 / 216.012;
-    width: 30%;
-    min-width: 10em;
-    max-width: 15em;
-  }
-  </style>
-  </head>
-  <body>
-    <h1>
-      <a href="/"><img id="logobanner" src="../../../../images/background_and_menus/logobanner.svg"/></a>
-    </h1>
-    <div id="feedback"><a href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&labels=feedback">How can we make this game better?</a></div>
-    <div style="
-      position: absolute;
-      width: ${highestIsoX - lowestIsoX + tileWidth}px;
-      height: ${highestIsoY + highestTileHeight - tileHeight}px;
-      left: 50%;
-      margin-right: -50%;
-      transform: translate(-50%, 0)
-    ">${html}</div>
-  </body>
-</html>`;
+  return ReactDOMServer.renderToString(
+    <html>
+      <head>
+        <style>{styles.toString()}</style>
+      </head>
+      <body>
+        <h1>
+          <a href="/">
+            <img
+              id="logobanner"
+              src="/images/background_and_menus/logobanner.svg"
+            />
+          </a>
+        </h1>
+        <div id="feedback">
+          <a href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&amp;labels=feedback">
+            How can we make this game better?
+          </a>
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            width: `${highestIsoX - lowestIsoX + tileWidth}px`,
+            height: `${highestIsoY + highestTileHeight - tileHeight}px`,
+            left: `50%`,
+            marginRight: `-50%`,
+            transform: `translate(-50%, 0)`,
+          }}
+        >
+          {tileImages}
+        </div>
+      </body>
+    </html>
+  );
 };

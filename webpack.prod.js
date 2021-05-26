@@ -1,15 +1,16 @@
-import merger from "webpack-merge";
-import common from "./webpack.common.js";
+const merger = require("webpack-merge");
+const client = require("./webpack.client.js");
+const server = require("./webpack.server.js");
 
-// import BundleAnalyzerPlugin from "webpack-bundle-analyzer";
+module.exports = [
+  merger.merge(client, {
+    mode: "production",
+    devtool: "source-map",
+  }),
+  merger.merge(server, {
+    mode: "production",
+    devtool: "source-map",
+  }),
+];
 
-export default merger.merge(common, {
-  mode: "production",
-  devtool: "source-map",
-  // plugins: [
-  //   new BundleAnalyzerPlugin({
-  //     analyzerMode: "static",
-  //     reportFilename: "bundle-analysis-report.html",
-  //   }),
-  // ],
-});
+module.exports.parallelism = 1;

@@ -259,7 +259,7 @@ async function isSupportedRepo(owner, repo) {
     } else {
       let json = await response.json();
       handleErrors(response);
-      return json.size > SIZE_LIMIT;
+      return json.size < SIZE_LIMIT;
     }
   } catch (error) {
     log(error);
