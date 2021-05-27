@@ -1,6 +1,7 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const fs = require("fs");
+const config = require("./config.json");
 
 module.exports = {
   /**
@@ -47,7 +48,10 @@ module.exports = {
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: "./src/homepage/index.html",
+      templateParameters: {
+        googleTag: config.googleTag,
+      },
+      template: "./src/homepage/index.ejs",
       filename: "./index.html",
       chunks: ["homepage"],
     }),
