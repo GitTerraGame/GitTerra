@@ -1,6 +1,16 @@
 import React from "react";
 import ReactDOMServer from "react-dom/server";
+import fs from "fs";
+
 import styles from "./mapStyles.css";
+import GoogleTag from "./googleAnalyticsTag";
+let googleId = null;
+try {
+  const config = fs.readFileSync("config.json", "utf-8");
+  googleId = JSON.parse(config).googleTag;
+} catch (ignore) {
+  //ignore error
+}
 
 /**
  * This function defines the algorythm for plotting city blocks maintaining the diamond shape.
@@ -99,38 +109,43 @@ export const generateMapHTML = function (total) {
     />
   ));
 
-  return ReactDOMServer.renderToString(
-    <html>
-      <head>
-        <style>{styles.toString()}</style>
-      </head>
-      <body>
-        <h1>
-          <a href="/">
-            <img
-              id="logobanner"
-              src="/images/background_and_menus/logobanner.svg"
-            />
-          </a>
-        </h1>
-        <div id="feedback">
-          <a href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&amp;labels=feedback">
-            How can we make this game better?
-          </a>
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            width: `${highestIsoX - lowestIsoX + tileWidth}px`,
-            height: `${highestIsoY + highestTileHeight - tileHeight}px`,
-            left: `50%`,
-            marginRight: `-50%`,
-            transform: `translate(-50%, 0)`,
-          }}
-        >
-          {tileImages}
-        </div>
-      </body>
-    </html>
+  return (
+    "<!doctype html>" +
+    ReactDOMServer.renderToString(
+      <html>
+        <head>
+          <style>{styles.toString()}</style>
+          <title>Your Repo Map | GitTerra</title>
+        </head>
+        <body>
+          <GoogleTag googleId={googleId}></GoogleTag>
+          <h1>
+            <a href="/">
+              <img
+                id="logobanner"
+                src="/images/background_and_menus/logobanner.svg"
+              />
+            </a>
+          </h1>
+          <div id="feedback">
+            <a href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&amp;labels=feedback">
+              How can we make this game better?
+            </a>
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              width: `${highestIsoX - lowestIsoX + tileWidth}px`,
+              height: `${highestIsoY + highestTileHeight - tileHeight}px`,
+              left: `50%`,
+              marginRight: `-50%`,
+              transform: `translate(-50%, 0)`,
+            }}
+          >
+            {tileImages}
+          </div>
+        </body>
+      </html>
+    )
   );
 };
