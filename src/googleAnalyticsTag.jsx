@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 function createMarkup(googleId) {
   return {
@@ -20,6 +21,6 @@ const GoogleTag = ({ googleId }) => (
 );
 
 GoogleTag.propTypes = {
-  googleId: "G-",
+  googleId: PropTypes.string.isRequired,
 };
 export default GoogleTag;
