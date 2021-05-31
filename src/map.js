@@ -118,7 +118,8 @@ export const generateMapHTML = function (total) {
           <title>Your Repo Map | GitTerra</title>
         </head>
         <body>
-          <GoogleTag googleId={googleId}></GoogleTag>
+          {googleId && <GoogleTag googleId={googleId}></GoogleTag>}
+
           <h1>
             <a href="/">
               <img
