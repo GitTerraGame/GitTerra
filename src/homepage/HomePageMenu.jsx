@@ -10,6 +10,7 @@ const HomePageMenu = function () {
   );
 
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generationError, setGenerationError] = useState();
 
   function showIntro() {
     // enable to reset cookie when intro is explicitly opened (for debugging)
@@ -23,7 +24,7 @@ const HomePageMenu = function () {
   }
 
   function startGeneration(repo) {
-    generateMap(repo, setIsGenerating);
+    generateMap(repo, setIsGenerating, setGenerationError);
   }
 
   return isGenerating ? (
@@ -35,7 +36,10 @@ const HomePageMenu = function () {
       {intro ? (
         <Intro onClose={hideIntro} />
       ) : (
-        <RepoInputForm callback={startGeneration} />
+        <RepoInputForm
+          callback={startGeneration}
+          initialError={generationError}
+        />
       )}
 
       <footer>
