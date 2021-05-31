@@ -1,9 +1,10 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const fs = require("fs");
-let config = null;
+let googleTag = null;
 try {
-  config = fs.readFileSync("config.json", "utf-8");
+  let config = fs.readFileSync("config.json", "utf-8");
+  googleTag = JSON.parse(config).googleTag;
 } catch (ignore) {
   //ignore error
 }
@@ -54,7 +55,7 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       templateParameters: {
-        googleTag: JSON.parse(config).googleTag,
+        googleTag: googleTag,
       },
       template: "./src/homepage/index.ejs",
       filename: "./index.html",
