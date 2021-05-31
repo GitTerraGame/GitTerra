@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { func } from "prop-types";
+import { func, string } from "prop-types";
 
 import repoURLValidator from "./repoURLValidator";
 
-function RepoInputForm({ callback }) {
+function RepoInputForm({ callback, initialError }) {
   const [valid, setValid] = useState(false);
   const [error, setError] = useState();
   const [url, setUrl] = useState("");
@@ -41,8 +41,11 @@ function RepoInputForm({ callback }) {
         required
         placeholder="https://github.com/your/repo"
       />
-      <div id="error" style={{ visibility: valid ? "hidden" : "visible" }}>
-        {error}
+      <div
+        id="error"
+        style={{ visibility: valid && !initialError ? "hidden" : "visible" }}
+      >
+        {error || initialError}
       </div>
       <input
         type="image"
@@ -56,6 +59,7 @@ function RepoInputForm({ callback }) {
 
 RepoInputForm.propTypes = {
   callback: func.isRequired,
+  initialError: string,
 };
 
 export default RepoInputForm;
