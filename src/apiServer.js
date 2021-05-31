@@ -63,7 +63,7 @@ app.post("/api/generateMap", function (req, res) {
     return res.status(200).send(`Process already exists but not complete`);
   }
 
-  const worker = child.spawn("node", ["./dist/generateMap.js"]);
+  const worker = child.spawn("node", ["./dist/mapGeneratorWorker.js"]);
   worker.stdin.write(repo_string);
   worker.stdin.end();
 

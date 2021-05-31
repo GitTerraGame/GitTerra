@@ -8,7 +8,7 @@
     "build": "NODE_ENV=production webpack --config webpack.prod.js",
     "watch": "NODE_ENV=production webpack --config webpack.prod.js --watch",
     "api-server": "node dist/apiServer.js",
-    "generate": "node dist/generateMap.js -u https://github.com/sergeychernyshev/GitTerra",
+    "generate": "node dist/mapGeneratorWorker.js -u https://github.com/sergeychernyshev/GitTerra",
     "web-dev-server": "webpack serve --config webpack.dev.js"
   },
   "repository": {
