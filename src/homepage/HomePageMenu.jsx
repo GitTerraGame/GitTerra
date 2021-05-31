@@ -24,7 +24,19 @@ const HomePageMenu = function () {
   }
 
   function startGeneration(repo) {
-    generateMap(repo, setIsGenerating, setGenerationError);
+    generateMap({
+      repo,
+      onGenerationStart: () => {
+        setIsGenerating(true);
+      },
+      onGenerationSuccess: (url) => {
+        window.location.href = url;
+      },
+      onGenerationError: (message) => {
+        setGenerationError(message);
+        setIsGenerating(false);
+      },
+    });
   }
 
   return isGenerating ? (

@@ -1,4 +1,8 @@
-async function checkJobStatus(postdata, setIsGenerating, setGenerationError) {
+async function checkJobStatus({
+  postdata,
+  onGenerationSuccess,
+  onGenerationError,
+}) {
   let response = await fetch("/api/mapStatus", {
     method: "POST",
     body: JSON.stringify(postdata),
@@ -6,8 +10,7 @@ async function checkJobStatus(postdata, setIsGenerating, setGenerationError) {
   });
 
   if (!response.ok) {
-    setIsGenerating(false);
-    setGenerationError(
+    onGenerationError(
       "We have problems generating your map, please try again later."
     );
     return;
@@ -15,36 +18,36 @@ async function checkJobStatus(postdata, setIsGenerating, setGenerationError) {
 
   let job = await response.json();
   if (job.complete) {
-    window.location.href = job.mapPageURL;
+    onGenerationSuccess(job.mapPageURL);
   } else {
     setTimeout(() => {
-      checkJobStatus(postdata, setIsGenerating, setGenerationError);
+      checkJobStatus({ postdata, onGenerationSuccess, onGenerationError });
     }, 3000);
   }
 }
 
-export default async function generateMap(
+export default async function generateMap({
   repo,
-  setIsGenerating,
-  setGenerationError
-) {
-  const repoRequest = { repo };
+  onGenerationStart,
+  onGenerationError,
+  onGenerationSuccess,
+}) {
+  const postdata = { repo };
 
   let response = await fetch("/api/generateMap", {
     method: "POST",
-    body: JSON.stringify(repoRequest),
+    body: JSON.stringify(postdata),
     headers: { "Content-type": "application/json" },
   });
 
   if (!response.ok) {
-    setIsGenerating(false);
-    setGenerationError(
+    onGenerationError(
       "We couldn't start generating your map, please try again later."
     );
     return;
   }
 
-  setIsGenerating(true);
+  onGenerationStart();
 
-  checkJobStatus(repoRequest, setIsGenerating, setGenerationError);
+  checkJobStatus({ postdata, onGenerationSuccess, onGenerationError });
 }

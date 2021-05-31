@@ -105,17 +105,19 @@ body {
   outline: 0 !important;
 }
 
-#error {
-  visibility: hidden;
+.error {
   text-align: center;
-  color: rgb(255 204 13);
   font-weight: bold;
   margin: 0.5em 0;
-  height: 2em;
+  min-height: 2em;
 }
 
-#error.invalid {
-  visibility: visible;
+.validation.error {
+  color: rgb(255 204 13);
+}
+
+.initial.error {
+  color: rgb(255 115 13);
 }
 
 #enterGitRepo {
