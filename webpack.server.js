@@ -56,7 +56,7 @@ module.exports = {
     ],
   },
   entry: {
-    generateMap: "./src/generateMap",
+    mapGeneratorWorker: "./src/mapGeneratorWorker",
     apiServer: "./src/apiServer",
   },
   resolve: {
