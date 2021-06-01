@@ -35,7 +35,7 @@ async function generateMap({
     const dirname = "./repos/" + host + "/" + owner + "/" + repo;
     const filename = dirname + "/index.html";
     mkdirp.sync(dirname);
-    if (number_of_blocks === MIN_TILES) {
+    if (repoData.total.files < 1) {
       // should be build a special page with message "Your repo seems empty.
       //Start to buld your city by commiting code to your repo and come again!"
     } else {
