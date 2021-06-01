@@ -41,12 +41,13 @@ function RepoInputForm({ callback, initialError }) {
         required
         placeholder="https://github.com/your/repo"
       />
-      <div
-        id="error"
-        style={{ visibility: valid && !initialError ? "hidden" : "visible" }}
-      >
-        {error || initialError}
-      </div>
+
+      {valid && !initialError && <div className="error"></div>}
+      {!valid && <div className="validation error">{error}</div>}
+      {valid && initialError && (
+        <div className="initial error">{initialError}</div>
+      )}
+
       <input
         type="image"
         id="generateButton"
