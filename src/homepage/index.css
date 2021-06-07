@@ -12,8 +12,8 @@ h1 * {
 }
 
 body {
-  background-color: white;
   background: url("images/background_and_menus/site_background_image_bg.svg");
+  background-color: white;
   background-size: cover;
 
   /* Jsut got a font stack from CSS-tricks site: https://css-tricks.com/snippets/css/font-stacks/ */
