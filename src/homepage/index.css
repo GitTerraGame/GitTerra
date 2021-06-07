@@ -32,11 +32,13 @@ body {
 #enterGitRepo {
   aspect-ratio: auto 322 / 110.25;
   width: 100%;
+  margin-top: 8%;
 }
 
 #generateButton {
   aspect-ratio: auto 322 / 71.862;
   width: 100%;
+  margin-bottom: 8%;
 }
 
 #mainMenu,
@@ -118,12 +120,4 @@ body {
 
 .initial.error {
   color: rgb(255 115 13);
-}
-
-#enterGitRepo {
-  margin-top: 8%;
-}
-
-#generateButton {
-  margin-bottom: 8%;
 }
