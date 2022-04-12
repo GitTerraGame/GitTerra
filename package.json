@@ -49,7 +49,7 @@
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.7",
-    "simple-git": "^2.38.1",
+    "simple-git": "^3.5.0",
     "tmp": "^0.2.1",
     "yargs": "^17.0.1"
   },
