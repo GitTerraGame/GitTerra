@@ -39,7 +39,7 @@
   },
   "homepage": "https://github.com/sergeychernyshev/GitTerra#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "get-stdin": "^9.0.0",
     "mkdirp": "^1.0.4",
     "node-fetch": "^2.6.1",
