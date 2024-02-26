@@ -50,7 +50,7 @@ const HomePageMenu = function () {
       <footer>
         <div id="feedback">
           <a
-            href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&amp;labels=feedback"
+            href="https://gitlab.com/gitterra/GitTerra/-/issues/new"
             target="_blank"
             rel="noreferrer"
           >
