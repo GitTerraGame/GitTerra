@@ -7,9 +7,14 @@ const Intro = ({ onClose }) => (
     <p>GitTerra is a game for developers played by building software!</p>
 
     <div id="startbox">
-      <button id="start" onClick={onClose}>
+      <a
+        id="start"
+        href="https://gitlab.com/gitterra/GitTerra"
+        target="_blank"
+        rel="noreferrer"
+      >
         🏗️ Start Building Your City 🏗️
-      </button>
+      </a>
     </div>
 
     <p>
@@ -23,9 +28,16 @@ const Intro = ({ onClose }) => (
       time, and so many more we can imagine together with you!
     </p>
     <p>
-      Right now, you can already get a city generated based on your repository,
-      just enter the URL of the public code repository on GitHub and the city
-      will rise!
+      Right now, you can already get a city generated based on your repository
+      using a{" "}
+      <a
+        href="https://gitlab.com/gitterra/GitTerra"
+        target="_blank"
+        rel="noreferrer"
+      >
+        CI/CD pipeline code with GitLab
+      </a>
+      . We are working on adding GitHub support as well.
     </p>
   </div>
 );

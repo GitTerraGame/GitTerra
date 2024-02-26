@@ -33,28 +33,18 @@ const HomePageMenu = function () {
     <div id="wholeMenu">
       <img id="logobanner" src="images/background_and_menus/logobanner.svg" />
 
-      {intro ? (
-        <Intro onClose={hideIntro} />
-      ) : (
-        <RepoInputForm
-          callback={startGeneration}
-          initialError={generationError}
-        />
-      )}
+      <Intro onClose={hideIntro} />
 
       <footer>
         <div id="feedback">
-          <a href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&amp;labels=feedback">
+          <a
+            href="https://github.com/GitTerraGame/GitTerra/issues/new?template=feedback.md&amp;labels=feedback"
+            target="_blank"
+            rel="noreferrer"
+          >
             How can we make this game better?
           </a>
         </div>
-        {intro || (
-          <div id="about">
-            <a href="#" id="aboutlink" onClick={showIntro}>
-              About Git Terra
-            </a>
-          </div>
-        )}
       </footer>
     </div>
   );
