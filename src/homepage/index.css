@@ -12,8 +12,8 @@ h1 * {
 }
 
 body {
-  background-color: white;
   background: url("images/background_and_menus/site_background_image_bg.svg");
+  background-color: white;
   background-size: cover;
 
   /* Jsut got a font stack from CSS-tricks site: https://css-tricks.com/snippets/css/font-stacks/ */
@@ -32,11 +32,13 @@ body {
 #enterGitRepo {
   aspect-ratio: auto 322 / 110.25;
   width: 100%;
+  margin-top: 8%;
 }
 
 #generateButton {
   aspect-ratio: auto 322 / 71.862;
   width: 100%;
+  margin-bottom: 8%;
 }
 
 #mainMenu,
@@ -114,23 +116,17 @@ a#start {
   outline: 0 !important;
 }
 
-#error {
-  visibility: hidden;
+.error {
   text-align: center;
-  color: rgb(255 204 13);
   font-weight: bold;
   margin: 0.5em 0;
-  height: 2em;
+  min-height: 2em;
 }
 
-#error.invalid {
-  visibility: visible;
+.validation.error {
+  color: rgb(255 204 13);
 }
 
-#enterGitRepo {
-  margin-top: 8%;
-}
-
-#generateButton {
-  margin-bottom: 8%;
+.initial.error {
+  color: rgb(255 115 13);
 }
