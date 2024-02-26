@@ -9,7 +9,7 @@ const Intro = ({ onClose }) => (
     <div id="startbox">
       <a
         id="start"
-        href="https://gitlab.com/gitterra/GitTerra"
+        href="https://gitlab.com/explore/catalog/gitterra/GitTerra"
         target="_blank"
         rel="noreferrer"
       >
@@ -31,7 +31,7 @@ const Intro = ({ onClose }) => (
       Right now, you can already get a city generated based on your repository
       using a{" "}
       <a
-        href="https://gitlab.com/gitterra/GitTerra"
+        href="https://gitlab.com/explore/catalog/gitterra/GitTerra"
         target="_blank"
         rel="noreferrer"
       >
