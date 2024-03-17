@@ -1,67 +1,14 @@
-# This is a basic workflow to help you get started with Actions
+name: Play GitTerra
+run-name: Playing 🌎 GitTerra on ${{ github.repository }} 🗺️
 
-name: GitTerra
-
-# Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  #push:
-    #branches: [ main ]
-  #pull_request:
-    #branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+  push:
+    branches:
+      - main
+  pull_request:
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  play-gitterra:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-       # install Node & NPM
-      - name: install Node & NPM
-        uses: actions/setup-node@v1
-      - name: Set today value
-        id: today
-        run: |
-          now=$(date +"%m_%d_%Y") && echo "TODAY=$now" >> $GITHUB_ENV
-        
-        #install scc
-      - name: SCC
-        id: scc
-        uses: iryanbell/scc-docker-action@v1.0.2
-        with:
-          args: ${{ env.workspace }} -f json
-
-      - name: Save scc resulst
-        run: echo "${{steps.scc.outputs.scc}}" > scc_${{ env.TODAY }}.json
-      #get commits
-      - name: gitlog
-        run:  git log --date=local --reverse --no-merges --shortstat --pretty="%x40%h%x7E%x7E%cd%x7E%x7E%<(79,trunc)%f%x7E%x7E" |  tr "\n" " " | tr "@" "\n" >commits_${{ env.TODAY }}.txt
-        #upload scc and commits files
-      - name: Archive scc
-        uses: actions/upload-artifact@v2
-        with:
-          name: scc_${{ env.TODAY }}
-          path: scc_${{ env.TODAY }}.json
-      - name: Archive commits
-        uses: actions/upload-artifact@v2
-        with:
-          name: commits_${{ env.TODAY }}
-          path: commits_${{ env.TODAY }}.txt
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
+      - name: Play GitTerra 🎮
+        uses: GitTerraGame/Play-GitTerra-Action@main
