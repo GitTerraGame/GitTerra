@@ -3,6 +3,13 @@
     <title>Welcome to GitTerraGame!</title>
     <meta content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      property="og:image"
+      content="images/background_and_menus/logobanner.svg"
+    />
+    <meta property="og:image:type" content="image/svg" />
+    <link rel="icon" type="image/png" href="/images/logo.png" />
+
     <style>
       h1,
       footer {
@@ -69,9 +76,12 @@
         border: 3px solid white;
         color: #2e3091;
         padding: 0.5em 1em;
-        text-align: center;
         font-size: 18px;
         border-radius: 0.5em;
+        display: flex;
+        gap: 0.2em;
+        justify-content: center;
+        align-items: center;
       }
 
       a#start {
@@ -95,6 +105,8 @@
       #startbox {
         text-align: center;
         margin: 2em 0;
+        display: flex;
+        justify-content: space-evenly;
       }
 
       #wholeMenu {
@@ -156,18 +168,40 @@
   <body>
     <div id="gitterra-app">
       <div id="wholeMenu">
-        <img id="logobanner" src="images/background_and_menus/logobanner.svg" />
+        <img
+          id="logobanner"
+          src="/images/background_and_menus/logobanner.svg"
+        />
         <div id="intro">
           <h1>Welcome Player!</h1>
           <p>GitTerra is a game for developers played by building software!</p>
+          <h1>🏗️ Start Building 🏗️</h1>
           <div id="startbox">
+            <a
+              id="start"
+              href="https://github.com/marketplace/actions/play-gitterra"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img
+                src="/images/github.svg"
+                alt="GitHub"
+                style="height: 1.5em"
+              />
+            </a>
+
             <a
               id="start"
               href="https://gitlab.com/explore/catalog/gitterra/GitTerra"
               target="_blank"
               rel="noreferrer"
-              >🏗️ Start Building Your City 🏗️</a
             >
+              <img
+                src="/images/gitlab.svg"
+                alt="GitLab"
+                style="height: 1.5em"
+              />
+            </a>
           </div>
           <p>
             Our game is in the very early stages of development with so many
@@ -182,19 +216,26 @@
           </p>
           <p>
             Right now, you can already get a city generated based on your
-            repository using a
+            repository using a CI/CD pipelines on
+            <a
+              href="https://github.com/marketplace/actions/play-gitterra"
+              target="_blank"
+              rel="noreferrer"
+              >GitHub</a
+            >
+            and
             <a
               href="https://gitlab.com/explore/catalog/gitterra/GitTerra"
               target="_blank"
               rel="noreferrer"
-              >CI/CD pipeline code with GitLab</a
-            >. We are working on adding GitHub support as well.
+              >GitLab</a
+            >.
           </p>
         </div>
         <footer>
           <div id="feedback">
             <a
-              href="https://gitlab.com/gitterra/GitTerra/-/issues/new"
+              href="https://github.com/GitTerraGame/GitTerra/issues/new?template=regular_template.md&labels=enhancement"
               target="_blank"
               rel="noreferrer"
               >How can we make this game better?</a
