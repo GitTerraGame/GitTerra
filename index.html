@@ -1,0 +1,248 @@
+<html>
+  <head>
+    <title>Welcome to GitTerraGame!</title>
+    <meta content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      property="og:image"
+      content="images/background_and_menus/logobanner.svg"
+    />
+    <meta property="og:image:type" content="image/svg" />
+    <link rel="icon" type="image/png" href="/images/logo.png" />
+
+    <style>
+      h1,
+      footer {
+        text-align: center;
+      }
+
+      footer {
+        margin-bottom: 3em;
+      }
+
+      h1 * {
+        vertical-align: middle;
+      }
+
+      body {
+        background: url("/images/background_and_menus/site_background_image_bg.svg");
+        background-color: white;
+        background-size: cover;
+
+        /* Jsut got a font stack from CSS-tricks site: https://css-tricks.com/snippets/css/font-stacks/ */
+        /* Helvetica/Arial-based sans serif stack */
+        font-family: Frutiger, "Frutiger Linotype", Univers, Calibri,
+          "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad,
+          "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma,
+          Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      #logobanner {
+        aspect-ratio: auto 400 / 216.012;
+        width: 100%;
+      }
+
+      #enterGitRepo {
+        aspect-ratio: auto 322 / 110.25;
+        width: 100%;
+        margin-top: 8%;
+      }
+
+      #generateButton {
+        aspect-ratio: auto 322 / 71.862;
+        width: 100%;
+        margin-bottom: 8%;
+      }
+
+      #mainMenu,
+      #intro {
+        background-color: #2e3192;
+        border: 3px solid white;
+        padding: 17% 1em 1em 1em;
+        margin-top: -17%;
+        z-index: -100;
+        margin-left: 5%;
+        margin-right: 5%;
+        display: block;
+      }
+
+      #mainMenu a,
+      #intro a {
+        color: rgb(219, 239, 254);
+      }
+
+      #start {
+        background-color: white;
+        border: 3px solid white;
+        color: #2e3091;
+        padding: 0.5em 1em;
+        font-size: 18px;
+        border-radius: 0.5em;
+        display: flex;
+        gap: 0.2em;
+        justify-content: center;
+        align-items: center;
+      }
+
+      a#start {
+        color: #2e3091;
+      }
+
+      #start:hover {
+        background-color: #f0f0f0;
+        border-color: #f0f0f0;
+      }
+
+      #start:active {
+        border-width: 2px;
+        margin: 1px;
+      }
+
+      #intro {
+        color: white;
+      }
+
+      #startbox {
+        text-align: center;
+        margin: 2em 0;
+        display: flex;
+        justify-content: space-evenly;
+      }
+
+      #wholeMenu {
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, 0);
+        position: absolute;
+        width: 85%;
+        min-width: 15em;
+        max-width: 32em;
+      }
+
+      #repoUrl {
+        box-sizing: border-box;
+        display: block;
+        margin: 1px auto 0.8em auto;
+        width: 100%;
+        border: 2px solid rgb(19, 4, 77);
+        font-size: 1.2em;
+        line-height: 1.5em;
+        padding: 0.5em;
+      }
+
+      *:focus {
+        outline: 0 !important;
+      }
+
+      .error {
+        text-align: center;
+        font-weight: bold;
+        margin: 0.5em 0;
+        min-height: 2em;
+      }
+
+      .validation.error {
+        color: rgb(255 204 13);
+      }
+
+      .initial.error {
+        color: rgb(255 115 13);
+      }
+      /*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9ob21lcGFnZS9pbmRleC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7O0VBRUUsa0JBQWtCO0FBQ3BCOztBQUVBO0VBQ0Usa0JBQWtCO0FBQ3BCOztBQUVBO0VBQ0Usc0JBQXNCO0FBQ3hCOztBQUVBO0VBQ0UsbURBQTJFO0VBQzNFLHVCQUF1QjtFQUN2QixzQkFBc0I7O0VBRXRCLGlHQUFpRztFQUNqRywyQ0FBMkM7RUFDM0M7OztnQ0FHOEI7QUFDaEM7O0FBRUE7RUFDRSxnQ0FBZ0M7RUFDaEMsV0FBVztBQUNiOztBQUVBO0VBQ0UsK0JBQStCO0VBQy9CLFdBQVc7RUFDWCxjQUFjO0FBQ2hCOztBQUVBO0VBQ0UsK0JBQStCO0VBQy9CLFdBQVc7RUFDWCxpQkFBaUI7QUFDbkI7O0FBRUE7O0VBRUUseUJBQXlCO0VBQ3pCLHVCQUF1QjtFQUN2Qix3QkFBd0I7RUFDeEIsZ0JBQWdCO0VBQ2hCLGFBQWE7RUFDYixlQUFlO0VBQ2YsZ0JBQWdCO0VBQ2hCLGNBQWM7QUFDaEI7O0FBRUE7O0VBRUUseUJBQXlCO0FBQzNCOztBQUVBO0VBQ0UsdUJBQXVCO0VBQ3ZCLHVCQUF1QjtFQUN2QixjQUFjO0VBQ2Qsa0JBQWtCO0VBQ2xCLGtCQUFrQjtFQUNsQixlQUFlO0VBQ2Ysb0JBQW9CO0FBQ3RCOztBQUVBO0VBQ0UsY0FBYztBQUNoQjs7QUFFQTtFQUNFLHlCQUF5QjtFQUN6QixxQkFBcUI7QUFDdkI7O0FBRUE7RUFDRSxpQkFBaUI7RUFDakIsV0FBVztBQUNiOztBQUVBO0VBQ0UsWUFBWTtBQUNkOztBQUVBO0VBQ0Usa0JBQWtCO0VBQ2xCLGFBQWE7QUFDZjs7QUFFQTtFQUNFLFNBQVM7RUFDVCxrQkFBa0I7RUFDbEIsNkJBQTZCO0VBQzdCLGtCQUFrQjtFQUNsQixVQUFVO0VBQ1YsZUFBZTtFQUNmLGVBQWU7QUFDakI7O0FBRUE7RUFDRSxzQkFBc0I7RUFDdEIsY0FBYztFQUNkLDJCQUEyQjtFQUMzQixXQUFXO0VBQ1gsZ0NBQWdDO0VBQ2hDLGdCQUFnQjtFQUNoQixrQkFBa0I7RUFDbEIsY0FBYztBQUNoQjs7QUFFQTtFQUNFLHFCQUFxQjtBQUN2Qjs7QUFFQTtFQUNFLGtCQUFrQjtFQUNsQixpQkFBaUI7RUFDakIsZUFBZTtFQUNmLGVBQWU7QUFDakI7O0FBRUE7RUFDRSxzQkFBc0I7QUFDeEI7O0FBRUE7RUFDRSxzQkFBc0I7QUFDeEIiLCJzb3VyY2VzQ29udGVudCI6WyJoMSxcbmZvb3RlciB7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbn1cblxuZm9vdGVyIHtcbiAgbWFyZ2luLWJvdHRvbTogM2VtO1xufVxuXG5oMSAqIHtcbiAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcbn1cblxuYm9keSB7XG4gIGJhY2tncm91bmQ6IHVybChcImltYWdlcy9iYWNrZ3JvdW5kX2FuZF9tZW51cy9zaXRlX2JhY2tncm91bmRfaW1hZ2VfYmcuc3ZnXCIpO1xuICBiYWNrZ3JvdW5kLWNvbG9yOiB3aGl0ZTtcbiAgYmFja2dyb3VuZC1zaXplOiBjb3ZlcjtcblxuICAvKiBKc3V0IGdvdCBhIGZvbnQgc3RhY2sgZnJvbSBDU1MtdHJpY2tzIHNpdGU6IGh0dHBzOi8vY3NzLXRyaWNrcy5jb20vc25pcHBldHMvY3NzL2ZvbnQtc3RhY2tzLyAqL1xuICAvKiBIZWx2ZXRpY2EvQXJpYWwtYmFzZWQgc2FucyBzZXJpZiBzdGFjayAqL1xuICBmb250LWZhbWlseTogRnJ1dGlnZXIsIFwiRnJ1dGlnZXIgTGlub3R5cGVcIiwgVW5pdmVycywgQ2FsaWJyaSwgXCJHaWxsIFNhbnNcIixcbiAgICBcIkdpbGwgU2FucyBNVFwiLCBcIk15cmlhZCBQcm9cIiwgTXlyaWFkLCBcIkRlamFWdSBTYW5zIENvbmRlbnNlZFwiLFxuICAgIFwiTGliZXJhdGlvbiBTYW5zXCIsIFwiTmltYnVzIFNhbnMgTFwiLCBUYWhvbWEsIEdlbmV2YSwgXCJIZWx2ZXRpY2EgTmV1ZVwiLFxuICAgIEhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWY7XG59XG5cbiNsb2dvYmFubmVyIHtcbiAgYXNwZWN0LXJhdGlvOiBhdXRvIDQwMCAvIDIxNi4wMTI7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4jZW50ZXJHaXRSZXBvIHtcbiAgYXNwZWN0LXJhdGlvOiBhdXRvIDMyMiAvIDExMC4yNTtcbiAgd2lkdGg6IDEwMCU7XG4gIG1hcmdpbi10b3A6IDglO1xufVxuXG4jZ2VuZXJhdGVCdXR0b24ge1xuICBhc3BlY3QtcmF0aW86IGF1dG8gMzIyIC8gNzEuODYyO1xuICB3aWR0aDogMTAwJTtcbiAgbWFyZ2luLWJvdHRvbTogOCU7XG59XG5cbiNtYWluTWVudSxcbiNpbnRybyB7XG4gIGJhY2tncm91bmQtY29sb3I6ICMyZTMxOTI7XG4gIGJvcmRlcjogM3B4IHNvbGlkIHdoaXRlO1xuICBwYWRkaW5nOiAxNyUgMWVtIDFlbSAxZW07XG4gIG1hcmdpbi10b3A6IC0xNyU7XG4gIHotaW5kZXg6IC0xMDA7XG4gIG1hcmdpbi1sZWZ0OiA1JTtcbiAgbWFyZ2luLXJpZ2h0OiA1JTtcbiAgZGlzcGxheTogYmxvY2s7XG59XG5cbiNtYWluTWVudSBhLFxuI2ludHJvIGEge1xuICBjb2xvcjogcmdiKDIxOSwgMjM5LCAyNTQpO1xufVxuXG4jc3RhcnQge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiB3aGl0ZTtcbiAgYm9yZGVyOiAzcHggc29saWQgd2hpdGU7XG4gIGNvbG9yOiAjMmUzMDkxO1xuICBwYWRkaW5nOiAwLjVlbSAxZW07XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgZm9udC1zaXplOiAxOHB4O1xuICBib3JkZXItcmFkaXVzOiAwLjVlbTtcbn1cblxuYSNzdGFydCB7XG4gIGNvbG9yOiAjMmUzMDkxO1xufVxuXG4jc3RhcnQ6aG92ZXIge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjZjBmMGYwO1xuICBib3JkZXItY29sb3I6ICNmMGYwZjA7XG59XG5cbiNzdGFydDphY3RpdmUge1xuICBib3JkZXItd2lkdGg6IDJweDtcbiAgbWFyZ2luOiAxcHg7XG59XG5cbiNpbnRybyB7XG4gIGNvbG9yOiB3aGl0ZTtcbn1cblxuI3N0YXJ0Ym94IHtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBtYXJnaW46IDJlbSAwO1xufVxuXG4jd2hvbGVNZW51IHtcbiAgbGVmdDogNTAlO1xuICBtYXJnaW4tcmlnaHQ6IC01MCU7XG4gIHRyYW5zZm9ybTogdHJhbnNsYXRlKC01MCUsIDApO1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIHdpZHRoOiA4NSU7XG4gIG1pbi13aWR0aDogMTVlbTtcbiAgbWF4LXdpZHRoOiAzMmVtO1xufVxuXG4jcmVwb1VybCB7XG4gIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gIGRpc3BsYXk6IGJsb2NrO1xuICBtYXJnaW46IDFweCBhdXRvIDAuOGVtIGF1dG87XG4gIHdpZHRoOiAxMDAlO1xuICBib3JkZXI6IDJweCBzb2xpZCByZ2IoMTksIDQsIDc3KTtcbiAgZm9udC1zaXplOiAxLjJlbTtcbiAgbGluZS1oZWlnaHQ6IDEuNWVtO1xuICBwYWRkaW5nOiAwLjVlbTtcbn1cblxuKjpmb2N1cyB7XG4gIG91dGxpbmU6IDAgIWltcG9ydGFudDtcbn1cblxuLmVycm9yIHtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBmb250LXdlaWdodDogYm9sZDtcbiAgbWFyZ2luOiAwLjVlbSAwO1xuICBtaW4taGVpZ2h0OiAyZW07XG59XG5cbi52YWxpZGF0aW9uLmVycm9yIHtcbiAgY29sb3I6IHJnYigyNTUgMjA0IDEzKTtcbn1cblxuLmluaXRpYWwuZXJyb3Ige1xuICBjb2xvcjogcmdiKDI1NSAxMTUgMTMpO1xufSJdLCJzb3VyY2VSb290IjoiIn0= */
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-TTFNRWRVFB"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-TTFNRWRVFB");
+    </script>
+  </head>
+  <body>
+    <div id="gitterra-app">
+      <div id="wholeMenu">
+        <img
+          id="logobanner"
+          src="/images/background_and_menus/logobanner.svg"
+        />
+        <div id="intro">
+          <h1>Welcome Player!</h1>
+          <p>GitTerra is a game for developers played by building software!</p>
+          <h1>🏗️ Start Building 🏗️</h1>
+          <div id="startbox">
+            <a
+              id="start"
+              href="https://github.com/marketplace/actions/play-gitterra"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img
+                src="/images/github.svg"
+                alt="GitHub"
+                style="height: 1.5em"
+              />
+            </a>
+
+            <a
+              id="start"
+              href="https://gitlab.com/explore/catalog/gitterra/GitTerra"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img
+                src="/images/gitlab.svg"
+                alt="GitLab"
+                style="height: 1.5em"
+              />
+            </a>
+          </div>
+          <p>
+            Our game is in the very early stages of development with so many
+            awesome features coming!
+          </p>
+          <p>
+            Imagine cities colored based on the code language, imaging getting
+            points for coding and doing non-coding tasks like submitting issues
+            and writing tests and documentation, imagine ability to see how your
+            city evolved over time, and so many more we can imagine together
+            with you!
+          </p>
+          <p>
+            Right now, you can already get a city generated based on your
+            repository using a CI/CD pipelines on
+            <a
+              href="https://github.com/marketplace/actions/play-gitterra"
+              target="_blank"
+              rel="noreferrer"
+              >GitHub</a
+            >
+            and
+            <a
+              href="https://gitlab.com/explore/catalog/gitterra/GitTerra"
+              target="_blank"
+              rel="noreferrer"
+              >GitLab</a
+            >.
+          </p>
+        </div>
+        <footer>
+          <div id="feedback">
+            <a
+              href="https://github.com/GitTerraGame/GitTerra/issues/new?template=regular_template.md&labels=enhancement"
+              target="_blank"
+              rel="noreferrer"
+              >How can we make this game better?</a
+            >
+          </div>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>
